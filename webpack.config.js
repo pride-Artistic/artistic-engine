@@ -30,7 +30,7 @@ const options = {}
     },
     plugins: [
         new HtmlWebpackPlugin({
-            template: "./dist/index.html", 
+            template: "./src/index.html", 
         }),
     ],
     devServer: {
@@ -68,7 +68,7 @@ options['production'] = {
     },
     plugins: [
         new HtmlWebpackPlugin({
-            template: "./dist/index.html", 
+            template: "./src/index.html", 
         }),
     ],
     devServer: {
