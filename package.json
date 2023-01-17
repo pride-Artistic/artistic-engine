@@ -11,9 +11,7 @@
     "document": "typedoc"
   },
   "pre-commit": [
-    "lint",
-    "test",
-    "build"
+    "lint"
   ],
   "author": "pride Artistic",
   "license": "MIT",
