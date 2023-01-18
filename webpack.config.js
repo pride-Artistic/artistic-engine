@@ -1,13 +1,13 @@
 const path = require("path")
 const HtmlWebpackPlugin = require("html-webpack-plugin")
+const OPTION_PRODUCTION = 'production', OPTION_DEVELOPMENT = 'development'
 
 const options = {}
 
-
- options['development'] = {
-    mode: 'development',
+options[OPTION_DEVELOPMENT] = {
+    mode: OPTION_DEVELOPMENT,
     context: __dirname,
-    entry: './src/main.ts',
+    entry: './test-app/index.ts',
     devtool: 'inline-source-map',
     output: {
         filename: 'main.js' ,
@@ -44,11 +44,10 @@ const options = {}
     }
 }
 
-
-options['production'] = {
-    mode: 'production',
+options[OPTION_PRODUCTION] = {
+    mode: OPTION_PRODUCTION,
     context: __dirname,
-    entry: './src/main.ts',
+    entry: './src/index.ts',
     devtool: 'inline-source-map',
     output: {
         filename: 'main.js' ,
@@ -56,8 +55,11 @@ options['production'] = {
     },
     module: {
         rules: [{
-            test: /\.ts$/,
-            exclude: /node_modules/,
+            test: /(?<!\.test)\.ts$/,
+            exclude: [
+                path.join(__dirname, 'node_modules'), 
+                path.join(__dirname, 'test-app')
+            ],
             use: {
                 loader: 'ts-loader'
             }
@@ -65,23 +67,7 @@ options['production'] = {
     },
     resolve: {
         extensions: ['.js', '.ts']
-    },
-    plugins: [
-        new HtmlWebpackPlugin({
-            template: "./src/index.html", 
-        }),
-    ],
-    devServer: {
-        static: {
-            directory: path.join(__dirname, 'dist'),
-        },
-        inline: true,
-        hot: false, // optional, but you must not set both hot and liveReload to true
-        liveReload: true,
-        compress: true,
-        port: 8010
     }
 }
 
-
-module.exports = options['development']
+module.exports = options[process.env.NODE_ENV === OPTION_PRODUCTION ? OPTION_PRODUCTION : OPTION_DEVELOPMENT]
