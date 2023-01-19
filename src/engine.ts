@@ -3,16 +3,24 @@ export default class Engine {
 
   private context: CanvasRenderingContext2D;
 
-  public constructor(canvasIdentifier: HTMLCanvasElement | string) {
+  public constructor(canvasIdentifier: HTMLCanvasElement | string | null) {
+    // locate canvas
+    let canvas: HTMLCanvasElement | null;
     if (typeof canvasIdentifier === "string") {
-      this.canvas = document.querySelector(
+      canvas = document.querySelector(
         canvasIdentifier
-      ) as HTMLCanvasElement;
+      ) as HTMLCanvasElement | null;
     } else {
-      this.canvas = canvasIdentifier;
+      canvas = canvasIdentifier;
     }
+
+    if (canvas === null) {
+      throw new Error("Unable to identify canvas.");
+    }
+
+    this.canvas = canvas;
+
+    // request context from given canvas
     this.context = this.canvas.getContext("2d") as CanvasRenderingContext2D;
-    this.context.fillStyle = "red";
-    this.context.fillRect(0, 0, 100, 100);
   }
 }
