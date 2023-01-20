@@ -4,7 +4,7 @@ export default class Engine {
   private context: CanvasRenderingContext2D;
 
   public constructor(canvasIdentifier: HTMLCanvasElement | string | null) {
-    // locate canvas
+    // locate canvas by HTMLCanvasElement or CSS selector
     let canvas: HTMLCanvasElement | null;
     if (typeof canvasIdentifier === "string") {
       canvas = document.querySelector(
