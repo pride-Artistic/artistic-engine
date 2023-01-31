@@ -11,6 +11,10 @@ export default class Entity {
     return this.dimension;
   }
 
+  public get Parent() {
+    return this.parent;
+  }
+
   public get Position() {
     return this.position;
   }
@@ -25,6 +29,10 @@ export default class Entity {
 
   public set Dimension(dimension: Vector2D) {
     this.dimension = dimension;
+  }
+
+  public set Parent(entity: Entity | null) {
+    this.parent = entity;
   }
 
   public set Position(pos: Vector2D) {
