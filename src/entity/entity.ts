@@ -3,6 +3,8 @@ import { Vector2D } from "src/vector";
 export default class Entity {
   private dimension: Vector2D = new Vector2D();
 
+  private parent: Entity | null = null;
+
   private position: Vector2D = new Vector2D();
 
   public get Dimension() {
