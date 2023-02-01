@@ -1,6 +1,8 @@
 import { Vector2D } from "src/vector";
 
 export default class Entity {
+  protected children: Entity[] = [];
+
   protected parent: Entity | null = null;
 
   private dimension: Vector2D = new Vector2D();
