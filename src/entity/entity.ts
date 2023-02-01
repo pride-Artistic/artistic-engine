@@ -1,9 +1,9 @@
 import { Vector2D } from "src/vector";
 
 export default class Entity {
-  private dimension: Vector2D = new Vector2D();
+  protected parent: Entity | null = null;
 
-  private parent: Entity | null = null;
+  private dimension: Vector2D = new Vector2D();
 
   private position: Vector2D = new Vector2D();
 
@@ -29,10 +29,6 @@ export default class Entity {
 
   public set Dimension(dimension: Vector2D) {
     this.dimension = dimension;
-  }
-
-  public set Parent(entity: Entity | null) {
-    this.parent = entity;
   }
 
   public set Position(pos: Vector2D) {
