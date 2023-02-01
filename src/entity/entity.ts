@@ -29,6 +29,10 @@ export default class Entity {
     return this.dimension.X;
   }
 
+  protected get Children() {
+    return this.children.slice();
+  }
+
   public set Dimension(dimension: Vector2D) {
     this.dimension = dimension;
   }
