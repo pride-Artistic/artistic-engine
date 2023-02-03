@@ -1,4 +1,4 @@
-import { Vector2D } from "src/vector";
+import { Vector2D } from "../vector";
 
 export default class Entity {
   protected children: Entity[] = [];
