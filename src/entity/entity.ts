@@ -31,6 +31,10 @@ export default class Entity {
     return this.dimension;
   }
 
+  public get Height() {
+    return this.dimension.Y;
+  }
+
   public get Parent() {
     return this.parent;
   }
@@ -39,11 +43,7 @@ export default class Entity {
     return this.position;
   }
 
-  public get height() {
-    return this.dimension.Y;
-  }
-
-  public get width() {
+  public get Width() {
     return this.dimension.X;
   }
 
@@ -55,15 +55,15 @@ export default class Entity {
     this.dimension = dimension;
   }
 
+  public set Height(value: number) {
+    this.dimension.Y = value;
+  }
+
   public set Position(pos: Vector2D) {
     this.position = pos;
   }
 
-  public set height(value: number) {
-    this.dimension.Y = value;
-  }
-
-  public set width(value: number) {
+  public set Width(value: number) {
     this.dimension.X = value;
   }
 }
