@@ -1,4 +1,8 @@
-export default class Vector3D {
+import Vector from "./vector";
+
+export default class Vector3D extends Vector {
+  readonly size = 3;
+
   private _X: number = 0;
 
   private _Y: number = 0;
@@ -6,6 +10,7 @@ export default class Vector3D {
   private _Z: number = 0;
 
   constructor(x: number = 0, y: number = 0, z: number = 0) {
+    super();
     this.X = x;
     this.Y = y;
     this.Z = z;
