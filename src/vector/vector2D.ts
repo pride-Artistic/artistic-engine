@@ -1,9 +1,14 @@
-export default class Vector2D {
+import Vector from "./vector";
+
+export default class Vector2D extends Vector {
+  readonly size = 2;
+
   private _X: number = 0;
 
   private _Y: number = 0;
 
   constructor(x: number = 0, y: number = 0) {
+    super();
     this.X = x;
     this.Y = y;
   }
