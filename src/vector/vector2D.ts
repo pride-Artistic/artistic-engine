@@ -28,4 +28,8 @@ export default class Vector2D extends Vector {
   public set Y(y: number) {
     this._Y = y;
   }
+
+  public get_tuple(): [number, number] {
+    return [this.X, this.Y];
+  }
 }

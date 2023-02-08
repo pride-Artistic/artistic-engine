@@ -1,7 +1,9 @@
 import Vector from "./vector";
 
-export default class Vector3D extends Vector {
-  readonly size = 3;
+export default class Vector4D extends Vector {
+  readonly size = 4;
+
+  private _W: number = 0;
 
   private _X: number = 0;
 
@@ -9,11 +11,16 @@ export default class Vector3D extends Vector {
 
   private _Z: number = 0;
 
-  constructor(x: number = 0, y: number = 0, z: number = 0) {
+  constructor(x: number = 0, y: number = 0, z: number = 0, w: number = 0) {
     super();
     this.X = x;
     this.Y = y;
     this.Z = z;
+    this.W = w;
+  }
+
+  public get W() {
+    return this._W;
   }
 
   public get X() {
@@ -28,6 +35,10 @@ export default class Vector3D extends Vector {
     return this._Z;
   }
 
+  public set W(w: number) {
+    this._W = w;
+  }
+
   public set X(x: number) {
     this._X = x;
   }
@@ -40,7 +51,7 @@ export default class Vector3D extends Vector {
     this._Z = z;
   }
 
-  public get_tuple(): [number, number, number] {
-    return [this.X, this.Y, this.Z];
+  public get_tuple(): [number, number, number, number] {
+    return [this.X, this.Y, this.Z, this.W];
   }
 }
