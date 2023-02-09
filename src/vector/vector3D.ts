@@ -1,46 +1,31 @@
 import Vector from "./vector";
 
 export default class Vector3D extends Vector {
-  readonly size = 3;
-
-  private _X: number = 0;
-
-  private _Y: number = 0;
-
-  private _Z: number = 0;
-
   constructor(x: number = 0, y: number = 0, z: number = 0) {
-    super();
-    this.X = x;
-    this.Y = y;
-    this.Z = z;
+    super(x, y, z);
   }
 
   public get X() {
-    return this._X;
+    return this.values[0];
   }
 
   public get Y() {
-    return this._Y;
+    return this.values[1];
   }
 
   public get Z() {
-    return this._Z;
+    return this.values[2];
   }
 
   public set X(x: number) {
-    this._X = x;
+    this.values[0] = x;
   }
 
   public set Y(y: number) {
-    this._Y = y;
+    this.values[1] = y;
   }
 
   public set Z(z: number) {
-    this._Z = z;
-  }
-
-  public get_tuple(): [number, number, number] {
-    return [this.X, this.Y, this.Z];
+    this.values[2] = z;
   }
 }

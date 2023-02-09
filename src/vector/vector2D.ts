@@ -1,35 +1,23 @@
 import Vector from "./vector";
 
 export default class Vector2D extends Vector {
-  readonly size = 2;
-
-  private _X: number = 0;
-
-  private _Y: number = 0;
-
   constructor(x: number = 0, y: number = 0) {
-    super();
-    this.X = x;
-    this.Y = y;
+    super(x, y);
   }
 
   public get X() {
-    return this._X;
+    return this.values[0];
   }
 
   public get Y() {
-    return this._Y;
+    return this.values[1];
   }
 
   public set X(x: number) {
-    this._X = x;
+    this.values[0] = x;
   }
 
   public set Y(y: number) {
-    this._Y = y;
-  }
-
-  public get_tuple(): [number, number] {
-    return [this.X, this.Y];
+    this.values[1] = y;
   }
 }

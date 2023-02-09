@@ -1,18 +1,34 @@
-import * as VC from "./index";
-
-type VectorType = VC.Vector2D | VC.Vector3D | VC.Vector4D;
-const vectorClasses = [VC.Vector2D, VC.Vector3D, VC.Vector4D];
-
 export default abstract class Vector {
-  abstract readonly size: 2 | 3 | 4;
+  protected readonly size: number;
 
-  public copy(size?: 2 | 3 | 4, force: boolean = false): VectorType {
-    if (size == undefined) size = this.size;
-    if (size < this.size && !force)
-      throw new Error("New vector size is less than before.");
-    const vectorClass = vectorClasses[size - 2];
-    return new vectorClass(...this.get_tuple());
+  protected values: number[];
+
+  constructor(...values: number[]) {
+    this.values = [...values];
+    this.size = values.length;
   }
 
-  public abstract get_tuple(): number[];
+  public get Size() {
+    return this.size;
+  }
+
+  public copy<T extends Vector>(to: T, force: boolean = false): T {
+    if (this.size > to.size && !force) {
+      throw new Error(
+        `Copying vector of size ${this.size} to ${to.size} will cause data loss.\nInclude force option if intended.`
+      );
+    } else {
+      to.overwrite(this.values);
+      return to;
+    }
+  }
+
+  private overwrite(values: number[]) {
+    let counter = 0;
+    this.values = this.values.map(function () {
+      const newValue = values[counter++];
+      if (newValue) return newValue;
+      else return 0;
+    });
+  }
 }
