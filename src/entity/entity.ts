@@ -67,21 +67,20 @@ export default class Entity {
     children: Entity[] | Entity,
     z_index: number = Infinity
   ): number {
-    const safeIndex = Math.max(0, Math.min(z_index, this.Children.length));
     let lastIndex: number = -1;
     if (Array.isArray(children)) {
+      const safeIndex = Math.max(0, Math.min(z_index, this.Children.length));
       for (let index = 0; index < children.length; index++) {
         lastIndex = this.attachChildren(children[index], safeIndex + index);
       }
     } else {
-      let duplicateCount = 0;
       for (let index = this.Children.length - 1; index >= 0; index--) {
         if (this.Children[index] === children) {
           this.Children.splice(index, 1);
-          duplicateCount++;
         }
       }
-      lastIndex = safeIndex - duplicateCount;
+      const safeIndex = Math.max(0, Math.min(z_index, this.Children.length));
+      lastIndex = safeIndex;
       this.Children.splice(lastIndex, 0, children);
       children.parent = this;
     }
