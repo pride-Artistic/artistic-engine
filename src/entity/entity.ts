@@ -10,20 +10,16 @@ export default class Entity {
   private position: Vector2D = new Vector2D();
 
   public constructor(config: {
-    dimension: Vector2D | undefined;
-    position: Vector2D | undefined;
+    h: number | undefined;
+    w: number | undefined;
+    x: number | undefined;
+    y: number | undefined;
   }) {
     if (config) {
-      if (config.dimension) {
-        this.dimension.X = config.dimension.X;
-        this.dimension.Y = config.dimension.Y;
-        // TODO: replace with vector copy method
-      }
-      if (config.position) {
-        this.position.X = config.position.X;
-        this.position.Y = config.position.Y;
-        // TODO: replace with vector copy method
-      }
+      this.dimension.X = config.w ?? 0;
+      this.dimension.Y = config.h ?? 0;
+      this.position.X = config.x ?? 0;
+      this.position.Y = config.y ?? 0;
     }
   }
 
