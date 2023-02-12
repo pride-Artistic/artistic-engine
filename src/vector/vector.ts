@@ -23,6 +23,16 @@ export default abstract class Vector {
     }
   }
 
+  public shift(move: number = 1) {
+    move %= this.size;
+    const temp = this.values.slice(0, -move);
+    temp.unshift(...this.values.slice(-move));
+    // It changes itself (reference), does not return new value
+    // If you want to let it return new value, you should modify this section
+    this.values = temp;
+    return this;
+  }
+
   private overwrite(values: number[]) {
     let counter = 0;
     this.values = this.values.map(function () {
