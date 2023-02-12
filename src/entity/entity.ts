@@ -44,7 +44,7 @@ export default class Entity {
   }
 
   protected get Children() {
-    return this.children.slice();
+    return this.children;
   }
 
   public set Dimension(dimension: Vector2D) {
@@ -55,11 +55,55 @@ export default class Entity {
     this.dimension.Y = value;
   }
 
-  public set Position(pos: Vector2D) {
-    this.position = pos;
+  public set Position(position: Vector2D) {
+    this.position = position;
   }
 
   public set Width(value: number) {
     this.dimension.X = value;
+  }
+
+  public attachChildren(
+    children: Entity[] | Entity,
+    z_index: number = Infinity
+  ): number {
+    const safeIndex = Math.max(0, Math.min(z_index, this.Children.length));
+    let lastIndex: number = -1;
+    if (Array.isArray(children)) {
+      for (let index = 0; index < children.length; index++) {
+        lastIndex = this.attachChildren(children[index], safeIndex + index);
+      }
+    } else {
+      let duplicateCount = 0;
+      for (let index = this.Children.length - 1; index >= 0; index--) {
+        if (this.Children[index] === children) {
+          this.Children.splice(index, 1);
+          duplicateCount++;
+        }
+      }
+      lastIndex = safeIndex - duplicateCount;
+      this.Children.splice(lastIndex, 0, children);
+      children.parent = this;
+    }
+    return lastIndex; // if returns -1, empty array has been input.
+  }
+
+  public detachChildren(children: Entity[] | Entity) {
+    if (Array.isArray(children)) {
+      for (const child of children) {
+        this.detachChildren(child);
+      }
+    } else {
+      const index = this.Children.indexOf(children);
+      if (index > -1) {
+        this.Children.splice(index, 1);
+        children.parent = null;
+      }
+    }
+  }
+
+  public setParent(parent: Entity | null = null) {
+    this.parent?.detachChildren(this);
+    parent?.attachChildren(this);
   }
 }
