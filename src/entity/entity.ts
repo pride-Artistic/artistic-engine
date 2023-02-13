@@ -43,6 +43,24 @@ export default class Entity {
     return this.dimension.X;
   }
 
+  public get X() {
+    return this.position.X;
+  }
+
+  public get Y() {
+    return this.position.Y;
+  }
+
+  public get absoluteX(): number {
+    const parentX = this.parent?.absoluteX ?? 0;
+    return parentX + this.position.X;
+  }
+
+  public get absoluteY(): number {
+    const parentY = this.parent?.absoluteY ?? 0;
+    return parentY + this.position.Y;
+  }
+
   protected get Children() {
     return this.children;
   }
@@ -51,16 +69,24 @@ export default class Entity {
     this.dimension = dimension;
   }
 
-  public set Height(value: number) {
-    this.dimension.Y = value;
+  public set Height(height: number) {
+    this.dimension.Y = height;
   }
 
   public set Position(position: Vector2D) {
     this.position = position;
   }
 
-  public set Width(value: number) {
-    this.dimension.X = value;
+  public set Width(width: number) {
+    this.dimension.X = width;
+  }
+
+  public set X(x: number) {
+    this.position.X = x;
+  }
+
+  public set Y(y: number) {
+    this.position.Y = y;
   }
 
   public attachChildren(
