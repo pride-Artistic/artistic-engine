@@ -1,5 +1,6 @@
 node_modules
 dist
+scripts
 webpack.config.js
 .eslintrc.cjs
 jest.config.js
