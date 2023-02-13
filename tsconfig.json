@@ -111,5 +111,5 @@
     "sort": "source-order"
 
   },
-  "exclude": ["node_modules", "dist", "webpack.config.js", "jest.config.js"]
+  "exclude": ["node_modules", "dist", "scripts", "webpack.config.js", "jest.config.js"]
 }
