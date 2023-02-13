@@ -10,7 +10,7 @@ export default class Sprite extends Entity {
 
   private region: Entity = this;
 
-  constructor(config: SpriteConstructorConfig | undefined) {
+  constructor(config: SpriteConstructorConfig | undefined = undefined) {
     super(config);
     this.drawer = config?.drawer ?? (() => undefined);
   }
