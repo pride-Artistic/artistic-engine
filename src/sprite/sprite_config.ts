@@ -3,7 +3,7 @@ import Sprite from "./sprite";
 
 export default interface SpriteConstructorConfig
   extends EntityConstructorConfig {
-  drawer: (
+  drawer?: (
     self: Sprite,
     context: CanvasRenderingContext2D,
     delay: number
