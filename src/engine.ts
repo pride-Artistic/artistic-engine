@@ -84,6 +84,12 @@ export default class Engine {
     const elapsedTime = timestamp - this.previousTimestamp;
     console.log(elapsedTime);
 
+    this.context.reset();
+
+    // TODO: user definded reset
+
+    //this.scene.draw();
+
     requestAnimationFrame(this.render);
   }
 }
