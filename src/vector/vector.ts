@@ -23,6 +23,19 @@ export default abstract class Vector {
     }
   }
 
+  public isequal<T extends Vector>(other: T, precise?: number): boolean {
+    if (this.size != other.size) return false;
+    const thisArray = this.values.slice();
+    const otherArray = other.values.slice();
+    return thisArray.every((v, i) => {
+      if (precise == undefined) {
+        return v == otherArray[i];
+      } else {
+        return v.toFixed(precise) == otherArray[i].toFixed(precise);
+      }
+    });
+  }
+
   public shift(move: number = 1) {
     move %= this.size;
     const temp = this.values.slice(0, -move);
