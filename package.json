@@ -9,7 +9,9 @@
     "lint": "eslint . --ext .ts",
     "test": "jest",
     "document": "typedoc",
-    "clean:branch": "node scripts/git_clean"
+    "clean": "node scripts/clean",
+    "clean:branch": "node scripts/git_clean",
+    "clean:build": "node scripts/dist_clean"
   },
   "pre-commit": [
     "lint"
