@@ -1,4 +1,5 @@
 import { Vector2D } from "../vector";
+import EntityConstructorConfig from "./entity_config";
 
 export default class Entity {
   protected children: Entity[] = [];
@@ -9,12 +10,7 @@ export default class Entity {
 
   private position: Vector2D = new Vector2D();
 
-  public constructor(config: {
-    h: number | undefined;
-    w: number | undefined;
-    x: number | undefined;
-    y: number | undefined;
-  }) {
+  public constructor(config: EntityConstructorConfig | undefined) {
     if (config) {
       this.dimension.X = config.w ?? 0;
       this.dimension.Y = config.h ?? 0;
