@@ -32,5 +32,13 @@ describe("Vector module", () => {
     expect([v5.Z, v5.X, v5.Y]).toEqual(
       expect.arrayContaining([v1.X, v1.Y, v1.Z])
     );
+
+    // comparing two vectors are equal or not
+    const v6 = v1.copy(new Vector3D());
+    expect(v6.isequal(v1)).toBe(true);
+    expect(v6.isequal(v4)).toBe(false);
+    expect(v6.isequal(v2)).toBe(false);
+    v6.shift(1);
+    expect(v6.isequal(v4)).toBe(true);
   });
 });
