@@ -1,6 +1,7 @@
 const child_process = require('child_process');
 
 child_process.spawnSync("git", ["switch", "develop"], { encoding : 'utf8' });
+child_process.spawnSync("git", ["pull"], { encoding : 'utf8' });
 child_process.spawnSync("git", ["fetch", "--prune", "--all"], { encoding : 'utf8' });
 const child = child_process.spawnSync("git", ["branch", "-v"], { encoding : 'utf8' });
 if(child.error) {
