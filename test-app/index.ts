@@ -1,6 +1,4 @@
-import Engine from "../src/engine";
+import { WorkerResolver } from "../src/worker";
 
-const engine = new Engine("#main");
-
-console.log(engine);
-console.log("test-app");
+const workerResolver = new WorkerResolver();
+workerResolver.start("#main");
