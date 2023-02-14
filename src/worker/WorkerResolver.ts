@@ -40,6 +40,7 @@ export default class WorkerResolver {
           "Unable to start engine in.\nWorkerResolver failed to reach user defined entry point"
         );
       }
+      delete (window as any).__artistic_engine_entry_point__;
       fallbackEntryPoint(canvas);
     }
   }
