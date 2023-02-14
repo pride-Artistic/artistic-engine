@@ -1,3 +1,3 @@
 import WorkerResolver from "./WorkerResolver";
 
-export { WorkerResolver };
+export default WorkerResolver;
