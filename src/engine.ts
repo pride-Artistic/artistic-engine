@@ -5,7 +5,7 @@ interface ExtendedCanvasRenderingContext2D extends CanvasRenderingContext2D {
 }
 
 export default class Engine {
-  private canvas: HTMLCanvasElement;
+  private canvas: HTMLCanvasElement | OffscreenCanvas;
 
   private context: ExtendedCanvasRenderingContext2D;
 
@@ -13,10 +13,17 @@ export default class Engine {
 
   // private focusedScene: Scene;
 
-  public constructor(canvasIdentifier: HTMLCanvasElement | string | null) {
+  public constructor(
+    canvasIdentifier: HTMLCanvasElement | OffscreenCanvas | string | null
+  ) {
     // locate canvas by HTMLCanvasElement or CSS selector
-    let canvas: HTMLCanvasElement | null;
+    let canvas: HTMLCanvasElement | OffscreenCanvas | null;
     if (typeof canvasIdentifier === "string") {
+      if (!document) {
+        throw new Error(
+          "Engine is configured to run in worker thread.\nPlease pass OffscreenCanvas Object to Engine constructor."
+        );
+      }
       canvas = document.querySelector(
         canvasIdentifier
       ) as HTMLCanvasElement | null;
