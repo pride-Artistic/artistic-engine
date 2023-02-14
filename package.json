@@ -5,6 +5,7 @@
   "main": "dist/main.js",
   "scripts": {
     "build": "cross-env NODE_ENV=production webpack",
+    "build:dev": "webpack",
     "serve": "webpack-dev-server",
     "lint": "eslint . --ext .ts",
     "test": "jest",
