@@ -19,8 +19,8 @@ export default class Sprite extends Entity {
     context.save();
     context.beginPath();
     context.rect(
-      this.region.absoluteX,
-      this.region.absoluteY,
+      this.region.AbsoluteX,
+      this.region.AbsoluteY,
       this.region.Width,
       this.region.Height
     );

@@ -19,6 +19,16 @@ export default class Entity {
     }
   }
 
+  public get AbsoluteX(): number {
+    const parentX = this.parent?.AbsoluteX ?? 0;
+    return parentX + this.position.X;
+  }
+
+  public get AbsoluteY(): number {
+    const parentY = this.parent?.AbsoluteY ?? 0;
+    return parentY + this.position.Y;
+  }
+
   public get Dimension() {
     return this.dimension;
   }
@@ -45,16 +55,6 @@ export default class Entity {
 
   public get Y() {
     return this.position.Y;
-  }
-
-  public get absoluteX(): number {
-    const parentX = this.parent?.absoluteX ?? 0;
-    return parentX + this.position.X;
-  }
-
-  public get absoluteY(): number {
-    const parentY = this.parent?.absoluteY ?? 0;
-    return parentY + this.position.Y;
   }
 
   protected get Children() {
