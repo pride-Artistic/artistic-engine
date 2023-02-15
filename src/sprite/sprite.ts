@@ -16,7 +16,17 @@ export default class Sprite extends Entity {
   }
 
   public draw(context: CanvasRenderingContext2D, delay: number) {
+    context.save();
+    context.beginPath();
+    context.rect(
+      this.region.AbsoluteX,
+      this.region.AbsoluteY,
+      this.region.Width,
+      this.region.Height
+    );
+    context.clip();
     this.drawer(this, context, delay);
+    context.restore();
     for (const child of this.Children) {
       if (!(child instanceof Sprite)) continue;
       child.draw(context, delay);
