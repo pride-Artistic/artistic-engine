@@ -96,15 +96,9 @@ export default class Entity {
         lastIndex = this.attachChildren(children[index], safeIndex + index);
       }
     } else {
-      for (let index = this.Children.length - 1; index >= 0; index--) {
-        if (this.Children[index] === children) {
-          this.Children.splice(index, 1);
-        }
-      }
-      const safeIndex = Math.max(0, Math.min(z_index, this.Children.length));
-      lastIndex = safeIndex;
-      this.Children.splice(lastIndex, 0, children);
+      this.Children.push(children);
       children.parent = this;
+      lastIndex = this.setChildDepth(children, z_index);
     }
     return lastIndex; // if returns -1, empty array has been input.
   }
@@ -121,6 +115,25 @@ export default class Entity {
         children.parent = null;
       }
     }
+  }
+
+  public getChildDepth(child: Entity): number {
+    return this.Children.indexOf(child);
+  }
+
+  public setChildDepth(child: Entity, depth: number): number {
+    const currentDepth = this.getChildDepth(child);
+    if (currentDepth === -1) {
+      throw new Error("I AM NOT YOUR FATHER"); // todo: better error message?
+    }
+    for (let index = this.Children.length - 1; index >= 0; index--) {
+      if (this.Children[index] === child) {
+        this.Children.splice(index, 1);
+      }
+    }
+    const safeIndex = Math.max(0, Math.min(depth, this.Children.length));
+    this.Children.splice(safeIndex, 0, child);
+    return safeIndex;
   }
 
   public setParent(parent: Entity | null = null) {
