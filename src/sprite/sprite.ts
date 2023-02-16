@@ -15,6 +15,18 @@ export default class Sprite extends Entity {
     this.drawer = config?.drawer ?? (() => undefined);
   }
 
+  public get Region() {
+    return this.region;
+  }
+
+  public get isSelfRegion(): boolean {
+    return this.region === this;
+  }
+
+  public set Region(region: Entity) {
+    this.region = region;
+  }
+
   public draw(context: CanvasRenderingContext2D, delay: number) {
     context.save();
     context.beginPath();
