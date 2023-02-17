@@ -1,6 +1,25 @@
-import Engine from "../src/engine";
+import { Engine } from "../src";
+import GridScene from "./grid-scene";
+import TestRectangle from "./test-rectangle";
+
+document.body.style.margin = "0";
 
 const engine = new Engine("#main");
+engine.resizeCanvas();
 
-console.log(engine);
-console.log("test-app");
+engine.Scene = new GridScene(engine.Canvas.width, engine.Canvas.height, 100);
+
+engine.Scene.attachChildren([
+  new TestRectangle("red", true),
+  new TestRectangle("blue", false),
+]);
+
+addEventListener("resize", () => {
+  engine.resizeCanvas();
+  if (engine.Scene) {
+    engine.Scene.Width = engine.Canvas.width;
+    engine.Scene.Height = engine.Canvas.height;
+  }
+});
+
+engine.start();
