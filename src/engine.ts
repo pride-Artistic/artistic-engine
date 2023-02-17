@@ -1,3 +1,5 @@
+import { Sprite } from "./sprite";
+
 interface ExtendedCanvasRenderingContext2D extends CanvasRenderingContext2D {
   stateCount: number;
   reset(): void;
@@ -11,7 +13,7 @@ export default class Engine {
 
   private previousTimestamp: number = 0;
 
-  // private focusedScene: Scene;
+  private scene: Sprite | null = null;
 
   public constructor(canvasIdentifier: HTMLCanvasElement | string | null) {
     // locate canvas by HTMLCanvasElement or CSS selector
@@ -69,9 +71,22 @@ export default class Engine {
         this.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.save();
       };
+    } else {
+      // TODO: create restoreRoot method with reset;
     }
 
     this.context = context;
+  }
+
+  public get Scene(): Sprite | null {
+    return this.scene;
+  }
+
+  public set Scene(scene: Sprite | null) {
+    if (scene) {
+      scene.setParent(null);
+    }
+    this.scene = scene;
   }
 
   public start() {
