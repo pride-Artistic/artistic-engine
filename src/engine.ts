@@ -103,7 +103,7 @@ export default class Engine {
 
     // TODO: user definded reset
 
-    //this.scene.draw();
+    this.scene?.draw(this.context, elapsedTime);
 
     requestAnimationFrame(this.render);
   }
