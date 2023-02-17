@@ -24,11 +24,11 @@ export default abstract class Vector {
   }
 
   public isequal<T extends Vector>(other: T, precise?: number): boolean {
-    if (this.size != other.size) return false;
+    if (this.size !== other.size) return false;
     const thisArray = this.values.slice();
     const otherArray = other.values.slice();
     return thisArray.every((v, i) => {
-      if (precise == undefined) {
+      if (precise == null) {
         return v == otherArray[i];
       } else {
         return v.toFixed(precise) == otherArray[i].toFixed(precise);

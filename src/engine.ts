@@ -15,7 +15,7 @@ export default class Engine {
 
   private previousTimestamp: number = 0;
 
-  private scene: Sprite | null = null;
+  private scene: Sprite = new Sprite();
 
   public constructor(canvasIdentifier: HTMLCanvasElement | string | null) {
     // locate canvas by HTMLCanvasElement or CSS selector
@@ -84,14 +84,12 @@ export default class Engine {
     return this.canvas;
   }
 
-  public get Scene(): Sprite | null {
+  public get Scene(): Sprite {
     return this.scene;
   }
 
-  public set Scene(scene: Sprite | null) {
-    if (scene) {
-      scene.setParent(null);
-    }
+  public set Scene(scene: Sprite) {
+    scene.setParent(null);
     this.scene = scene;
   }
 
