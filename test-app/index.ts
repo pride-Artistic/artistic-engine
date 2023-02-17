@@ -16,10 +16,8 @@ engine.Scene.attachChildren([
 
 addEventListener("resize", () => {
   engine.resizeCanvas();
-  if (engine.Scene) {
-    engine.Scene.Width = engine.Canvas.width;
-    engine.Scene.Height = engine.Canvas.height;
-  }
+  engine.Scene.Width = engine.Canvas.width;
+  engine.Scene.Height = engine.Canvas.height;
 });
 
 engine.start();

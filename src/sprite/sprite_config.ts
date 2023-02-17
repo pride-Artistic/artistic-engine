@@ -7,5 +7,5 @@ export default interface SpriteConstructorConfig
     self: Sprite,
     context: CanvasRenderingContext2D,
     delay: number
-  ) => void | undefined;
+  ) => void;
 }
