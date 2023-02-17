@@ -1,4 +1,6 @@
+import CanvasConfig from "./canvas_config";
 import { Sprite } from "./sprite";
+import { Vector2D } from "./vector";
 
 interface ExtendedCanvasRenderingContext2D extends CanvasRenderingContext2D {
   stateCount: number;
@@ -78,6 +80,10 @@ export default class Engine {
     this.context = context;
   }
 
+  public get Canvas() {
+    return this.canvas;
+  }
+
   public get Scene(): Sprite | null {
     return this.scene;
   }
@@ -89,15 +95,25 @@ export default class Engine {
     this.scene = scene;
   }
 
+  public resizeCanvas(config?: CanvasConfig | Vector2D) {
+    if (config instanceof Vector2D) {
+      this.Canvas.width = config.X;
+      this.Canvas.height = config.Y;
+    } else {
+      this.Canvas.width = config?.w ?? window.innerWidth;
+      this.Canvas.height = config?.h ?? window.innerHeight;
+    }
+    // TODO: emit canvas resize event
+  }
+
   public start() {
     // may be error check.
-    this.previousTimestamp = Date.now();
     this.render(this.previousTimestamp);
   }
 
   private render(timestamp: number) {
     const elapsedTime = timestamp - this.previousTimestamp;
-    console.log(elapsedTime);
+    this.previousTimestamp = timestamp;
 
     this.context.reset();
 
@@ -105,6 +121,6 @@ export default class Engine {
 
     this.scene?.draw(this.context, elapsedTime);
 
-    requestAnimationFrame(this.render);
+    requestAnimationFrame(this.render.bind(this));
   }
 }
