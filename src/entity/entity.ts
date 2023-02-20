@@ -101,6 +101,13 @@ export class Entity {
         lastIndex = this.attachChildren(children[index], safeIndex + index);
       }
     } else {
+      let tempParent: Entity | null = this;
+      while (tempParent !== null) {
+        tempParent = this.parent;
+        if (tempParent === children) {
+          throw new Error("Loop of parent-child relationships detected.");
+        }
+      }
       this.children.push(children);
       children.parent?.detachChildren(children);
       children.parent = this;
