@@ -102,6 +102,7 @@ export default class Entity {
       }
     } else {
       this.children.push(children);
+      children.parent?.detachChildren(children);
       children.parent = this;
       lastIndex = this.setChildIndex(children, z_index);
     }
@@ -142,7 +143,6 @@ export default class Entity {
   }
 
   public setParent(parent: Entity | null = null) {
-    this.parent?.detachChildren(this);
     parent?.attachChildren(this);
   }
 }
