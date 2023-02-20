@@ -1,7 +1,14 @@
-import { Entity } from "../entity";
-import SpriteConstructorConfig from "./sprite_config";
+import { Entity, EntityConstructorConfig } from "../entity";
 
-export default class Sprite extends Entity {
+export interface SpriteConstructorConfig extends EntityConstructorConfig {
+  drawer?: (
+    self: Sprite,
+    context: CanvasRenderingContext2D,
+    delay: number
+  ) => void;
+}
+
+export class Sprite extends Entity {
   private drawer: (
     self: Sprite,
     context: CanvasRenderingContext2D,
