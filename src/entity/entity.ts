@@ -58,7 +58,7 @@ export default class Entity {
   }
 
   protected get Children() {
-    return this.children;
+    return this.children.slice();
   }
 
   public set Dimension(dimension: Vector2D) {
@@ -91,12 +91,12 @@ export default class Entity {
   ): number {
     let lastIndex: number = -1;
     if (Array.isArray(children)) {
-      const safeIndex = Math.max(0, Math.min(z_index, this.Children.length));
+      const safeIndex = Math.max(0, Math.min(z_index, this.children.length));
       for (let index = 0; index < children.length; index++) {
         lastIndex = this.attachChildren(children[index], safeIndex + index);
       }
     } else {
-      this.Children.push(children);
+      this.children.push(children);
       children.parent = this;
       lastIndex = this.setChildDepth(children, z_index);
     }
@@ -109,16 +109,16 @@ export default class Entity {
         this.detachChildren(child);
       }
     } else {
-      const index = this.Children.indexOf(children);
+      const index = this.children.indexOf(children);
       if (index > -1) {
-        this.Children.splice(index, 1);
+        this.children.splice(index, 1);
         children.parent = null;
       }
     }
   }
 
   public getChildDepth(child: Entity): number {
-    return this.Children.indexOf(child);
+    return this.children.indexOf(child);
   }
 
   public setChildDepth(child: Entity, depth: number): number {
@@ -126,13 +126,13 @@ export default class Entity {
     if (currentDepth === -1) {
       throw new Error("I AM NOT YOUR FATHER"); // todo: better error message?
     }
-    for (let index = this.Children.length - 1; index >= 0; index--) {
-      if (this.Children[index] === child) {
-        this.Children.splice(index, 1);
+    for (let index = this.children.length - 1; index >= 0; index--) {
+      if (this.children[index] === child) {
+        this.children.splice(index, 1);
       }
     }
-    const safeIndex = Math.max(0, Math.min(depth, this.Children.length));
-    this.Children.splice(safeIndex, 0, child);
+    const safeIndex = Math.max(0, Math.min(depth, this.children.length));
+    this.children.splice(safeIndex, 0, child);
     return safeIndex;
   }
 
