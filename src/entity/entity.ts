@@ -98,7 +98,7 @@ export default class Entity {
     } else {
       this.children.push(children);
       children.parent = this;
-      lastIndex = this.setChildDepth(children, z_index);
+      lastIndex = this.setChildIndex(children, z_index);
     }
     return lastIndex; // if returns -1, empty array has been input.
   }
@@ -117,21 +117,21 @@ export default class Entity {
     }
   }
 
-  public getChildDepth(child: Entity): number {
+  public getChildIndex(child: Entity): number {
     return this.children.indexOf(child);
   }
 
-  public setChildDepth(child: Entity, depth: number): number {
-    const currentDepth = this.getChildDepth(child);
+  public setChildIndex(child: Entity, index: number): number {
+    const currentDepth = this.getChildIndex(child);
     if (currentDepth === -1) {
       throw new Error("I AM NOT YOUR FATHER"); // todo: better error message?
     }
-    for (let index = this.children.length - 1; index >= 0; index--) {
-      if (this.children[index] === child) {
-        this.children.splice(index, 1);
+    for (let idx = this.children.length - 1; idx >= 0; idx--) {
+      if (this.children[idx] === child) {
+        this.children.splice(idx, 1);
       }
     }
-    const safeIndex = Math.max(0, Math.min(depth, this.children.length));
+    const safeIndex = Math.max(0, Math.min(index, this.children.length));
     this.children.splice(safeIndex, 0, child);
     return safeIndex;
   }
