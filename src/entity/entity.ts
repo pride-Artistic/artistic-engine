@@ -1,12 +1,12 @@
 import { Vector2D } from "../vector";
 import CanvasConfig from "../canvas_config";
 
-interface EntityConstructorConfig extends CanvasConfig {
+export interface EntityConstructorConfig extends CanvasConfig {
   x?: number;
   y?: number;
 }
 
-export default class Entity {
+export class Entity {
   protected children: Entity[] = [];
 
   protected parent: Entity | null = null;
@@ -109,6 +109,7 @@ export default class Entity {
         }
       }
       this.children.push(children);
+      children.parent?.detachChildren(children);
       children.parent = this;
       lastIndex = this.setChildIndex(children, z_index);
     }
@@ -149,7 +150,6 @@ export default class Entity {
   }
 
   public setParent(parent: Entity | null = null) {
-    this.parent?.detachChildren(this);
     parent?.attachChildren(this);
   }
 }
