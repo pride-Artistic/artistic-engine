@@ -108,8 +108,8 @@ export class Entity {
           throw new Error("Loop of parent-child relationships detected.");
         }
       }
-      this.children.push(children);
       children.parent?.detachChildren(children);
+      this.children.push(children);
       children.parent = this;
       lastIndex = this.setChildIndex(children, z_index);
     }
