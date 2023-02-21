@@ -8,7 +8,7 @@ describe("Vector module", () => {
     const v3 = v1.copy(new Vector2D(), true);
 
     // copying to vector of bigger size
-    expect([v2.W, v2.X, v2.Y, v2.Z]).toEqual(
+    expect([v2.X, v2.Y, v2.Z, v2.W]).toEqual(
       expect.arrayContaining([v1.X, v1.Y, v1.Z, 0])
     );
     expect(v2.Size).toBe(4);
