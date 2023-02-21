@@ -109,6 +109,8 @@ export class Entity {
         }
       }
       children.parent?.detachChildren(children);
+      // TODO: Maybe good if there's option which decides
+      //       whether it detaches and re-attaches or throws error
       this.children.push(children);
       children.parent = this;
       lastIndex = this.setChildIndex(children, z_index);
@@ -135,15 +137,11 @@ export class Entity {
   }
 
   public setChildIndex(child: Entity, index: number): number {
-    const currentDepth = this.getChildIndex(child);
-    if (currentDepth === -1) {
+    const currentIndex = this.getChildIndex(child);
+    if (currentIndex === -1) {
       throw new Error("I AM NOT YOUR FATHER"); // todo: better error message?
     }
-    for (let idx = this.children.length - 1; idx >= 0; idx--) {
-      if (this.children[idx] === child) {
-        this.children.splice(idx, 1);
-      }
-    }
+    this.children.splice(currentIndex, 1);
     const safeIndex = Math.max(0, Math.min(index, this.children.length));
     this.children.splice(safeIndex, 0, child);
     return safeIndex;
