@@ -161,7 +161,6 @@ module.exports = {
         
             "method"
           ],
-          order: "natural" 
         }
       }
     ],
