@@ -24,6 +24,18 @@ export class Entity {
     }
   }
 
+  public get Position() {
+    return this.position;
+  }
+
+  public get X() {
+    return this.position.X;
+  }
+
+  public get Y() {
+    return this.position.Y;
+  }
+
   public get AbsoluteX(): number {
     const parentX = this.parent?.AbsoluteX ?? 0;
     return parentX + this.position.X;
@@ -42,28 +54,28 @@ export class Entity {
     return this.dimension.Y;
   }
 
-  public get Parent() {
-    return this.parent;
-  }
-
-  public get Position() {
-    return this.position;
-  }
-
   public get Width() {
     return this.dimension.X;
   }
 
-  public get X() {
-    return this.position.X;
-  }
-
-  public get Y() {
-    return this.position.Y;
+  public get Parent() {
+    return this.parent;
   }
 
   protected get Children() {
     return this.children.slice();
+  }
+
+  public set Position(position: Vector2D) {
+    this.position = position;
+  }
+
+  public set X(x: number) {
+    this.position.X = x;
+  }
+
+  public set Y(y: number) {
+    this.position.Y = y;
   }
 
   public set Dimension(dimension: Vector2D) {
@@ -74,20 +86,8 @@ export class Entity {
     this.dimension.Y = height;
   }
 
-  public set Position(position: Vector2D) {
-    this.position = position;
-  }
-
   public set Width(width: number) {
     this.dimension.X = width;
-  }
-
-  public set X(x: number) {
-    this.position.X = x;
-  }
-
-  public set Y(y: number) {
-    this.position.Y = y;
   }
 
   public attachChildren(
