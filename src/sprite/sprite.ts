@@ -22,18 +22,33 @@ export class Sprite extends Entity {
     this.drawer = config?.drawer ?? (() => undefined);
   }
 
+  /**
+   * Getter property for region.
+   * @returns The drawing region this sprite is indicating. Sprites are clipped by their region.
+   * @see [CanvasRenderingContext2D#clip](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/clip)
+   */
   public get Region() {
     return this.region;
   }
 
+  /**
+   * @returns Boolean that determines whether the region of this sprite indicates it self.
+   * @see {@link Region}
+   */
   public get isSelfRegion(): boolean {
     return this.region === this;
   }
 
+  /**
+   * Setter property for region.
+   */
   public set Region(region: Entity) {
     this.region = region;
   }
 
+  /**
+   * @internal
+   */
   public draw(context: CanvasRenderingContext2D, delay: number) {
     context.save();
     context.beginPath();
