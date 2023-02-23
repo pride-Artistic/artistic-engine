@@ -15,7 +15,7 @@ export class Entity {
 
   private position: Vector2D = new Vector2D();
 
-  public constructor(config: EntityConstructorConfig | undefined = undefined) {
+  public constructor(config?: EntityConstructorConfig | undefined) {
     if (config) {
       this.dimension.X = config.w ?? 0;
       this.dimension.Y = config.h ?? 0;
