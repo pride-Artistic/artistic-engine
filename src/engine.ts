@@ -9,6 +9,8 @@ interface ExtendedCanvasRenderingContext2D extends CanvasRenderingContext2D {
 }
 
 export default class Engine {
+  private static isResetCompatible: boolean = false;
+
   private canvas: HTMLCanvasElement;
 
   private context: ExtendedCanvasRenderingContext2D;
@@ -39,43 +41,7 @@ export default class Engine {
       "2d"
     ) as ExtendedCanvasRenderingContext2D;
 
-    // CanvasRenderingContext2D#reset is a experimental method. which may not be included in some browsers including firefox.
-    // This block will create reset method mocking the behavior described in Chromium source code.
-    // In order to keep track of default state stack in context, relevant methods are modifeied/added as a side effect.
-    if (!context.reset) {
-      context.save();
-      context.stateCount = 0;
-      const tempSave = context.save;
-      const tempRestore = context.restore;
-      context.save = function () {
-        tempSave.call(this);
-        this.stateCount++;
-      };
-      context.restore = function () {
-        if (this.stateCount > 0) {
-          tempRestore.call(this);
-          this.stateCount--;
-        }
-      };
-
-      context.restoreRoot = function () {
-        for (let count = this.stateCount; count > -1; count--) {
-          tempRestore.call(this);
-        }
-        this.stateCount = -1;
-      };
-      context.reset = function () {
-        this.restoreRoot();
-        this.moveTo(0, 0);
-        this.beginPath();
-        this.closePath();
-        this.resetTransform();
-        this.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        this.save();
-      };
-    } else {
-      // TODO: create restoreRoot method with reset;
-    }
+    Engine.fallbackContextReset(context);
 
     this.context = context;
   }
@@ -92,6 +58,66 @@ export default class Engine {
     scene.setParent(null);
     this.scene = scene;
   }
+
+  private static fallbackContextReset(
+    context: ExtendedCanvasRenderingContext2D
+  ) {
+    if (context.reset != null) {
+      return true;
+    }
+
+    // CanvasRenderingContext2D#reset is a experimental method. which may not be included in some browsers including firefox.
+    // This block will create reset method mocking the behavior described in Chromium source code.
+    // In order to keep track of default state stack in context, relevant methods are modifeied/added as a side effect.
+    context.save();
+    context.stateCount = 0;
+
+    const tempSave = context.save;
+    Engine.restoreRootCopy = context.restore;
+
+    context.save = function () {
+      tempSave.call(this);
+      this.stateCount++;
+    };
+
+    context.restore = function () {
+      if (this.stateCount > 0) {
+        Engine.restoreRootCopy.call(this);
+        this.stateCount--;
+      }
+    };
+
+    context.restoreRoot = function () {
+      for (let count = this.stateCount; count > -1; count--) {
+        Engine.restoreRootCopy.call(this);
+      }
+      this.stateCount = -1;
+    };
+
+    context.reset = function () {
+      this.restoreRoot();
+      this.moveTo(0, 0);
+      this.beginPath();
+      this.closePath();
+      this.resetTransform();
+      this.clearRect(0, 0, this.canvas.width, this.canvas.height);
+      this.save();
+    };
+    return false;
+  }
+
+  private static restoreRootContextState(
+    context: ExtendedCanvasRenderingContext2D
+  ) {
+    if (Engine.isResetCompatible) return;
+
+    for (let count = context.stateCount; count > -1; count--) {
+      Engine.restoreRootCopy.call(this);
+    }
+    context.stateCount = -1;
+  }
+
+  private static restoreRootCopy() {}
 
   public resizeCanvas(config?: CanvasConfig | Vector2D) {
     if (config instanceof Vector2D) {
