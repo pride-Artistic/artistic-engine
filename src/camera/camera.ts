@@ -128,7 +128,7 @@ export default class Camera {
    * @returns Itself which moved.
    */
   public left(value: number): this {
-    this.values[5] -= value;
+    this.values[4] -= value;
     return this;
   }
 
@@ -138,7 +138,7 @@ export default class Camera {
    * @returns Itself which moved.
    */
   public right(value: number): this {
-    this.values[5] += value;
+    this.values[4] += value;
     return this;
   }
 
@@ -148,7 +148,7 @@ export default class Camera {
    * @returns Itself which moved.
    */
   public up(value: number): this {
-    this.values[4] -= value;
+    this.values[5] -= value;
     return this;
   }
 
@@ -158,7 +158,7 @@ export default class Camera {
    * @returns Itself which moved.
    */
   public down(value: number): this {
-    this.values[4] += value;
+    this.values[5] += value;
     return this;
   }
 
@@ -173,12 +173,12 @@ export default class Camera {
   public linear(m11: number, m12: number, m21: number, m22: number): this {
     const temp = this.values.slice();
     this.values = [
-      m11 * temp[0] + m12 * temp[2],
-      m11 * temp[1] + m12 * temp[3],
-      m21 * temp[0] + m22 * temp[2],
-      m21 * temp[1] + m22 * temp[3],
-      m11 * temp[4] + m12 * temp[5],
-      m21 * temp[4] + m22 * temp[5],
+      temp[0] * m11 + temp[1] * m21,
+      temp[0] * m12 + temp[1] * m22,
+      temp[2] * m11 + temp[3] * m21,
+      temp[2] * m12 + temp[3] * m22,
+      temp[4] * m11 + temp[5] * m21,
+      temp[4] * m12 + temp[5] * m22,
     ];
     return this;
   }
@@ -192,7 +192,7 @@ export default class Camera {
     angle = (angle * Math.PI) / 180;
     const sinValue = Math.sin(angle);
     const cosValue = Math.cos(angle);
-    return this.linear(sinValue, cosValue, -cosValue, sinValue);
+    return this.linear(cosValue, sinValue, -sinValue, cosValue);
   }
 
   /**
@@ -203,8 +203,8 @@ export default class Camera {
    */
   public calc(x: number, y: number): [number, number] {
     return [
-      this.m11 * x + this.m12 * y + this.ox,
-      this.m21 * x + this.m22 * y + this.oy,
+      this.m11 * x + this.m21 * y + this.ox,
+      this.m12 * x + this.m22 * y + this.oy,
     ];
   }
 
