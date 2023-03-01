@@ -5,7 +5,7 @@ describe("Entity test", () => {
   test("Parent-child", () => {
     const e1 = new Entity();
     const e2 = new Entity();
-    
+
     // setting e2's parent to e1
     e2.setParent(e1);
     expect(e2.Parent).toBe(e1);
@@ -41,12 +41,11 @@ describe("Entity test", () => {
     expect(e1.getChildIndex(e3)).toBe(1);
 
     const e4 = new Entity();
-    
+
     // e4 is not child of e1
     // so Entity#setChildIndex should cause an error
     expect(() => {
       e1.setChildIndex(e4, 0);
     }).toThrowError();
-
   });
 });
