@@ -1,26 +1,7 @@
-import { Entity, EntityConstructorConfig } from "../entity";
-
-export interface SpriteConstructorConfig extends EntityConstructorConfig {
-  drawer?: (
-    self: Sprite,
-    context: CanvasRenderingContext2D,
-    delay: number
-  ) => void;
-}
+import { Entity } from "../entity";
 
 export class Sprite extends Entity {
-  private drawer: (
-    self: Sprite,
-    context: CanvasRenderingContext2D,
-    delay: number
-  ) => void;
-
   private region: Entity = this;
-
-  constructor(config?: SpriteConstructorConfig) {
-    super(config);
-    this.drawer = config?.drawer ?? (() => undefined);
-  }
 
   /**
    * Getter property for region.
@@ -47,9 +28,27 @@ export class Sprite extends Entity {
   }
 
   /**
-   * @internal
+   * Overall render tasks performed for canvas context specific to the sprite.
+   * this method is called automatically by engine if attached.
+   * @param context Canvas context to perform reset on.
+   * @param delay time in milliseconds passed from the previous frame call.
    */
-  public draw(context: CanvasRenderingContext2D, delay: number) {
+  public readonly draw = (context: CanvasRenderingContext2D, delay: number) => {
+    this.beforeDraw(context, delay);
+    this.onDraw(context, delay);
+    this.afterDraw(context, delay);
+  };
+
+  /**
+   * Pre-render tasks performed for canvas context reset.
+   * this method is called automatically by engine if attached.
+   * @param context Canvas context to perform reset on.
+   * @param delay time in milliseconds passed from the previous frame call.
+   */
+  public beforeDraw(context: CanvasRenderingContext2D, delay: number) {
+    // todo: remove after interface extraction
+    console.log(delay);
+
     context.save();
     context.beginPath();
     context.rect(
@@ -59,7 +58,27 @@ export class Sprite extends Entity {
       this.region.Height
     );
     context.clip();
-    this.drawer(this, context, delay);
+  }
+
+  /**
+   * Render tasks performed for canvas context.
+   * this method is called automatically by engine if attached.
+   * @param context Canvas context to perform reset on.
+   * @param delay time in milliseconds passed from the previous frame call.
+   */
+  public onDraw(context: CanvasRenderingContext2D, delay: number) {
+    // stub
+    // todo: move this method to super interface and make sprite class abstract.
+    console.log(context, delay);
+  }
+
+  /**
+   * Post-render tasks performed for canvas context restore.
+   * this method is called automatically by engine if attached.
+   * @param context Canvas context to perform reset on.
+   * @param delay time in milliseconds passed from the previous frame call.
+   */
+  public afterDraw(context: CanvasRenderingContext2D, delay: number) {
     context.restore();
     for (const child of this.Children) {
       if (!(child instanceof Sprite)) continue;
