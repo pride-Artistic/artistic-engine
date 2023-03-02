@@ -20,6 +20,8 @@ export default class Engine {
 
   private previousTimestamp: number = 0;
 
+  private animationId: number = -1;
+
   private scene: IDrawable = new Sprite();
 
   public constructor(canvasIdentifier: HTMLCanvasElement | string | null) {
@@ -147,6 +149,10 @@ export default class Engine {
     this.render(this.previousTimestamp);
   }
 
+  public stop() {
+    cancelAnimationFrame(this.animationId);
+  }
+
   private render(timestamp: number) {
     const elapsedTime = timestamp - this.previousTimestamp;
     this.previousTimestamp = timestamp;
@@ -156,6 +162,6 @@ export default class Engine {
 
     this.scene?.draw(this.context, elapsedTime);
 
-    requestAnimationFrame(this.render.bind(this));
+    this.animationId = requestAnimationFrame(this.render.bind(this));
   }
 }
