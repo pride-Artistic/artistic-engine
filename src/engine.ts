@@ -56,6 +56,10 @@ export default class Engine {
     return this.canvas;
   }
 
+  public get Context() {
+    return this.context;
+  }
+
   public get Scene(): IDrawable {
     return this.scene;
   }
