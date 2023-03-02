@@ -1,5 +1,6 @@
 import CanvasConfig from "./canvas_config";
-import { Sprite } from "./sprite";
+import { Entity } from "./entity";
+import { Sprite, IDrawable } from "./sprite";
 import { Vector2D } from "./vector";
 
 interface ExtendedCanvasRenderingContext2D extends CanvasRenderingContext2D {
@@ -17,7 +18,7 @@ export default class Engine {
 
   private previousTimestamp: number = 0;
 
-  private scene: Sprite = new Sprite();
+  private scene: IDrawable = new Sprite();
 
   public constructor(canvasIdentifier: HTMLCanvasElement | string | null) {
     // locate canvas by HTMLCanvasElement or CSS selector
@@ -50,12 +51,14 @@ export default class Engine {
     return this.canvas;
   }
 
-  public get Scene(): Sprite {
+  public get Scene(): IDrawable {
     return this.scene;
   }
 
-  public set Scene(scene: Sprite) {
-    scene.setParent(null);
+  public set Scene(scene: IDrawable) {
+    if (scene instanceof Entity) {
+      scene.setParent(null);
+    }
     this.scene = scene;
   }
 
