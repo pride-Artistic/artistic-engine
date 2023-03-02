@@ -1,22 +1,20 @@
 import { Vector2D } from "../vector";
 import CanvasConfig from "../canvas_config";
 import IEntity from "./ientity";
+import { TreeItem } from "../treeitem";
 
 export interface EntityConstructorConfig extends CanvasConfig {
   x?: number;
   y?: number;
 }
 
-export class Entity implements IEntity {
-  protected children: Entity[] = [];
-
-  protected parent: Entity | null = null;
-
+export class Entity extends TreeItem implements IEntity {
   private dimension: Vector2D = new Vector2D();
 
   private position: Vector2D = new Vector2D();
 
   public constructor(config?: IEntity | undefined) {
+    super();
     if (config) {
       this.dimension.X = config.W ?? 0;
       this.dimension.Y = config.H ?? 0;
@@ -67,14 +65,6 @@ export class Entity implements IEntity {
     return this.dimension.Y;
   }
 
-  public get Parent() {
-    return this.parent;
-  }
-
-  protected get Children() {
-    return this.children.slice();
-  }
-
   public set Position(position: Vector2D) {
     this.position = position;
   }
@@ -105,66 +95,5 @@ export class Entity implements IEntity {
 
   public set Height(height: number) {
     this.dimension.Y = height;
-  }
-
-  public attachChildren(
-    children: Entity[] | Entity,
-    z_index: number = Infinity
-  ): number {
-    let lastIndex: number = -1;
-    if (Array.isArray(children)) {
-      const safeIndex = Math.max(0, Math.min(z_index, this.children.length));
-      for (let index = 0; index < children.length; index++) {
-        lastIndex = this.attachChildren(children[index], safeIndex + index);
-      }
-    } else {
-      let tempParent: Entity | null = this;
-      while (tempParent !== null) {
-        tempParent = this.parent;
-        if (tempParent === children) {
-          throw new Error("Loop of parent-child relationships detected.");
-        }
-      }
-      children.parent?.detachChildren(children);
-      // TODO: Maybe good if there's option which decides
-      //       whether it detaches and re-attaches or throws error
-      this.children.push(children);
-      children.parent = this;
-      lastIndex = this.setChildIndex(children, z_index);
-    }
-    return lastIndex; // if returns -1, empty array has been input.
-  }
-
-  public detachChildren(children: Entity[] | Entity) {
-    if (Array.isArray(children)) {
-      for (const child of children) {
-        this.detachChildren(child);
-      }
-    } else {
-      const index = this.children.indexOf(children);
-      if (index > -1) {
-        this.children.splice(index, 1);
-        children.parent = null;
-      }
-    }
-  }
-
-  public getChildIndex(child: Entity): number {
-    return this.children.indexOf(child);
-  }
-
-  public setChildIndex(child: Entity, index: number): number {
-    const currentIndex = this.getChildIndex(child);
-    if (currentIndex === -1) {
-      throw new Error("I AM NOT YOUR FATHER"); // todo: better error message?
-    }
-    this.children.splice(currentIndex, 1);
-    const safeIndex = Math.max(0, Math.min(index, this.children.length));
-    this.children.splice(safeIndex, 0, child);
-    return safeIndex;
-  }
-
-  public setParent(parent: Entity | null = null) {
-    parent?.attachChildren(this);
   }
 }
