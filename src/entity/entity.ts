@@ -1,12 +1,13 @@
 import { Vector2D } from "../vector";
 import CanvasConfig from "../canvas_config";
+import IEntity from "./ientity";
 
 export interface EntityConstructorConfig extends CanvasConfig {
   x?: number;
   y?: number;
 }
 
-export class Entity {
+export class Entity implements IEntity {
   protected children: Entity[] = [];
 
   protected parent: Entity | null = null;
@@ -15,12 +16,12 @@ export class Entity {
 
   private position: Vector2D = new Vector2D();
 
-  public constructor(config?: EntityConstructorConfig | undefined) {
+  public constructor(config?: IEntity | undefined) {
     if (config) {
-      this.dimension.X = config.w ?? 0;
-      this.dimension.Y = config.h ?? 0;
-      this.position.X = config.x ?? 0;
-      this.position.Y = config.y ?? 0;
+      this.dimension.X = config.W ?? 0;
+      this.dimension.Y = config.H ?? 0;
+      this.position.X = config.X ?? 0;
+      this.position.Y = config.Y ?? 0;
     }
   }
 
@@ -50,12 +51,20 @@ export class Entity {
     return this.dimension;
   }
 
-  public get Height() {
+  public get W() {
+    return this.dimension.X;
+  }
+
+  public get H() {
     return this.dimension.Y;
   }
 
   public get Width() {
     return this.dimension.X;
+  }
+
+  public get Height() {
+    return this.dimension.Y;
   }
 
   public get Parent() {
@@ -82,12 +91,20 @@ export class Entity {
     this.dimension = dimension;
   }
 
-  public set Height(height: number) {
+  public set W(width: number) {
+    this.dimension.X = width;
+  }
+
+  public set H(height: number) {
     this.dimension.Y = height;
   }
 
   public set Width(width: number) {
     this.dimension.X = width;
+  }
+
+  public set Height(height: number) {
+    this.dimension.Y = height;
   }
 
   public attachChildren(

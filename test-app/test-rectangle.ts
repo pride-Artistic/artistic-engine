@@ -7,8 +7,8 @@ export default class TestRectangle extends Sprite {
 
   constructor(color: string, isXMoving: boolean) {
     super({
-      w: 100,
-      h: 100,
+      W: 100,
+      H: 100,
     });
     this.color = color;
     this.isXmoving = isXMoving;
