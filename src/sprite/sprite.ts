@@ -1,6 +1,7 @@
 import { Entity } from "../entity";
+import IDrawable from "./idrawable";
 
-export class Sprite extends Entity {
+export default class Sprite extends Entity implements IDrawable {
   private region: Entity = this;
 
   /**
@@ -28,10 +29,7 @@ export class Sprite extends Entity {
   }
 
   /**
-   * Overall render tasks performed for canvas context specific to the sprite.
-   * this method is called automatically by engine if attached.
-   * @param context Canvas context to perform reset on.
-   * @param delay time in milliseconds passed from the previous frame call.
+   * @inheritdoc
    */
   public readonly draw = (context: CanvasRenderingContext2D, delay: number) => {
     this.beforeDraw(context, delay);
@@ -68,7 +66,7 @@ export class Sprite extends Entity {
    */
   public onDraw(context: CanvasRenderingContext2D, delay: number) {
     // stub
-    // todo: move this method to super interface and make sprite class abstract.
+    // todo: make sprite class abstract.
     console.log(context, delay);
   }
 
