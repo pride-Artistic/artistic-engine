@@ -5,8 +5,8 @@ export default class GridScene extends Sprite {
 
   constructor(width: number, height: number, gridSize: number) {
     super({
-      w: width,
-      h: height,
+      W: width,
+      H: height,
     });
     this.gridSize = gridSize;
   }
