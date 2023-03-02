@@ -16,6 +16,8 @@ export default class Engine {
 
   private context: ExtendedCanvasRenderingContext2D;
 
+  private subReset: (context: CanvasRenderingContext2D) => void;
+
   private previousTimestamp: number = 0;
 
   private scene: IDrawable = new Sprite();
@@ -36,6 +38,7 @@ export default class Engine {
     }
 
     this.canvas = canvas;
+    this.subReset = () => {};
 
     // request context from given canvas
     const context = this.canvas.getContext(
@@ -122,6 +125,12 @@ export default class Engine {
 
   private static restoreRootCopy() {}
 
+  public setSubResetFunction(
+    func: (context: CanvasRenderingContext2D) => void
+  ) {
+    this.subReset = func;
+  }
+
   public resizeCanvas(config?: CanvasConfig | Vector2D) {
     if (config instanceof Vector2D) {
       this.Canvas.width = config.X;
@@ -143,8 +152,7 @@ export default class Engine {
     this.previousTimestamp = timestamp;
 
     this.context.reset();
-
-    // TODO: user definded reset
+    this.subReset(this.context);
 
     this.scene?.draw(this.context, elapsedTime);
 
