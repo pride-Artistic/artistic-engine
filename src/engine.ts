@@ -15,7 +15,7 @@ export default class Engine {
 
   private context: ExtendedCanvasRenderingContext2D;
 
-  private subReset: () => void;
+  private subReset: (context: CanvasRenderingContext2D) => void;
 
   private previousTimestamp: number = 0;
 
@@ -122,7 +122,9 @@ export default class Engine {
 
   private static restoreRootCopy() {}
 
-  public setSubResetFunction(func: () => void) {
+  public setSubResetFunction(
+    func: (context: CanvasRenderingContext2D) => void
+  ) {
     this.subReset = func;
   }
 
@@ -147,7 +149,7 @@ export default class Engine {
     this.previousTimestamp = timestamp;
 
     this.context.reset();
-    this.subReset.call(this);
+    this.subReset(this.context);
 
     this.scene?.draw(this.context, elapsedTime);
 
