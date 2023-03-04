@@ -44,9 +44,9 @@ export default class Engine {
       "2d"
     ) as ExtendedCanvasRenderingContext2D;
 
-    checkCompatibility(this);
-
     this.context = context;
+
+    checkCompatibility(this);
   }
 
   public get Canvas() {
