@@ -1,13 +1,7 @@
 import { Vector2D } from "../vector";
-import CanvasConfig from "../canvas_config";
 import IEntity from "./ientity";
 
-export interface EntityConstructorConfig extends CanvasConfig {
-  x?: number;
-  y?: number;
-}
-
-export class Entity implements IEntity {
+export default class Entity implements IEntity {
   protected children: Entity[] = [];
 
   protected parent: Entity | null = null;
