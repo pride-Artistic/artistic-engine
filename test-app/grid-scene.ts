@@ -1,7 +1,15 @@
-import { Sprite } from "../src";
+import { Entity, Sprite } from "../src";
 
 export default class GridScene extends Sprite {
   private gridSize: number;
+
+  private minx = Infinity;
+
+  private miny = Infinity;
+
+  private maxx = -Infinity;
+
+  private maxy = -Infinity;
 
   constructor(width: number, height: number, gridSize: number) {
     super({
@@ -9,22 +17,57 @@ export default class GridScene extends Sprite {
       H: height,
     });
     this.gridSize = gridSize;
+    this.Region = new Entity();
+    this.Region.Dimension = this.Dimension;
+  }
+
+  public override beforeDraw(
+    context: CanvasRenderingContext2D,
+    delay: number
+  ): void {
+    const m = context.getTransform();
+    const m2 = m.invertSelf();
+    const coorx = [0, context.canvas.width];
+    const coory = [0, context.canvas.height];
+    for (const x of coorx) {
+      for (const y of coory) {
+        const xx = x * m2.a + y * m2.c + 1 * m2.e;
+        const yy = x * m2.b + y * m2.d + 1 * m2.f;
+        this.minx = Math.min(xx, this.minx);
+        this.maxx = Math.max(xx, this.maxx);
+        this.miny = Math.min(yy, this.miny);
+        this.maxy = Math.max(yy, this.maxy);
+      }
+    }
+    this.Width = this.maxx - this.minx;
+    this.Height = this.maxy - this.miny;
+    this.Region.X = this.minx;
+    this.Region.Y = this.miny;
+    super.beforeDraw(context, delay);
   }
 
   public override onDraw(context: CanvasRenderingContext2D): void {
     context.fillStyle = "black";
-    context.fillRect(0, 0, this.Width, this.Height);
+    context.fillRect(this.minx, this.miny, this.Width, this.Height);
     context.fillStyle = "white";
     context.strokeStyle = "white";
-    for (let i = 0; i < this.Width; i += this.gridSize) {
+    for (
+      let i = Math.floor(this.minx / 100) * 100;
+      i < this.maxx;
+      i += this.gridSize
+    ) {
       context.fillText(String(i), i + 1, 10);
-      context.moveTo(i, 0);
-      context.lineTo(i, this.Height);
+      context.moveTo(i, this.miny);
+      context.lineTo(i, this.maxy);
     }
-    for (let i = this.gridSize; i < this.Height; i += this.gridSize) {
+    for (
+      let i = Math.floor(this.miny / 100) * 100 + this.gridSize;
+      i < this.maxy;
+      i += this.gridSize
+    ) {
       context.fillText(String(i), 1, i - 2);
-      context.moveTo(0, i);
-      context.lineTo(this.Width, i);
+      context.moveTo(this.minx, i);
+      context.lineTo(this.maxx, i);
     }
     context.stroke();
   }
