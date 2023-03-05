@@ -1,7 +1,7 @@
 import { Entity } from "../entity";
 import IDrawable from "./idrawable";
 
-export default class Sprite extends Entity implements IDrawable {
+export default abstract class Sprite extends Entity implements IDrawable {
   private region: Entity = this;
 
   /**
@@ -59,18 +59,6 @@ export default class Sprite extends Entity implements IDrawable {
   }
 
   /**
-   * Render tasks performed for canvas context.
-   * this method is called automatically by engine if attached.
-   * @param context Canvas context to perform reset on.
-   * @param delay time in milliseconds passed from the previous frame call.
-   */
-  public onDraw(context: CanvasRenderingContext2D, delay: number) {
-    // stub
-    // todo: make sprite class abstract.
-    console.log(context, delay);
-  }
-
-  /**
    * Post-render tasks performed for canvas context restore.
    * this method is called automatically by engine if attached.
    * @param context Canvas context to perform reset on.
@@ -83,4 +71,15 @@ export default class Sprite extends Entity implements IDrawable {
       child.draw(context, delay);
     }
   }
+
+  /**
+   * Render tasks performed for canvas context.
+   * this method is called automatically by engine if attached.
+   * @param context Canvas context to perform reset on.
+   * @param delay time in milliseconds passed from the previous frame call.
+   */
+  public abstract onDraw(
+    context: CanvasRenderingContext2D,
+    delay: number
+  ): void;
 }
