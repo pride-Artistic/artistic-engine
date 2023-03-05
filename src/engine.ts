@@ -1,8 +1,9 @@
 import CanvasConfig from "./canvas_config";
 import { Entity } from "./entity";
-import { Sprite, IDrawable } from "./sprite";
+import { IDrawable } from "./sprite";
 import { Vector2D } from "./vector";
 import checkCompatibility from "./compatibility";
+import { BlankScene } from "./scenes";
 
 interface ExtendedCanvasRenderingContext2D extends CanvasRenderingContext2D {
   reset(): void;
@@ -19,7 +20,7 @@ export default class Engine {
 
   private animationId: number = -1;
 
-  private scene: IDrawable = new Sprite();
+  private scene: IDrawable = new BlankScene();
 
   public constructor(canvasIdentifier: HTMLCanvasElement | string | null) {
     // locate canvas by HTMLCanvasElement or CSS selector

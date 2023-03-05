@@ -1,3 +1,3 @@
-import BlankScene from "./blank-scene";
+import BlankScene from "./blank_scene";
 
 export { BlankScene };
