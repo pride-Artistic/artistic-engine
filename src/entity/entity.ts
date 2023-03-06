@@ -1,14 +1,16 @@
 import { Vector2D } from "../vector";
 import CanvasConfig from "../canvas_config";
 import IEntity from "./ientity";
-import { TreeItem } from "../treeitem";
+import { applyTreeItem } from "../treeitem";
 
 export interface EntityConstructorConfig extends CanvasConfig {
   x?: number;
   y?: number;
 }
 
-export class Entity extends TreeItem implements IEntity {
+const BaseEntity = applyTreeItem(class {});
+
+export class Entity extends BaseEntity implements IEntity {
   private dimension: Vector2D = new Vector2D();
 
   private position: Vector2D = new Vector2D();

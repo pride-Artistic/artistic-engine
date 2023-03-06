@@ -1,74 +1,96 @@
-export class TreeItem {
-  protected children: this[] = [];
+type Constructor<T> = new (...args: any[]) => T;
 
-  protected parent: this | null = null;
+interface ITreeItem {
+  attachChildren(children: any[] | any, z_index: number): number;
+  detachChildren(children: any[] | any): void;
+  getChildIndex(child: any): number;
+  setChildIndex(child: any, index: number): number;
+  setParent(parent: any | null): void;
+}
 
-  public get Parent() {
-    return this.parent;
+export function applyTreeItem<T extends Constructor<any>>(constructor: T) {
+  class Dummy extends constructor {
+    protected children: Dummy[] = [];
+
+    protected parent: Dummy | null = null;
+
+    public get Parent() {
+      return this.parent;
+    }
+
+    public get Children() {
+      return this.children.slice();
+    }
   }
+  class TreeItem extends Dummy implements ITreeItem {
+    public get Parent() {
+      return this.parent;
+    }
 
-  protected get Children() {
-    return this.children.slice();
-  }
+    public get Children() {
+      return this.children.slice();
+    }
 
-  public attachChildren(
-    children: this[] | this,
-    z_index: number = Infinity
-  ): number {
-    let lastIndex: number = -1;
-    if (Array.isArray(children)) {
-      const safeIndex = Math.max(0, Math.min(z_index, this.children.length));
-      for (let index = 0; index < children.length; index++) {
-        lastIndex = this.attachChildren(children[index], safeIndex + index);
+    public attachChildren(
+      children: TreeItem[] | TreeItem,
+      z_index: number = Infinity
+    ): number {
+      let lastIndex: number = -1;
+      if (Array.isArray(children)) {
+        const safeIndex = Math.max(0, Math.min(z_index, this.children.length));
+        for (let index = 0; index < children.length; index++) {
+          lastIndex = this.attachChildren(children[index], safeIndex + index);
+        }
+      } else {
+        let tempParent: TreeItem | null = this;
+        while (tempParent !== null) {
+          tempParent = this.parent;
+          if (tempParent === children) {
+            throw new Error("Loop of parent-child relationships detected.");
+          }
+        }
+        children.parent?.detachChildren(children);
+        // TODO: Maybe good if there's option which decides
+        //       whether it detaches and re-attaches or throws error
+        this.children.push(children);
+        children.parent = this;
+        lastIndex = this.setChildIndex(children, z_index);
       }
-    } else {
-      let tempParent: this | null = this;
-      while (tempParent !== null) {
-        tempParent = this.parent;
-        if (tempParent === children) {
-          throw new Error("Loop of parent-child relationships detected.");
+      return lastIndex; // if returns -1, empty array has been input.
+    }
+
+    public detachChildren(children: TreeItem[] | TreeItem) {
+      if (Array.isArray(children)) {
+        for (const child of children) {
+          this.detachChildren(child);
+        }
+      } else {
+        const index = this.children.indexOf(children);
+        if (index > -1) {
+          this.children.splice(index, 1);
+          children.parent = null;
         }
       }
-      children.parent?.detachChildren(children);
-      // TODO: Maybe good if there's option which decides
-      //       whether it detaches and re-attaches or throws error
-      this.children.push(children);
-      children.parent = this;
-      lastIndex = this.setChildIndex(children, z_index);
     }
-    return lastIndex; // if returns -1, empty array has been input.
-  }
 
-  public detachChildren(children: this[] | this) {
-    if (Array.isArray(children)) {
-      for (const child of children) {
-        this.detachChildren(child);
+    public getChildIndex(child: TreeItem): number {
+      return this.children.indexOf(child);
+    }
+
+    public setChildIndex(child: TreeItem, index: number): number {
+      const currentIndex = this.getChildIndex(child);
+      if (currentIndex === -1) {
+        throw new Error("I AM NOT YOUR FATHER"); // todo: better error message?
       }
-    } else {
-      const index = this.children.indexOf(children);
-      if (index > -1) {
-        this.children.splice(index, 1);
-        children.parent = null;
-      }
+      this.children.splice(currentIndex, 1);
+      const safeIndex = Math.max(0, Math.min(index, this.children.length));
+      this.children.splice(safeIndex, 0, child);
+      return safeIndex;
+    }
+
+    public setParent(parent: TreeItem | null = null) {
+      parent?.attachChildren(this);
     }
   }
-
-  public getChildIndex(child: this): number {
-    return this.children.indexOf(child);
-  }
-
-  public setChildIndex(child: this, index: number): number {
-    const currentIndex = this.getChildIndex(child);
-    if (currentIndex === -1) {
-      throw new Error("I AM NOT YOUR FATHER"); // todo: better error message?
-    }
-    this.children.splice(currentIndex, 1);
-    const safeIndex = Math.max(0, Math.min(index, this.children.length));
-    this.children.splice(safeIndex, 0, child);
-    return safeIndex;
-  }
-
-  public setParent(parent: this | null = null) {
-    parent?.attachChildren(this);
-  }
+  return TreeItem as Constructor<TreeItem & InstanceType<T>>;
 }
