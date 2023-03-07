@@ -101,6 +101,14 @@ export default class Entity implements IEntity {
     this.dimension.Y = height;
   }
 
+  /**
+   * Creates parent-child relation between this entity and entities passed through the parameter.
+   * If children passed already has a parent, the previous relation is overwritted.
+   * z_index can be specified to configure rendering sequence between children.
+   * @param children Single entity or an array of entities to attach.
+   * @param z_index Index in array of all children in this entity. The higher gets renderd later.
+   * @returns The position given child entity is put.
+   */
   public attachChildren(
     children: Entity[] | Entity,
     z_index: number = Infinity
