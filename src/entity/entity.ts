@@ -120,9 +120,11 @@ export default class Entity implements IEntity {
         lastIndex = this.attachChildren(children[index], safeIndex + index);
       }
     } else {
-      let tempParent: Entity | null = this;
-      while (tempParent !== null) {
-        tempParent = this.parent;
+      for (
+        let tempParent: Entity | null = this;
+        tempParent !== null;
+        tempParent = tempParent.parent
+      ) {
         if (tempParent === children) {
           throw new Error("Loop of parent-child relationships detected.");
         }
