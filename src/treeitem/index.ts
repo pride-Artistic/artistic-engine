@@ -23,14 +23,6 @@ export function applyTreeItem<T extends Constructor<any>>(constructor: T) {
     }
   }
   class TreeItem extends Dummy implements ITreeItem {
-    public get Parent() {
-      return this.parent;
-    }
-
-    public get Children() {
-      return this.children.slice();
-    }
-
     public attachChildren(
       children: TreeItem[] | TreeItem,
       z_index: number = Infinity
@@ -42,9 +34,11 @@ export function applyTreeItem<T extends Constructor<any>>(constructor: T) {
           lastIndex = this.attachChildren(children[index], safeIndex + index);
         }
       } else {
-        let tempParent: TreeItem | null = this;
-        while (tempParent !== null) {
-          tempParent = this.parent;
+        for (
+          let tempParent: TreeItem | null = this;
+          tempParent !== null;
+          tempParent = tempParent.parent
+        ) {
           if (tempParent === children) {
             throw new Error("Loop of parent-child relationships detected.");
           }
