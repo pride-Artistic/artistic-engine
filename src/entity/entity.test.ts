@@ -10,8 +10,12 @@ describe("Entity test", () => {
   const e6 = new Entity({ X: 0, Y: -10 });
   const entities = [e1, e2, e3, e4, e5, e6];
 
-  afterEach(() => {
+  function resetTree() {
     entities.forEach((e) => e.setParent(null));
+  }
+
+  afterEach(() => {
+    resetTree();
   });
   test("Parent-child", () => {
     // Chain them
@@ -94,5 +98,79 @@ describe("Entity test", () => {
     e3.setChildIndex(e4, 1000);
     expect(e3.getChildIndex(e1)).toBe(0);
     expect(e3.getChildIndex(e4)).toBe(1);
+  });
+  test("Absolute Coordinate Calculation", () => {
+    const getAbsoluteCoordinates = (_es: Entity[]) => {
+      return _es.map((e) => [e.AbsoluteX, e.AbsoluteY]);
+    };
+
+    /**
+     * Test Graph #1
+     *    e1
+     *   /  \
+     * e2    e3
+     *   \     \
+     *    e4    e5
+     *   /
+     * e6
+     */
+    e1.attachChildren([e2, e3]);
+    e2.attachChildren(e4);
+    e3.attachChildren(e5);
+    e4.attachChildren(e6);
+    expect(getAbsoluteCoordinates(entities)).toEqual(
+      expect.arrayContaining([
+        expect.arrayContaining([3, 6]),
+        expect.arrayContaining([5, -2]),
+        expect.arrayContaining([9, 0]),
+        expect.arrayContaining([3, -6]),
+        expect.arrayContaining([12, 0]),
+        expect.arrayContaining([3, -16]),
+      ])
+    );
+
+    /**
+     * Test Graph #2
+     *     e1
+     *   /  | \
+     * e2  e3  e4
+     *  |       |
+     * e5      e6
+     */
+    e1.attachChildren(e4);
+    e2.attachChildren(e5);
+    expect(getAbsoluteCoordinates(entities)).toEqual(
+      expect.arrayContaining([
+        expect.arrayContaining([3, 6]),
+        expect.arrayContaining([5, -2]),
+        expect.arrayContaining([9, 0]),
+        expect.arrayContaining([1, 2]),
+        expect.arrayContaining([8, -2]),
+        expect.arrayContaining([1, -8]),
+      ])
+    );
+
+    /**
+     * Test Graph #3
+     *       e6
+     *      /  \
+     *    e3    e2
+     *   /  \     \
+     * e4    e1    e5
+     */
+    resetTree();
+    e6.attachChildren([e3, e2]);
+    e3.attachChildren([e4, e1]);
+    e2.attachChildren(e5);
+    expect(getAbsoluteCoordinates(entities)).toEqual(
+      expect.arrayContaining([
+        expect.arrayContaining([9, -10]),
+        expect.arrayContaining([2, -18]),
+        expect.arrayContaining([6, -16]),
+        expect.arrayContaining([4, -20]),
+        expect.arrayContaining([5, -18]),
+        expect.arrayContaining([0, -10]),
+      ])
+    );
   });
 });
