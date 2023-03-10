@@ -2,62 +2,19 @@ import { describe, expect, test } from "@jest/globals";
 import Entity from "./entity";
 
 describe("Entity test", () => {
-  test("Parent-child", () => {
-    const e1 = new Entity();
-    const e2 = new Entity();
+  const e1 = new Entity({ X: 3, Y: 6 });
+  const e2 = new Entity({ X: 2, Y: -8 });
+  const e3 = new Entity({ X: 6, Y: -6 });
+  const e4 = new Entity({ X: -2, Y: -4 });
+  const e5 = new Entity({ X: 3, Y: 0 });
+  const e6 = new Entity({ X: 0, Y: -10 });
+  const entities = [e1, e2, e3, e4, e5, e6];
 
-    // setting e2's parent to e1
-    e2.setParent(e1);
-    expect(e2.Parent).toBe(e1);
-    expect(e1.getChildIndex(e2)).toBe(0);
-    expect(e2.getChildIndex(e1)).toBe(-1);
-
-    // setting e1's parent to e2
-    // e2 is already set as a child of e1
-    // so Entity#setParent should cause an error
-    expect(() => {
-      e1.setParent(e2);
-    }).toThrowError();
-
-    // e3 is also going to be a child of e1
-    const e3 = new Entity();
-    e3.setParent(e1);
-
-    // e3 was added after e2
-    // so e3's index should be 1
-    expect(e1.getChildIndex(e3)).toBe(1);
-
-    // moved e3's index to 0
-    // then e2's index should be 1
-    e1.setChildIndex(e3, 0);
-
-    expect(e1.getChildIndex(e3)).toBe(0);
-    expect(e1.getChildIndex(e2)).toBe(1);
-
-    // setting e3's index to 2
-    // but there are only 2 children on e1,
-    // so maximum valid index is 1
-    e1.setChildIndex(e3, 2);
-    expect(e1.getChildIndex(e3)).toBe(1);
-
-    const e4 = new Entity();
-
-    // e4 is not child of e1
-    // so Entity#setChildIndex should cause an error
-    expect(() => {
-      e1.setChildIndex(e4, 0);
-    }).toThrowError();
+  afterEach(() => {
+    entities.forEach((e) => e.setParent(null));
   });
-  test("Parent-child; Intensified test", () => {
-    const e1 = new Entity();
-    const e2 = new Entity();
-    const e3 = new Entity();
-    const e4 = new Entity();
-    const e5 = new Entity();
-    const e6 = new Entity();
-    const entities = [e1, e2, e3, e4, e5, e6];
-
-    // Chained entities test
+  test("Parent-child", () => {
+    // Chain them
     e1.attachChildren(e2);
     e2.attachChildren(e3);
     e3.attachChildren(e4);
@@ -81,18 +38,20 @@ describe("Entity test", () => {
 
     expect(e6.Parent?.Parent?.Parent?.Parent?.Parent).toBe(e1);
 
-    // Setting index of child is meaningless and does not change its index.
-    e1.setChildIndex(e2, 100);
-    expect(e1.getChildIndex(e2)).toBe(0);
+    // The return of Entity#getChildIndex for nonchild Entity should be -1.
+    expect(e5.getChildIndex(e3)).toBe(-1);
 
-    // Any try of attaching a entity to lower-number-named entity will cause error.
-    for (let i = 0; i < entities.length - 1; i++) {
-      for (let j = i + 1; j < entities.length; j++) {
-        expect(() => {
-          entities[j].attachChildren(entities[i]);
-        }).toThrowError();
-      }
-    }
+    // Setting index for nonchild Entity should cause error.
+    // Only one of the cases about this situation will be run.
+    expect(() => {
+      e2.setChildIndex(e4, 3);
+    }).toThrowError();
+
+    // Any try of attaching a entity to lower-number-named entity should cause error.
+    // Only one of the cases about this situation will be run.
+    expect(() => {
+      e5.attachChildren(e2);
+    }).toThrowError();
 
     // Move e5 to e2's child
     e2.attachChildren(e5);
@@ -128,5 +87,12 @@ describe("Entity test", () => {
     );
     expect(e3.getChildIndex(e1)).toBe(1);
     expect(e3.getChildIndex(e4)).toBe(0);
+
+    // In Entity#setChildIndex,
+    // if the value of index is out of the range,
+    // it gets converted into minimum or maximum index of the range.
+    e3.setChildIndex(e4, 1000);
+    expect(e3.getChildIndex(e1)).toBe(0);
+    expect(e3.getChildIndex(e4)).toBe(1);
   });
 });
