@@ -9,10 +9,10 @@ interface ITreeItem {
 }
 
 export function applyTreeItem<T extends Constructor<any>>(constructor: T) {
-  class Dummy extends constructor {
-    protected children: Dummy[] = [];
+  class TempTreeItem extends constructor {
+    protected children: TempTreeItem[] = [];
 
-    protected parent: Dummy | null = null;
+    protected parent: TempTreeItem | null = null;
 
     public get Parent() {
       return this.parent;
@@ -22,7 +22,7 @@ export function applyTreeItem<T extends Constructor<any>>(constructor: T) {
       return this.children.slice();
     }
   }
-  class TreeItem extends Dummy implements ITreeItem {
+  class TreeItem extends TempTreeItem implements ITreeItem {
     public attachChildren(
       children: TreeItem[] | TreeItem,
       z_index: number = Infinity

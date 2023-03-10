@@ -8,15 +8,12 @@ export interface EntityConstructorConfig extends CanvasConfig {
   y?: number;
 }
 
-const BaseEntity = applyTreeItem(class {});
+class EntityPartialClass implements IEntity {
+  protected dimension: Vector2D = new Vector2D();
 
-export class Entity extends BaseEntity implements IEntity {
-  private dimension: Vector2D = new Vector2D();
-
-  private position: Vector2D = new Vector2D();
+  protected position: Vector2D = new Vector2D();
 
   public constructor(config?: IEntity | undefined) {
-    super();
     if (config) {
       this.dimension.X = config.W ?? 0;
       this.dimension.Y = config.H ?? 0;
@@ -35,16 +32,6 @@ export class Entity extends BaseEntity implements IEntity {
 
   public get Y() {
     return this.position.Y;
-  }
-
-  public get AbsoluteX(): number {
-    const parentX = this.parent?.AbsoluteX ?? 0;
-    return parentX + this.position.X;
-  }
-
-  public get AbsoluteY(): number {
-    const parentY = this.parent?.AbsoluteY ?? 0;
-    return parentY + this.position.Y;
   }
 
   public get Dimension() {
@@ -97,5 +84,19 @@ export class Entity extends BaseEntity implements IEntity {
 
   public set Height(height: number) {
     this.dimension.Y = height;
+  }
+}
+
+const BaseEntityClass = applyTreeItem(EntityPartialClass);
+
+export class Entity extends BaseEntityClass {
+  public get AbsoluteX(): number {
+    const parentX = this.parent?.AbsoluteX ?? 0;
+    return parentX + this.position.X;
+  }
+
+  public get AbsoluteY(): number {
+    const parentY = this.parent?.AbsoluteY ?? 0;
+    return parentY + this.position.Y;
   }
 }
