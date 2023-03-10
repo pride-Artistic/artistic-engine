@@ -64,6 +64,21 @@ describe("Entity test", () => {
     e4.attachChildren(e5);
     e5.attachChildren(e6);
 
+    /**
+     * Graph of this tree is like this:
+     * e1
+     *   \
+     *    e2
+     *   /
+     * e3
+     *   \
+     *    e4
+     *   /
+     * e5
+     *   \
+     *    e6
+     */
+
     expect(e6.Parent?.Parent?.Parent?.Parent?.Parent).toBe(e1);
 
     // Setting index of child is meaningless and does not change its index.
