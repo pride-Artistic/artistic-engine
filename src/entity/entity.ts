@@ -169,6 +169,10 @@ export default class Entity implements IEntity {
   }
 
   public setParent(parent: Entity | null = null) {
-    parent?.attachChildren(this);
+    if (parent == null) {
+      this.parent?.detachChildren(this);
+    } else {
+      parent.attachChildren(this);
+    }
   }
 }
