@@ -57,10 +57,17 @@ export default abstract class Sprite extends Entity implements IDrawable {
    * @param context Canvas context to perform reset on.
    * @param delay time in milliseconds passed from the previous frame call.
    */
-  public abstract beforeClip(
-    context: CanvasRenderingContext2D,
-    delay: number
-  ): void;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  public beforeClip(context: CanvasRenderingContext2D, delay: number) {}
+
+  /**
+   * Post-restore tasks performed for canvas context restore.
+   * this method is called automatically by engine if attached.
+   * @param context Canvas context to perform reset on.
+   * @param delay time in milliseconds passed from the previous frame call.
+   */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  public afterRestore(context: CanvasRenderingContext2D, delay: number) {}
 
   /**
    * Render tasks performed for canvas context.
@@ -69,17 +76,6 @@ export default abstract class Sprite extends Entity implements IDrawable {
    * @param delay time in milliseconds passed from the previous frame call.
    */
   public abstract onDraw(
-    context: CanvasRenderingContext2D,
-    delay: number
-  ): void;
-
-  /**
-   * Post-restore tasks performed for canvas context restore.
-   * this method is called automatically by engine if attached.
-   * @param context Canvas context to perform reset on.
-   * @param delay time in milliseconds passed from the previous frame call.
-   */
-  public abstract afterRestore(
     context: CanvasRenderingContext2D,
     delay: number
   ): void;
