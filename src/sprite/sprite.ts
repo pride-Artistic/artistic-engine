@@ -32,22 +32,8 @@ export default abstract class Sprite extends Entity implements IDrawable {
    * @inheritdoc
    */
   public readonly draw = (context: CanvasRenderingContext2D, delay: number) => {
-    this.beforeDraw(context, delay);
-    this.onDraw(context, delay);
-    this.afterDraw(context, delay);
-  };
-
-  /**
-   * Pre-render tasks performed for canvas context reset.
-   * this method is called automatically by engine if attached.
-   * @param context Canvas context to perform reset on.
-   * @param delay time in milliseconds passed from the previous frame call.
-   */
-  public beforeDraw(context: CanvasRenderingContext2D, delay: number) {
-    // todo: remove after interface extraction
-    console.log(delay);
-
     context.save();
+    this.beforeClip(context, delay);
     context.beginPath();
     context.rect(
       this.region.AbsoluteX,
@@ -56,21 +42,32 @@ export default abstract class Sprite extends Entity implements IDrawable {
       this.region.Height
     );
     context.clip();
-  }
-
-  /**
-   * Post-render tasks performed for canvas context restore.
-   * this method is called automatically by engine if attached.
-   * @param context Canvas context to perform reset on.
-   * @param delay time in milliseconds passed from the previous frame call.
-   */
-  public afterDraw(context: CanvasRenderingContext2D, delay: number) {
+    this.onDraw(context, delay);
     context.restore();
+    this.afterRestore(context, delay);
     for (const child of this.Children) {
       if (!(child instanceof Sprite)) continue;
       child.draw(context, delay);
     }
-  }
+  };
+
+  /**
+   * Pre-clip tasks performed for canvas context reset.
+   * this method is called automatically by engine if attached.
+   * @param context Canvas context to perform reset on.
+   * @param delay time in milliseconds passed from the previous frame call.
+   */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  public beforeClip(context: CanvasRenderingContext2D, delay: number) {}
+
+  /**
+   * Post-restore tasks performed for canvas context restore.
+   * this method is called automatically by engine if attached.
+   * @param context Canvas context to perform reset on.
+   * @param delay time in milliseconds passed from the previous frame call.
+   */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  public afterRestore(context: CanvasRenderingContext2D, delay: number) {}
 
   /**
    * Render tasks performed for canvas context.

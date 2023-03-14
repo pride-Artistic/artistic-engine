@@ -21,10 +21,7 @@ export default class GridScene extends Sprite {
     this.Region.Dimension = this.Dimension;
   }
 
-  public override beforeDraw(
-    context: CanvasRenderingContext2D,
-    delay: number
-  ): void {
+  public override beforeClip(context: CanvasRenderingContext2D): void {
     const m = context.getTransform();
     const m2 = m.invertSelf();
     const coorx = [0, context.canvas.width];
@@ -43,7 +40,6 @@ export default class GridScene extends Sprite {
     this.Height = this.maxy - this.miny;
     this.Region.X = this.minx;
     this.Region.Y = this.miny;
-    super.beforeDraw(context, delay);
   }
 
   public override onDraw(context: CanvasRenderingContext2D): void {
