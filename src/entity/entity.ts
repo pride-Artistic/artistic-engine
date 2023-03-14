@@ -137,6 +137,10 @@ export default class Entity implements IEntity {
     return lastIndex; // if returns -1, empty array has been input.
   }
 
+  /**
+   * Removes parent-child relation between this entity and entities passed through the parameter.
+   * @param children Single entity or an array of entities to dettach.
+   */
   public detachChildren(children: Entity[] | Entity) {
     if (Array.isArray(children)) {
       for (const child of children) {
@@ -151,10 +155,22 @@ export default class Entity implements IEntity {
     }
   }
 
+  /**
+   * Retrieves child index of the entity passed through the parameter in the children list of this entity.
+   * If children passed is not child of this instance, an error is thrown.
+   * @param child Single entity which require the index.
+   * @returns The position of the given child entity.
+   */
   public getChildIndex(child: Entity): number {
     return this.children.indexOf(child);
   }
 
+  /**
+   * Based on already existing parent-child relation, this method modifies the index of given child in the children list of this entity.
+   * @param child Single entity to modify index.
+   * @param z_index Index in array of children in this entity. The higher gets renderd later.
+   * @returns The position given child entity is moved to.
+   */
   public setChildIndex(child: Entity, index: number): number {
     const currentIndex = this.getChildIndex(child);
     if (currentIndex === -1) {
@@ -166,6 +182,16 @@ export default class Entity implements IEntity {
     return safeIndex;
   }
 
+  /**
+   * Alias of attachChildren. this entity is dettached from parent if null is passed.
+   * @example
+   * The following two linese of code means exactly same.
+   * ```ts
+   * A.setParent(B);
+   * B.attachChildren(A);
+   * ```
+   * @param parent parent instance to set as parent of this entity.
+   */
   public setParent(parent: Entity | null = null) {
     parent?.attachChildren(this);
   }
