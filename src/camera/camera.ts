@@ -62,6 +62,17 @@ export default class Camera {
     return this.Determinant !== 0;
   }
 
+  get isIdentity(): boolean {
+    return (
+      this.m11 === 1 &&
+      this.m22 === 1 &&
+      this.m12 === 0 &&
+      this.m21 === 0 &&
+      this.ox === 0 &&
+      this.oy === 0
+    );
+  }
+
   /**
    * Setter property of m11
    */
