@@ -54,6 +54,14 @@ export default class Camera {
     return this.values[5];
   }
 
+  get Determinant(): number {
+    return this.m11 * this.m22 - this.m12 * this.m21;
+  }
+
+  get isInvertible(): boolean {
+    return this.Determinant !== 0;
+  }
+
   /**
    * Setter property of m11
    */
@@ -233,5 +241,28 @@ export default class Camera {
     const beforeTransform = canvas.getTransform();
     canvas.setTransform(this.toDOM());
     return beforeTransform;
+  }
+
+  /**
+   * Invert this matrix if invertible.
+   * @returns this transform.
+   */
+  public invert() {
+    const det = this.Determinant;
+    if (det === 0) throw new Error("This transform is not invertible");
+    const m11 = this.m22 / det;
+    const m12 = (this.m12 * -1) / det;
+    const ox = (this.m12 * this.oy - this.m22 * this.ox) / det;
+    const m21 = (this.m21 * -1) / det;
+    const m22 = this.m11 / det;
+    const oy = ((this.m11 * this.oy - this.m21 * this.ox) * -1) / det;
+
+    this.m11 = m11;
+    this.m12 = m12;
+    this.ox = ox;
+    this.m21 = m21;
+    this.m22 = m22;
+    this.oy = oy;
+    return this;
   }
 }
