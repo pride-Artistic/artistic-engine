@@ -54,6 +54,14 @@ export default class Camera {
     return this.values[5];
   }
 
+  get Determinant(): number {
+    return this.m11 * this.m22 - this.m12 * this.m21;
+  }
+
+  get isInvertible(): boolean {
+    return this.Determinant !== 0;
+  }
+
   /**
    * Setter property of m11
    */
