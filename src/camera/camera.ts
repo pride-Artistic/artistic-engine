@@ -211,8 +211,8 @@ export default class Camera {
    */
   public calc(x: number, y: number): [number, number] {
     return [
-      this.m11 * x + this.m21 * y + this.ox,
-      this.m12 * x + this.m22 * y + this.oy,
+      this.m11 * x + this.m12 * y + this.ox,
+      this.m21 * x + this.m22 * y + this.oy,
     ];
   }
 
