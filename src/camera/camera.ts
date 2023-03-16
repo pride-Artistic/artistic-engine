@@ -243,6 +243,10 @@ export default class Camera {
     return beforeTransform;
   }
 
+  /**
+   * Invert this matrix if invertible.
+   * @returns this transform.
+   */
   public invert() {
     const det = this.Determinant;
     if (det === 0) throw new Error("This transform is not invertible");
