@@ -54,7 +54,8 @@ options[OPTION_PRODUCTION] = {
     devtool: 'inline-source-map',
     output: {
         filename: 'main.js' ,
-        path: path.join(__dirname, 'dist')
+        path: path.join(__dirname, 'dist'),
+        library: "ArtisticEngine"
     },
     module: {
         rules: [{
