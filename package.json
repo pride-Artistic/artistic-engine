@@ -17,6 +17,9 @@
     "lint"
   ],
   "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "author": "pride Artistic",
   "license": "MIT",
   "devDependencies": {
