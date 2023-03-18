@@ -2,14 +2,14 @@ import { Entity } from "../entity";
 import IDrawable from "./idrawable";
 
 export default abstract class Sprite extends Entity implements IDrawable {
-  private region: Entity = this;
+  private region: Entity | undefined;
 
   /**
    * Getter property for region.
    * @returns The drawing region this sprite is indicating. Sprites are clipped by their region.
    * @see [CanvasRenderingContext2D#clip](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/clip)
    */
-  public get Region() {
+  public get Region(): Entity | undefined {
     return this.region;
   }
 
@@ -24,7 +24,7 @@ export default abstract class Sprite extends Entity implements IDrawable {
   /**
    * Setter property for region.
    */
-  public set Region(region: Entity) {
+  public set Region(region: Entity | undefined) {
     this.region = region;
   }
 
@@ -33,15 +33,17 @@ export default abstract class Sprite extends Entity implements IDrawable {
    */
   public readonly draw = (context: CanvasRenderingContext2D, delay: number) => {
     context.save();
-    this.beforeClip(context, delay);
-    context.beginPath();
-    context.rect(
-      this.region.AbsoluteX,
-      this.region.AbsoluteY,
-      this.region.Width,
-      this.region.Height
-    );
-    context.clip();
+    if (this.region) {
+      this.beforeClip(context, delay);
+      context.beginPath();
+      context.rect(
+        this.region.AbsoluteX,
+        this.region.AbsoluteY,
+        this.region.Width,
+        this.region.Height
+      );
+      context.clip();
+    }
     this.onDraw(context, delay);
     context.restore();
     this.afterRestore(context, delay);
