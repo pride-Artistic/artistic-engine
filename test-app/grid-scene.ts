@@ -38,8 +38,10 @@ export default class GridScene extends Sprite {
     }
     this.Width = this.maxx - this.minx;
     this.Height = this.maxy - this.miny;
-    this.Region.X = this.minx;
-    this.Region.Y = this.miny;
+    if (this.Region) {
+      this.Region.X = this.minx;
+      this.Region.Y = this.miny;
+    }
   }
 
   public override onDraw(context: CanvasRenderingContext2D): void {
