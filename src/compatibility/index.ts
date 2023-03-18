@@ -1,4 +1,4 @@
-import Engine from "src/engine";
+import Engine from "../engine";
 import contextReset from "./context_reset";
 
 export default (engine: Engine) => {

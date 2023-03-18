@@ -1,4 +1,4 @@
-import Engine from "src/engine";
+import Engine from "../engine";
 declare const _default: (engine: Engine) => {
     context_reset: boolean;
 };
