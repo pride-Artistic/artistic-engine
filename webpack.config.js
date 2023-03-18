@@ -21,7 +21,10 @@ options[OPTION_DEVELOPMENT] = {
                 /test\.ts$/,
             ],
             use: {
-                loader: 'ts-loader'
+                loader: 'ts-loader',
+                options: {
+                    configFile: 'tsconfig.test.json'
+                },
             }
         }]
     },
@@ -61,7 +64,10 @@ options[OPTION_PRODUCTION] = {
                 path.join(__dirname, 'test-app')
             ],
             use: {
-                loader: 'ts-loader'
+                loader: 'ts-loader',
+                options: {
+                    configFile: 'tsconfig.prod.json'
+                },
             }
         }]
     },
