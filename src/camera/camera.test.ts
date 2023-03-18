@@ -1,5 +1,6 @@
 import { describe, expect, test } from "@jest/globals";
 import Camera from "./camera";
+import ExtendedCamera from "./extended_camera";
 
 describe("Camera module", () => {
   test("Camera initializing & getter & setter", () => {
@@ -20,12 +21,12 @@ describe("Camera module", () => {
   });
   test("Camera operations & coord calculations", () => {
     function toArray(
-      c: Camera
+      c: ExtendedCamera
     ): [number, number, number, number, number, number] {
       return [c.m11, c.m12, c.m21, c.m22, c.ox, c.oy];
     }
     const rounding = (v: number) => expect.closeTo(v, 6);
-    const camera = new Camera(2, 3, 1, 4, 0, 0);
+    const camera = new ExtendedCamera(2, 3, 1, 4, 0, 0);
     camera.scale(2);
     expect(toArray(camera)).toEqual(expect.arrayContaining([4, 6, 2, 8, 0, 0]));
     camera.left(4).down(9).rotate(90);
