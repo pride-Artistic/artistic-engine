@@ -116,6 +116,30 @@ export default class Camera {
   }
 
   /**
+   * Sets the position of this camera.
+   * @param x - X value of the position.
+   * @param y - Y value of the position.
+   * @returns Itself which got set.
+   */
+  public translate(x: number, y: number): this {
+    this.ox = x;
+    this.oy = y;
+    return this;
+  }
+
+  /**
+   * Moves the position of this camera.
+   * @param x - X value of the movement.
+   * @param y - Y value of the movement.
+   * @returns Itself which got moved.
+   */
+  public move(x: number, y: number): this {
+    this.ox += x;
+    this.oy += y;
+    return this;
+  }
+
+  /**
    * Scales the whole scene. Bigger the value is, Bigger the entities show.
    * @param value - Scale ratio of both direction.
    * @returns Itself which got scaled.
@@ -163,7 +187,7 @@ export default class Camera {
   }
 
   /**
-   * Rotate the camera.
+   * Rotate the camera countclockwise.
    * @param angle - The rotation angle you want. (in *degrees*)
    * @returns Itself which got rotated.
    */
