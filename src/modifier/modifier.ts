@@ -39,12 +39,12 @@ export default abstract class Modifier {
     return this.elapsedTime / this.duration;
   }
 
-  public tick(elapsedTime) {
+  public tick(elapsedTime: number) {
     this.elapsedTime += elapsedTime;
     this.modify(
       this.from + this.easeFunction(Math.min(this.Progress, 1)) * this.diff
     );
   }
 
-  protected abstract modify(value: number);
+  protected abstract modify(value: number): void;
 }
