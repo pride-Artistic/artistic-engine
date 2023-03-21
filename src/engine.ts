@@ -4,6 +4,7 @@ import { IDrawable } from "./sprite";
 import { Vector2D } from "./vector";
 import checkCompatibility from "./compatibility";
 import { BlankScene } from "./scenes";
+import { Modifier } from "./modifier";
 
 interface ExtendedCanvasRenderingContext2D extends CanvasRenderingContext2D {
   reset(): void;
@@ -21,6 +22,8 @@ export default class Engine {
   private animationId: number = -1;
 
   private scene: IDrawable = new BlankScene();
+
+  private modifiers: Modifier[] = [];
 
   public constructor(canvasIdentifier: HTMLCanvasElement | string | null) {
     // locate canvas by HTMLCanvasElement or CSS selector
@@ -95,9 +98,30 @@ export default class Engine {
     cancelAnimationFrame(this.animationId);
   }
 
+  public registerModifier(modifier: Modifier) {
+    modifier.register();
+    this.modifiers.push(modifier);
+  }
+
+  public unregisterModifier(modifier: Modifier) {
+    this.modifiers = this.modifiers.filter((m) => m === modifier);
+  }
+
   private render(timestamp: number) {
     const elapsedTime = timestamp - this.previousTimestamp;
     this.previousTimestamp = timestamp;
+
+    const modifiersToRemove: Modifier[] = [];
+    for (const modifier of this.modifiers) {
+      if (modifier.Progress < 1) {
+        modifier.tick();
+      } else {
+        modifiersToRemove.push(modifier);
+      }
+    }
+    this.modifiers = this.modifiers.filter((m) =>
+      modifiersToRemove.includes(m)
+    );
 
     this.context.reset();
     this.subReset(this.context);

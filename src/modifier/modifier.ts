@@ -5,6 +5,8 @@ export default abstract class Modifier {
 
   private duration: number;
 
+  private startTime = 0;
+
   private elapsedTime = 0;
 
   private easeFunction: (progress: number) => number;
@@ -39,8 +41,12 @@ export default abstract class Modifier {
     return this.elapsedTime / this.duration;
   }
 
-  public tick(elapsedTime: number) {
-    this.elapsedTime += elapsedTime;
+  public register() {
+    this.startTime = Date.now();
+  }
+
+  public tick() {
+    this.elapsedTime = Date.now() - this.startTime;
     this.modify(
       this.from + this.easeFunction(Math.min(this.Progress, 1)) * this.diff
     );
