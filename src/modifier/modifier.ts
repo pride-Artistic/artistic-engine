@@ -41,8 +41,12 @@ export default abstract class Modifier {
     return this.elapsedTime / this.duration;
   }
 
-  public register() {
-    this.startTime = Date.now();
+  public get EndTime() {
+    return this.duration - this.elapsedTime;
+  }
+
+  public register(offset: number = 0) {
+    this.startTime = Date.now() + offset;
   }
 
   public tick() {
