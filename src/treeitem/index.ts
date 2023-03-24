@@ -11,7 +11,7 @@ export declare class TreeItemMixinInstance<T> {
 
   attachChildren(
     children: MixinApplyedInstance<T>[] | MixinApplyedInstance<T>,
-    z_index: number
+    z_index?: number
   ): number;
   detachChildren(
     children: MixinApplyedInstance<T>[] | MixinApplyedInstance<T>
