@@ -1,19 +1,45 @@
 import { Vector2D } from "../vector";
 import CanvasConfig from "../canvas_config";
 import IEntity from "./ientity";
-import { applyTreeItem } from "../treeitem";
+import { TreeItemMixin, TreeItemMixinInstance } from "../treeitem";
 
 export interface EntityConstructorConfig extends CanvasConfig {
   x?: number;
   y?: number;
 }
 
-class EntityPartialClass implements IEntity {
+declare class EntityInstance extends TreeItemMixinInstance<EntityInstance> {
+  protected dimension: Vector2D;
+
+  protected position: Vector2D;
+
+  get Position(): Vector2D;
+  get X(): number;
+  get Y(): number;
+  get Dimension(): Vector2D;
+  get W(): number;
+  get H(): number;
+  get Width(): number;
+  get Height(): number;
+  get AbsoluteX(): number;
+  get AbsoluteY(): number;
+  set Position(position: Vector2D);
+  set X(x: number);
+  set Y(y: number);
+  set Dimension(dimension: Vector2D);
+  set W(width: number);
+  set H(height: number);
+  set Width(width: number);
+  set Height(height: number);
+}
+
+export class Entity extends TreeItemMixin<EntityInstance>() {
   protected dimension: Vector2D = new Vector2D();
 
   protected position: Vector2D = new Vector2D();
 
   public constructor(config?: IEntity | undefined) {
+    super();
     if (config) {
       this.dimension.X = config.W ?? 0;
       this.dimension.Y = config.H ?? 0;
@@ -54,6 +80,16 @@ class EntityPartialClass implements IEntity {
     return this.dimension.Y;
   }
 
+  public get AbsoluteX(): number {
+    const parentX = this.parent?.AbsoluteX ?? 0;
+    return parentX + this.position.X;
+  }
+
+  public get AbsoluteY(): number {
+    const parentY = this.parent?.AbsoluteY ?? 0;
+    return parentY + this.position.Y;
+  }
+
   public set Position(position: Vector2D) {
     this.position = position;
   }
@@ -84,19 +120,5 @@ class EntityPartialClass implements IEntity {
 
   public set Height(height: number) {
     this.dimension.Y = height;
-  }
-}
-
-const BaseEntityClass = applyTreeItem(EntityPartialClass);
-
-export class Entity extends BaseEntityClass {
-  public get AbsoluteX(): number {
-    const parentX = this.parent?.AbsoluteX ?? 0;
-    return parentX + this.position.X;
-  }
-
-  public get AbsoluteY(): number {
-    const parentY = this.parent?.AbsoluteY ?? 0;
-    return parentY + this.position.Y;
   }
 }

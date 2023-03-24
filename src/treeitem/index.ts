@@ -1,18 +1,33 @@
-type Constructor<T> = new (...args: any[]) => T;
+type Constructor<T = any> = new (...args: any[]) => T;
+type MixinApplyedInstance<T> = T & TreeItemMixinInstance<T>;
 
-interface ITreeItem {
-  attachChildren(children: any[] | any, z_index: number): number;
-  detachChildren(children: any[] | any): void;
-  getChildIndex(child: any): number;
-  setChildIndex(child: any, index: number): number;
-  setParent(parent: any | null): void;
+export declare class TreeItemMixinInstance<T> {
+  protected children: MixinApplyedInstance<T>[];
+
+  protected parent: MixinApplyedInstance<T>;
+
+  public get Children(): MixinApplyedInstance<T>[];
+  public get Parent(): MixinApplyedInstance<T>;
+
+  attachChildren(
+    children: MixinApplyedInstance<T>[] | MixinApplyedInstance<T>,
+    z_index: number
+  ): number;
+  detachChildren(
+    children: MixinApplyedInstance<T>[] | MixinApplyedInstance<T>
+  ): void;
+  getChildIndex(child: MixinApplyedInstance<T>): number;
+  setChildIndex(child: MixinApplyedInstance<T>, index: number): number;
+  setParent(parent: MixinApplyedInstance<T> | null): void;
 }
 
-export function applyTreeItem<T extends Constructor<any>>(constructor: T) {
-  class TempTreeItem extends constructor {
-    protected children: TempTreeItem[] = [];
+export function TreeItemMixin<MixinInstance = TreeItemMixinInstance<any>>(): {
+  new (...a: any[]): MixinInstance;
+} {
+  class TreeItem {
+    protected children: TreeItem[] = [];
 
-    protected parent: TempTreeItem | null = null;
+    protected parent: TreeItem | null = null;
 
     public get Parent() {
       return this.parent;
@@ -21,8 +36,7 @@ export function applyTreeItem<T extends Constructor<any>>(constructor: T) {
     public get Children() {
       return this.children.slice();
     }
-  }
-  class TreeItem extends TempTreeItem implements ITreeItem {
+
     public attachChildren(
       children: TreeItem[] | TreeItem,
       z_index: number = Infinity
@@ -86,5 +100,5 @@ export function applyTreeItem<T extends Constructor<any>>(constructor: T) {
       parent?.attachChildren(this);
     }
   }
-  return TreeItem as Constructor<TreeItem & InstanceType<T>>;
+  return TreeItem as Constructor<MixinInstance>;
 }
