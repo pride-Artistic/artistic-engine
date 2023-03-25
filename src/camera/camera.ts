@@ -261,6 +261,14 @@ export default class Camera {
   }
 
   /**
+   * Makes a copy of this transform.
+   * @returns a copy of this matrix
+   */
+  public copy(): Camera {
+    return new Camera(...this.values);
+  }
+
+  /**
    * [`DOMMatrix`]: https://developer.mozilla.org/en-US/docs/Web/API/DOMMatrix
    * [`DOMMatrix`] getter method.
    * @returns [`DOMMatrix`] object made from this values.
