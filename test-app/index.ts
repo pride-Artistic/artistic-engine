@@ -11,8 +11,8 @@ const scene = new GridScene(engine.Canvas.width, engine.Canvas.height, 100);
 engine.Scene = scene;
 
 scene.attachChildren([
-  new TestRectangle("red", true),
-  new TestRectangle("blue", false),
+  new TestRectangle("red", true, engine),
+  new TestRectangle("blue", false, engine),
 ]);
 
 addEventListener("resize", () => {
