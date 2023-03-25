@@ -119,8 +119,8 @@ export default class Engine {
         modifiersToRemove.push(modifier);
       }
     }
-    this.modifiers = this.modifiers.filter((m) =>
-      modifiersToRemove.includes(m)
+    this.modifiers = this.modifiers.filter(
+      (m) => !modifiersToRemove.includes(m)
     );
 
     this.context.reset();
