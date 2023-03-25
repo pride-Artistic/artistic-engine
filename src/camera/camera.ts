@@ -220,13 +220,36 @@ export default class Camera {
    * @param B - X value of the coordinate.
    * @returns this transform after transformation.
    */
-  public multiply(B: Camera): Camera {
+  public multiply(B: Camera): this {
     const m11 = this.m11 * B.m11 + this.m12 * B.m21;
     const m12 = this.m11 * B.m12 + this.m12 * B.m22;
     const ox = this.m11 * B.ox + this.m12 * B.oy;
     const m21 = this.m21 * B.m11 + this.m22 * B.m21;
     const m22 = this.m21 * B.m12 + this.m22 * B.m22;
     const oy = this.m21 * B.ox + this.m22 * B.oy;
+
+    this.m11 = m11;
+    this.m12 = m12;
+    this.ox = ox;
+    this.m21 = m21;
+    this.m22 = m22;
+    this.oy = oy;
+    return this;
+  }
+
+  /**
+   * Invert this matrix if invertible.
+   * @returns this transform.
+   */
+  public invert() {
+    const det = this.Determinant;
+    if (det === 0) throw new Error("This transform is not invertible");
+    const m11 = this.m22 / det;
+    const m12 = (this.m12 * -1) / det;
+    const ox = (this.m12 * this.oy - this.m22 * this.ox) / det;
+    const m21 = (this.m21 * -1) / det;
+    const m22 = this.m11 / det;
+    const oy = ((this.m11 * this.oy - this.m21 * this.ox) * -1) / det;
 
     this.m11 = m11;
     this.m12 = m12;
@@ -251,28 +274,5 @@ export default class Camera {
       this.ox,
       this.oy,
     ]);
-  }
-
-  /**
-   * Invert this matrix if invertible.
-   * @returns this transform.
-   */
-  public invert() {
-    const det = this.Determinant;
-    if (det === 0) throw new Error("This transform is not invertible");
-    const m11 = this.m22 / det;
-    const m12 = (this.m12 * -1) / det;
-    const ox = (this.m12 * this.oy - this.m22 * this.ox) / det;
-    const m21 = (this.m21 * -1) / det;
-    const m22 = this.m11 / det;
-    const oy = ((this.m11 * this.oy - this.m21 * this.ox) * -1) / det;
-
-    this.m11 = m11;
-    this.m12 = m12;
-    this.ox = ox;
-    this.m21 = m21;
-    this.m22 = m22;
-    this.oy = oy;
-    return this;
   }
 }
