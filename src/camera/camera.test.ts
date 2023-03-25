@@ -5,10 +5,10 @@ import ExtendedCamera from "./extended_camera";
 describe("Camera module", () => {
   test("Camera initializing & getter & setter", () => {
     const camera = new Camera();
-    expect(camera.m11).toBe(0);
+    expect(camera.m11).toBe(1);
     expect(camera.m12).toBe(0);
     expect(camera.m21).toBe(0);
-    expect(camera.m22).toBe(0);
+    expect(camera.m22).toBe(1);
     expect(camera.ox).toBe(0);
     expect(camera.oy).toBe(0);
     camera.m11 = 2;
