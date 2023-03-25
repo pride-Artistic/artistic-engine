@@ -161,17 +161,25 @@ export default class Camera {
    * @param m12 - Element of the matrix at `(1, 2)`.
    * @param m21 - Element of the matrix at `(2, 1)`.
    * @param m22 - Element of the matrix at `(2, 2)`.
+   * @param ox - Element of the matrix at `(3, 1)`.
+   * @param oy - Element of the matrix at `(3, 2)`.
    * @returns Itself which got applied.
    */
-  public linear(m11: number, m12: number, m21: number, m22: number): this {
-    const temp = this.values.slice();
+  public linear(
+    m11: number,
+    m12: number,
+    m21: number,
+    m22: number,
+    ox: number,
+    oy: number
+  ): this {
     this.values = [
-      temp[0] * m11 + temp[1] * m21,
-      temp[0] * m12 + temp[1] * m22,
-      temp[2] * m11 + temp[3] * m21,
-      temp[2] * m12 + temp[3] * m22,
-      temp[4] * m11 + temp[5] * m21,
-      temp[4] * m12 + temp[5] * m22,
+      this.m11 * m11 + this.m12 * m21,
+      this.m11 * m12 + this.m12 * m22,
+      this.m21 * m11 + this.m22 * m21,
+      this.m21 * m12 + this.m22 * m22,
+      this.m11 * ox + this.m12 * oy + this.ox,
+      this.m21 * ox + this.m22 * oy + this.oy,
     ];
     return this;
   }
@@ -185,7 +193,7 @@ export default class Camera {
     angle = (angle * Math.PI) / 180;
     const sinValue = Math.sin(angle);
     const cosValue = Math.cos(angle);
-    return this.linear(cosValue, sinValue, -sinValue, cosValue);
+    return this.linear(cosValue, sinValue, -sinValue, cosValue, 0, 0);
   }
 
   /**
@@ -221,20 +229,7 @@ export default class Camera {
    * @returns this transform after transformation.
    */
   public multiply(B: Camera): this {
-    const m11 = this.m11 * B.m11 + this.m12 * B.m21;
-    const m12 = this.m11 * B.m12 + this.m12 * B.m22;
-    const ox = this.m11 * B.ox + this.m12 * B.oy;
-    const m21 = this.m21 * B.m11 + this.m22 * B.m21;
-    const m22 = this.m21 * B.m12 + this.m22 * B.m22;
-    const oy = this.m21 * B.ox + this.m22 * B.oy;
-
-    this.m11 = m11;
-    this.m12 = m12;
-    this.ox = ox;
-    this.m21 = m21;
-    this.m22 = m22;
-    this.oy = oy;
-    return this;
+    return this.linear(...B.values);
   }
 
   /**
