@@ -1,3 +1,4 @@
 import Modifier from "./modifier";
+import EaseFunctions from "./ease-function";
 
-export { Modifier };
+export { Modifier, EaseFunctions };
