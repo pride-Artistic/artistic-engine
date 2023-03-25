@@ -1,4 +1,4 @@
-export default abstract class Modifier {
+export default class Modifier {
   private from: number;
 
   private diff: number;
@@ -9,12 +9,15 @@ export default abstract class Modifier {
 
   private elapsedTime = 0;
 
+  private modifyFunction: (value: number) => void;
+
   private easeFunction: (progress: number) => number;
 
   constructor(
     from: number,
     to: number,
     duration: number,
+    modify: (value: number) => void,
     easeFunction?: (progress: number) => number
   ) {
     if (Number.isNaN(from) || Math.abs(from) === Infinity)
@@ -34,6 +37,7 @@ export default abstract class Modifier {
     this.from = from;
     this.diff = to - from;
     this.duration = duration;
+    this.modifyFunction = modify;
     this.easeFunction = easeFunction ?? ((p) => p);
   }
 
@@ -47,6 +51,7 @@ export default abstract class Modifier {
 
   public register(offset: number = 0) {
     this.startTime = Date.now() + offset;
+    this.elapsedTime = 0;
   }
 
   public tick() {
@@ -56,5 +61,7 @@ export default abstract class Modifier {
     );
   }
 
-  protected abstract modify(value: number): void;
+  protected modify(value: number) {
+    this.modifyFunction(value);
+  }
 }

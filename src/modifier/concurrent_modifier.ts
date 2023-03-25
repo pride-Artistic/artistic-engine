@@ -4,7 +4,7 @@ export default abstract class ConcurrentModifier extends Modifier {
   protected modifiers: Modifier[];
 
   constructor(modifier: Modifier, ...modifiers: Modifier[]) {
-    super(0, 1, 1);
+    super(0, 1, 1, () => {});
     this.modifiers = [modifier, ...modifiers];
   }
 
