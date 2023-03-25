@@ -215,6 +215,23 @@ export default class Camera {
     return v;
   }
 
+  public multiply(B: Camera): Camera {
+    const m11 = this.m11 * B.m11 + this.m12 * B.m21;
+    const m12 = this.m11 * B.m12 + this.m12 * B.m22;
+    const ox = this.m11 * B.ox + this.m12 * B.oy;
+    const m21 = this.m21 * B.m11 + this.m22 * B.m21;
+    const m22 = this.m21 * B.m12 + this.m22 * B.m22;
+    const oy = this.m21 * B.ox + this.m22 * B.oy;
+
+    this.m11 = m11;
+    this.m12 = m12;
+    this.ox = ox;
+    this.m21 = m21;
+    this.m22 = m22;
+    this.oy = oy;
+    return this;
+  }
+
   /**
    * [`DOMMatrix`]: https://developer.mozilla.org/en-US/docs/Web/API/DOMMatrix
    * [`DOMMatrix`] getter method.
