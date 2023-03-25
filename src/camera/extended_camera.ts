@@ -7,7 +7,7 @@ export default class ExtendedCamera extends Camera {
    * @returns Itself which moved.
    */
   public left(value: number): this {
-    this.ox -= value;
+    this.translate(-value, 0);
     return this;
   }
 
@@ -17,7 +17,7 @@ export default class ExtendedCamera extends Camera {
    * @returns Itself which moved.
    */
   public right(value: number): this {
-    this.ox += value;
+    this.translate(value, 0);
     return this;
   }
 
@@ -27,7 +27,7 @@ export default class ExtendedCamera extends Camera {
    * @returns Itself which moved.
    */
   public up(value: number): this {
-    this.oy -= value;
+    this.translate(0, -value);
     return this;
   }
 
@@ -37,7 +37,7 @@ export default class ExtendedCamera extends Camera {
    * @returns Itself which moved.
    */
   public down(value: number): this {
-    this.oy += value;
+    this.translate(0, value);
     return this;
   }
 }

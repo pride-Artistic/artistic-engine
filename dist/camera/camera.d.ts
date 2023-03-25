@@ -53,6 +53,13 @@ export default class Camera {
      */
     set oy(value: number);
     /**
+     * Moves the position of this camera.
+     * @param x - X value of the movement.
+     * @param y - Y value of the movement.
+     * @returns Itself which got moved.
+     */
+    translate(x: number, y: number): this;
+    /**
      * Scales the whole scene. Bigger the value is, Bigger the entities show.
      * @param value - Scale ratio of both direction.
      * @returns Itself which got scaled.
@@ -75,7 +82,7 @@ export default class Camera {
      */
     linear(m11: number, m12: number, m21: number, m22: number): this;
     /**
-     * Rotate the camera.
+     * Rotate the camera countclockwise.
      * @param angle - The rotation angle you want. (in *degrees*)
      * @returns Itself which got rotated.
      */
