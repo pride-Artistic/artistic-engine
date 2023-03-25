@@ -1,3 +1,5 @@
+import { Vector2D } from "../vector";
+
 export default class Camera {
   private values: [number, number, number, number, number, number];
 
@@ -209,11 +211,25 @@ export default class Camera {
    * @param y - Y value of the coordinate.
    * @returns Actual coordinate values your coordinate will appear at.
    */
-  public apply(x: number, y: number): [number, number] {
-    return [
-      this.m11 * x + this.m12 * y + this.ox,
-      this.m21 * x + this.m22 * y + this.oy,
-    ];
+  public apply(x: number | Vector2D, y?: number): Vector2D {
+    let v: Vector2D;
+    if (x instanceof Vector2D) {
+      v = x;
+      y = x.Y;
+      x = x.X;
+      v.X = this.m11 * x + this.m12 * y + this.ox;
+      v.Y = this.m21 * x + this.m22 * y + this.oy;
+    } else if (y !== undefined) {
+      v = new Vector2D(
+        this.m11 * x + this.m12 * y + this.ox,
+        this.m21 * x + this.m22 * y + this.oy
+      );
+    } else {
+      throw new Error(
+        "Camera#apply method requires two number parameters or one Vector2D."
+      );
+    }
+    return v;
   }
 
   /**
