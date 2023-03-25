@@ -189,7 +189,7 @@ export default class Camera {
   }
 
   /**
-   * Apply transform to the gicen coordinate values.
+   * Apply transform to the gien coordinate values.
    * @param x - X value of the coordinate.
    * @param y - Y value of the coordinate.
    * @returns Actual coordinate values your coordinate will appear at.
@@ -215,6 +215,11 @@ export default class Camera {
     return v;
   }
 
+  /**
+   * Multiply given transform to this transform. A = AB where this is A and given param is B.
+   * @param B - X value of the coordinate.
+   * @returns this transform after transformation.
+   */
   public multiply(B: Camera): Camera {
     const m11 = this.m11 * B.m11 + this.m12 * B.m21;
     const m12 = this.m11 * B.m12 + this.m12 * B.m22;
