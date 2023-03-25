@@ -161,17 +161,25 @@ export default class Camera {
    * @param m12 - Element of the matrix at `(1, 2)`.
    * @param m21 - Element of the matrix at `(2, 1)`.
    * @param m22 - Element of the matrix at `(2, 2)`.
+   * @param ox - Element of the matrix at `(3, 1)`.
+   * @param oy - Element of the matrix at `(3, 2)`.
    * @returns Itself which got applied.
    */
-  public linear(m11: number, m12: number, m21: number, m22: number): this {
-    const temp = this.values.slice();
+  public linear(
+    m11: number,
+    m12: number,
+    m21: number,
+    m22: number,
+    ox: number,
+    oy: number
+  ): this {
     this.values = [
-      temp[0] * m11 + temp[1] * m21,
-      temp[0] * m12 + temp[1] * m22,
-      temp[2] * m11 + temp[3] * m21,
-      temp[2] * m12 + temp[3] * m22,
-      temp[4] * m11 + temp[5] * m21,
-      temp[4] * m12 + temp[5] * m22,
+      this.m11 * m11 + this.m12 * m21,
+      this.m11 * m12 + this.m12 * m22,
+      this.m21 * m11 + this.m22 * m21,
+      this.m21 * m12 + this.m22 * m22,
+      this.m11 * ox + this.m12 * oy + this.ox,
+      this.m21 * ox + this.m22 * oy + this.oy,
     ];
     return this;
   }
@@ -185,11 +193,11 @@ export default class Camera {
     angle = (angle * Math.PI) / 180;
     const sinValue = Math.sin(angle);
     const cosValue = Math.cos(angle);
-    return this.linear(cosValue, sinValue, -sinValue, cosValue);
+    return this.linear(cosValue, sinValue, -sinValue, cosValue, 0, 0);
   }
 
   /**
-   * Apply transform to the gicen coordinate values.
+   * Apply transform to the gien coordinate values.
    * @param x - X value of the coordinate.
    * @param y - Y value of the coordinate.
    * @returns Actual coordinate values your coordinate will appear at.
@@ -216,19 +224,12 @@ export default class Camera {
   }
 
   /**
-   * [`DOMMatrix`]: https://developer.mozilla.org/en-US/docs/Web/API/DOMMatrix
-   * [`DOMMatrix`] getter method.
-   * @returns [`DOMMatrix`] object made from this values.
+   * Multiply given transform to this transform. A = AB where this is A and given param is B.
+   * @param B - X value of the coordinate.
+   * @returns this transform after transformation.
    */
-  public toDOM(): DOMMatrix {
-    return new DOMMatrix([
-      this.m11,
-      this.m21,
-      this.m12,
-      this.m22,
-      this.ox,
-      this.oy,
-    ]);
+  public multiply(B: Camera): this {
+    return this.linear(...B.values);
   }
 
   /**
@@ -252,5 +253,29 @@ export default class Camera {
     this.m22 = m22;
     this.oy = oy;
     return this;
+  }
+
+  /**
+   * Makes a copy of this transform.
+   * @returns a copy of this matrix
+   */
+  public copy(): Camera {
+    return new Camera(...this.values);
+  }
+
+  /**
+   * [`DOMMatrix`]: https://developer.mozilla.org/en-US/docs/Web/API/DOMMatrix
+   * [`DOMMatrix`] getter method.
+   * @returns [`DOMMatrix`] object made from this values.
+   */
+  public toDOM(): DOMMatrix {
+    return new DOMMatrix([
+      this.m11,
+      this.m21,
+      this.m12,
+      this.m22,
+      this.ox,
+      this.oy,
+    ]);
   }
 }
