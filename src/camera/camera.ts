@@ -1,3 +1,5 @@
+import { Vector2D } from "../vector";
+
 export default class Camera {
   private values: [number, number, number, number, number, number];
 
@@ -187,16 +189,30 @@ export default class Camera {
   }
 
   /**
-   * Calculate the coordinate value where a original coordinate will actually appear in the canvas.
+   * Apply transform to the gicen coordinate values.
    * @param x - X value of the coordinate.
    * @param y - Y value of the coordinate.
    * @returns Actual coordinate values your coordinate will appear at.
    */
-  public calc(x: number, y: number): [number, number] {
-    return [
-      this.m11 * x + this.m12 * y + this.ox,
-      this.m21 * x + this.m22 * y + this.oy,
-    ];
+  public apply(x: number | Vector2D, y?: number): Vector2D {
+    let v: Vector2D;
+    if (x instanceof Vector2D) {
+      v = x;
+      y = x.Y;
+      x = x.X;
+      v.X = this.m11 * x + this.m12 * y + this.ox;
+      v.Y = this.m21 * x + this.m22 * y + this.oy;
+    } else if (y !== undefined) {
+      v = new Vector2D(
+        this.m11 * x + this.m12 * y + this.ox,
+        this.m21 * x + this.m22 * y + this.oy
+      );
+    } else {
+      throw new Error(
+        "Camera#apply method requires two number parameters or one Vector2D."
+      );
+    }
+    return v;
   }
 
   /**
@@ -213,17 +229,6 @@ export default class Camera {
       this.ox,
       this.oy,
     ]);
-  }
-
-  /**
-   * Apply this transformation to your canvas.
-   * @param canvas - Your canvas you want to apply this.
-   * @returns [`DOMMatrix`](https://developer.mozilla.org/en-US/docs/Web/API/DOMMatrix) object of your canvas' transformation before applying this transformation.
-   */
-  public apply(canvas: CanvasRenderingContext2D): DOMMatrix {
-    const beforeTransform = canvas.getTransform();
-    canvas.setTransform(this.toDOM());
-    return beforeTransform;
   }
 
   /**

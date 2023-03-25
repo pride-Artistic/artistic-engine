@@ -33,7 +33,8 @@ describe("Camera module", () => {
     expect(toArray(camera)).toEqual(
       expect.arrayContaining([-6, 4, -8, 2, -9, -4].map(rounding))
     );
-    expect(camera.calc(10, 8)).toEqual(
+    const v = camera.apply(10, 8);
+    expect([v.X, v.Y]).toEqual(
       expect.arrayContaining([-37, -68].map(rounding))
     );
   });
