@@ -4,10 +4,10 @@ export default class Camera {
   private values: [number, number, number, number, number, number];
 
   constructor(
-    m11: number = 0,
+    m11: number = 1,
     m12: number = 0,
     m21: number = 0,
-    m22: number = 0,
+    m22: number = 1,
     ox: number = 0,
     oy: number = 0
   ) {
