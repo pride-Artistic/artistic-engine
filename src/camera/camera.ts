@@ -204,12 +204,12 @@ export default class Camera {
   }
 
   /**
-   * Calculate the coordinate value where a original coordinate will actually appear in the canvas.
+   * Apply transform to the gicen coordinate values.
    * @param x - X value of the coordinate.
    * @param y - Y value of the coordinate.
    * @returns Actual coordinate values your coordinate will appear at.
    */
-  public calc(x: number, y: number): [number, number] {
+  public apply(x: number, y: number): [number, number] {
     return [
       this.m11 * x + this.m12 * y + this.ox,
       this.m21 * x + this.m22 * y + this.oy,
@@ -230,17 +230,6 @@ export default class Camera {
       this.ox,
       this.oy,
     ]);
-  }
-
-  /**
-   * Apply this transformation to your canvas.
-   * @param canvas - Your canvas you want to apply this.
-   * @returns [`DOMMatrix`](https://developer.mozilla.org/en-US/docs/Web/API/DOMMatrix) object of your canvas' transformation before applying this transformation.
-   */
-  public apply(canvas: CanvasRenderingContext2D): DOMMatrix {
-    const beforeTransform = canvas.getTransform();
-    canvas.setTransform(this.toDOM());
-    return beforeTransform;
   }
 
   /**
