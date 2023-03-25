@@ -1,3 +1,4 @@
+import { Vector2D } from "../vector";
 export default class Camera {
     private values;
     constructor(m11?: number, m12?: number, m21?: number, m22?: number, ox?: number, oy?: number);
@@ -78,9 +79,11 @@ export default class Camera {
      * @param m12 - Element of the matrix at `(1, 2)`.
      * @param m21 - Element of the matrix at `(2, 1)`.
      * @param m22 - Element of the matrix at `(2, 2)`.
+     * @param ox - Element of the matrix at `(3, 1)`.
+     * @param oy - Element of the matrix at `(3, 2)`.
      * @returns Itself which got applied.
      */
-    linear(m11: number, m12: number, m21: number, m22: number): this;
+    linear(m11: number, m12: number, m21: number, m22: number, ox: number, oy: number): this;
     /**
      * Rotate the camera countclockwise.
      * @param angle - The rotation angle you want. (in *degrees*)
@@ -88,27 +91,32 @@ export default class Camera {
      */
     rotate(angle: number): this;
     /**
-     * Calculate the coordinate value where a original coordinate will actually appear in the canvas.
+     * Apply transform to the gien coordinate values.
      * @param x - X value of the coordinate.
      * @param y - Y value of the coordinate.
      * @returns Actual coordinate values your coordinate will appear at.
      */
-    calc(x: number, y: number): [number, number];
+    apply(x: number | Vector2D, y?: number): Vector2D;
+    /**
+     * Multiply given transform to this transform. A = AB where this is A and given param is B.
+     * @param B - X value of the coordinate.
+     * @returns this transform after transformation.
+     */
+    multiply(B: Camera): this;
+    /**
+     * Invert this matrix if invertible.
+     * @returns this transform.
+     */
+    invert(): this;
+    /**
+     * Makes a copy of this transform.
+     * @returns a copy of this matrix
+     */
+    copy(): Camera;
     /**
      * [`DOMMatrix`]: https://developer.mozilla.org/en-US/docs/Web/API/DOMMatrix
      * [`DOMMatrix`] getter method.
      * @returns [`DOMMatrix`] object made from this values.
      */
     toDOM(): DOMMatrix;
-    /**
-     * Apply this transformation to your canvas.
-     * @param canvas - Your canvas you want to apply this.
-     * @returns [`DOMMatrix`](https://developer.mozilla.org/en-US/docs/Web/API/DOMMatrix) object of your canvas' transformation before applying this transformation.
-     */
-    apply(canvas: CanvasRenderingContext2D): DOMMatrix;
-    /**
-     * Invert this matrix if invertible.
-     * @returns this transform.
-     */
-    invert(): this;
 }
