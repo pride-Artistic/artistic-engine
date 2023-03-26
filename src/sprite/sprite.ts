@@ -1,5 +1,5 @@
 import { Entity } from "../entity";
-import { Transform } from "../camera";
+import { Transform } from "../transform";
 import IDrawable from "./idrawable";
 
 export default abstract class Sprite extends Entity implements IDrawable {

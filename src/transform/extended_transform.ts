@@ -1,4 +1,4 @@
-import Transform from "./camera";
+import Transform from "./transform";
 
 export default class ExtendedTransform extends Transform {
   /**
