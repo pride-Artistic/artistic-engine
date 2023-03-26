@@ -1,6 +1,6 @@
-import Camera from "./camera";
+import Transform from "./camera";
 
-export default class ExtendedCamera extends Camera {
+export default class ExtendedCamera extends Transform {
   /**
    * Move the camera left. (So the objects seems to move right.)
    * @param value - Distance to move.

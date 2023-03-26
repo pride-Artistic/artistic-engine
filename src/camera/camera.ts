@@ -1,6 +1,6 @@
 import { Vector2D } from "../vector";
 
-export default class Camera {
+export default class Transform {
   private values: [number, number, number, number, number, number];
 
   constructor(
@@ -228,7 +228,7 @@ export default class Camera {
    * @param B - X value of the coordinate.
    * @returns this transform after transformation.
    */
-  public multiply(B: Camera): this {
+  public multiply(B: Transform): this {
     return this.linear(...B.values);
   }
 
@@ -259,8 +259,8 @@ export default class Camera {
    * Makes a copy of this transform.
    * @returns a copy of this matrix
    */
-  public copy(): Camera {
-    return new Camera(...this.values);
+  public copy(): Transform {
+    return new Transform(...this.values);
   }
 
   /**

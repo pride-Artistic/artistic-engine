@@ -1,17 +1,17 @@
 import { Entity } from "../entity";
-import { Camera } from "../camera";
+import { Transform } from "../camera";
 import IDrawable from "./idrawable";
 
 export default abstract class Sprite extends Entity implements IDrawable {
   private region: Entity | undefined;
 
-  private transform: Camera = new Camera();
+  private transform: Transform = new Transform();
 
   /**
    * Getter property for transform.
    * @returns The matrix transform applied to this sprite.
    */
-  public get Transform(): Camera {
+  public get Transform(): Transform {
     return this.transform;
   }
 
@@ -35,7 +35,7 @@ export default abstract class Sprite extends Entity implements IDrawable {
   /**
    * Setter property for transform.
    */
-  public set Transform(trnasform: Camera) {
+  public set Transform(trnasform: Transform) {
     this.transform = trnasform;
   }
 
@@ -94,7 +94,7 @@ export default abstract class Sprite extends Entity implements IDrawable {
   public afterRestore(context: CanvasRenderingContext2D, delay: number) {}
 
   public resetTransform() {
-    this.transform = new Camera();
+    this.transform = new Transform();
   }
   /**
    * Render tasks performed for canvas context.
