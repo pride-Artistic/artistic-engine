@@ -1,5 +1,5 @@
 import { describe, expect, test } from "@jest/globals";
-import Camera from "./camera";
+import Camera from "./transform";
 import ExtendedCamera from "./extended_transform";
 
 describe("Camera module", () => {
