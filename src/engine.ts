@@ -5,6 +5,7 @@ import { Vector2D } from "./vector";
 import checkCompatibility from "./compatibility";
 import { BlankScene } from "./scenes";
 import { Modifier } from "./modifier";
+import { Transform } from "./transform";
 
 interface ExtendedCanvasRenderingContext2D extends CanvasRenderingContext2D {
   reset(): void;
@@ -15,13 +16,15 @@ export default class Engine {
 
   private context: ExtendedCanvasRenderingContext2D;
 
-  private subReset: (context: CanvasRenderingContext2D) => void;
-
   private previousTimestamp: number = 0;
 
   private animationId: number = -1;
 
   private scene: IDrawable = new BlankScene();
+
+  private subReset: (context: CanvasRenderingContext2D) => void;
+
+  private camera: Transform = new Transform();
 
   private modifiers: Modifier[] = [];
 
@@ -65,11 +68,19 @@ export default class Engine {
     return this.scene;
   }
 
+  public get Camera(): Transform {
+    return this.camera;
+  }
+
   public set Scene(scene: IDrawable) {
     if (scene instanceof Entity) {
       scene.setParent(null);
     }
     this.scene = scene;
+  }
+
+  public set Camera(camera: Transform) {
+    this.camera = camera;
   }
 
   public setSubResetFunction(
@@ -125,6 +136,15 @@ export default class Engine {
 
     this.context.reset();
     this.subReset(this.context);
+
+    this.context.transform(
+      this.camera.m11,
+      this.camera.m21,
+      this.camera.m12,
+      this.camera.m22,
+      this.camera.ox,
+      this.camera.oy
+    );
 
     this.scene?.draw(this.context, elapsedTime);
 

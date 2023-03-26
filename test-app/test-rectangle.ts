@@ -22,7 +22,7 @@ export default class TestRectangle extends Sprite {
 
   public override onDraw(context: CanvasRenderingContext2D): void {
     context.fillStyle = this.color;
-    context.fillRect(this.AbsoluteX, this.AbsoluteY, this.Width, this.Height);
+    context.fillRect(0, 0, this.Width, this.Height);
 
     if (!this.modifier || this.modifier.Progress >= 1) {
       if (this.isXmoving)

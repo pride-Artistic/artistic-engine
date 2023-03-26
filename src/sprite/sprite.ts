@@ -5,13 +5,14 @@ import IDrawable from "./idrawable";
 export default abstract class Sprite extends Entity implements IDrawable {
   private region: Entity | undefined;
 
-  private transform: Transform = new Transform();
+  private transform: Transform | undefined;
 
   /**
    * Getter property for transform.
    * @returns The matrix transform applied to this sprite.
    */
   public get Transform(): Transform {
+    if (!this.transform) this.transform = new Transform();
     return this.transform;
   }
 
@@ -35,8 +36,8 @@ export default abstract class Sprite extends Entity implements IDrawable {
   /**
    * Setter property for transform.
    */
-  public set Transform(trnasform: Transform) {
-    this.transform = trnasform;
+  public set Transform(transform: Transform) {
+    this.transform = transform;
   }
 
   /**
@@ -51,9 +52,10 @@ export default abstract class Sprite extends Entity implements IDrawable {
    */
   public readonly draw = (context: CanvasRenderingContext2D, delay: number) => {
     context.save();
-    if (this.region) {
-      this.beforeClip(context, delay);
-      context.translate(this.AbsoluteX, this.AbsoluteY);
+
+    context.translate(this.AbsoluteX, this.AbsoluteY);
+
+    if (this.transform) {
       context.transform(
         this.transform.m11,
         this.transform.m21,
@@ -62,12 +64,19 @@ export default abstract class Sprite extends Entity implements IDrawable {
         this.transform.ox,
         this.transform.oy
       );
+    }
+
+    if (this.region) {
+      this.beforeClip(context, delay);
       context.beginPath();
       context.rect(0, 0, this.region.Width, this.region.Height);
       context.clip();
     }
+
     this.onDraw(context, delay);
+
     context.restore();
+
     this.afterRestore(context, delay);
     for (const child of this.Children) {
       if (!(child instanceof Sprite)) continue;
