@@ -174,12 +174,12 @@ export default class Transform {
     oy: number
   ): this {
     this.values = [
-      this.m11 * m11 + this.m12 * m21,
-      this.m11 * m12 + this.m12 * m22,
-      this.m21 * m11 + this.m22 * m21,
-      this.m21 * m12 + this.m22 * m22,
-      this.m11 * ox + this.m12 * oy + this.ox,
-      this.m21 * ox + this.m22 * oy + this.oy,
+      m11 * this.m11 + m12 * this.m21,
+      m11 * this.m12 + m12 * this.m22,
+      m21 * this.m11 + m22 * this.m21,
+      m21 * this.m12 + m22 * this.m22,
+      m11 * this.ox + m12 * this.oy + ox,
+      m21 * this.ox + m22 * this.oy + oy,
     ];
     return this;
   }
