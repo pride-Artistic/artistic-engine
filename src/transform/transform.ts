@@ -118,7 +118,7 @@ export default class Transform {
   }
 
   /**
-   * Moves the position of this camera.
+   * Translate current coordinate system by given offset.
    * @param x - X value of the movement.
    * @param y - Y value of the movement.
    * @returns Itself which got moved.
@@ -217,7 +217,7 @@ export default class Transform {
       );
     } else {
       throw new Error(
-        "Camera#apply method requires two number parameters or one Vector2D."
+        "Transform#apply method requires two number parameters or one Vector2D."
       );
     }
     return v;
