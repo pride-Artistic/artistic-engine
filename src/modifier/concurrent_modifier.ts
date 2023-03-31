@@ -1,6 +1,6 @@
 import Modifier from "./modifier";
 
-export default abstract class ConcurrentModifier extends Modifier {
+export default class ConcurrentModifier extends Modifier {
   protected modifiers: Modifier[];
 
   constructor(modifier: Modifier, ...modifiers: Modifier[]) {
