@@ -55,7 +55,10 @@ options[OPTION_PRODUCTION] = {
     output: {
         filename: 'main.js' ,
         path: path.join(__dirname, 'dist'),
-        library: "ArtisticEngine"
+        library: {
+            name: "ArtisticEngine",
+            type: 'umd'
+        }
     },
     module: {
         rules: [{
