@@ -28,6 +28,10 @@ export default class Engine {
 
   private modifiers: Modifier[] = [];
 
+  /**
+   * Constructor will bind Engine object to a given canvas and check for incompatible canvas features and cover.
+   * @param canvasIdentifier one of HTMLCnavasElement or css selector string that indicates canvas element.
+   */
   public constructor(canvasIdentifier: HTMLCanvasElement | string | null) {
     // locate canvas by HTMLCanvasElement or CSS selector
     let canvas: HTMLCanvasElement | null;
@@ -83,12 +87,20 @@ export default class Engine {
     this.camera = camera;
   }
 
+  /**
+   * Register a callback that will be called on each frame.
+   * @param func User defined callback that will be executed after each frame is reset completely
+   */
   public setSubResetFunction(
     func: (context: CanvasRenderingContext2D) => void
   ) {
     this.subReset = func;
   }
 
+  /**
+   * Set canvas width and height to given dimension. Canvas will try to match window size when no arguments are passed.
+   * @param config Canvas size dimension.
+   */
   public resizeCanvas(config?: CanvasConfig | Vector2D) {
     if (config instanceof Vector2D) {
       this.Canvas.width = config.X;
@@ -100,20 +112,34 @@ export default class Engine {
     // TODO: emit canvas resize event
   }
 
+  /**
+   * Makes bound canvas begin refreshing with given context. This will also start modifiers to update.
+   */
   public start() {
     // may be error check.
     this.render(this.previousTimestamp);
   }
 
+  /**
+   * Makes bound canvas to stop refreshing. This will also stop modifiers to update.
+   */
   public stop() {
     cancelAnimationFrame(this.animationId);
   }
 
+  /**
+   * register and start given modifier from this engine.
+   * @param modifier Modifier to hult execution.
+   */
   public registerModifier(modifier: Modifier) {
     modifier.register();
     this.modifiers.push(modifier);
   }
 
+  /**
+   * Stops and removes given modifier from update pool in this engine.
+   * @param modifier Modifier to hult execution.
+   */
   public unregisterModifier(modifier: Modifier) {
     this.modifiers = this.modifiers.filter((m) => m === modifier);
   }
