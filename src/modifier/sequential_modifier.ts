@@ -1,6 +1,6 @@
 import Modifier from "./modifier";
 
-export default abstract class SequentialModifier extends Modifier {
+export default class SequentialModifier extends Modifier {
   protected modifiers: Modifier[];
 
   constructor(modifier: Modifier, ...modifiers: Modifier[]) {
