@@ -1,5 +1,3 @@
-import Modifier from "./modifier";
-import ConcurrentModifier from "./concurrent_modifier";
-import SequentialModifier from "./sequential_modifier";
+import * as Modifiers from "./modifiers";
 import EaseFunctions from "./ease-function";
-export { Modifier, ConcurrentModifier, SequentialModifier, EaseFunctions };
+export { Modifiers, EaseFunctions };

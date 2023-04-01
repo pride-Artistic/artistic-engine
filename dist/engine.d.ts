@@ -1,7 +1,7 @@
 import CanvasConfig from "./canvas_config";
 import { IDrawable } from "./sprite";
 import { Vector2D } from "./vector";
-import { Modifier } from "./modifier";
+import { Modifier } from "./modifier/modifiers";
 import { Transform } from "./transform";
 interface ExtendedCanvasRenderingContext2D extends CanvasRenderingContext2D {
     reset(): void;

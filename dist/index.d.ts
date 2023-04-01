@@ -4,5 +4,5 @@ import { Sprite } from "./sprite";
 import * as Scenes from "./scenes";
 import * as Vector from "./vector";
 import { Transform } from "./transform";
-import * as Modifiers from "./modifier";
-export { Engine, Entity, Sprite, Scenes, Vector, Transform, Modifiers };
+import { Modifiers, EaseFunctions } from "./modifier";
+export { Engine, Entity, Sprite, Scenes, Vector, Transform, Modifiers, EaseFunctions, };
