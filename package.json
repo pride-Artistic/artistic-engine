@@ -1,8 +1,25 @@
 {
   "name": "artistic-engine",
   "version": "1.0.0",
-  "description": "",
-  "main": "dist/main.js",
+  "description": "General purpose html5 canvas rendering game engine",
+  "keywords": ["game", "engine,", "canvas", "artistic"],
+  "homepage": "https://github.com/pride-Artistic/artistic-engine",
+  "author": "pride Artistic",
+  "contributors": [
+    {"name":"Ailre","url":"https://github.com/artistXenon"},
+    {"name":"friendship1226","url":"https://github.com/friend1226"},
+    {"name":"fixca","url":"https://github.com/fixca"}
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pride-Artistic/artistic-engine.git"
+  },
+  "browser": "dist/main.js",
+  "types": "dist/index.d.ts",
+
+  "TODO": "files",
+
   "scripts": {
     "build": "cross-env NODE_ENV=production webpack",
     "serve": "webpack-dev-server",
@@ -16,12 +33,6 @@
   "pre-commit": [
     "lint"
   ],
-  "types": "dist/index.d.ts",
-  "files": [
-    "dist"
-  ],
-  "author": "pride Artistic",
-  "license": "MIT",
   "devDependencies": {
     "@types/jest": "^29.2.5",
     "@typescript-eslint/eslint-plugin": "^5.48.1",
@@ -45,7 +56,5 @@
     "webpack": "^5.75.0",
     "webpack-cli": "^5.0.1",
     "webpack-dev-server": "^4.11.1"
-  },
-  "dependencies": {
   }
 }
