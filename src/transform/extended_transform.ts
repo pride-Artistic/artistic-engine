@@ -40,4 +40,31 @@ export default class ExtendedTransform extends Transform {
     this.translate(0, value);
     return this;
   }
+
+  /**
+   * Shortcut of rotating 90 degrees counterclockwise.
+   * @returns Itself rotated.
+   */
+  public rotate90(): this {
+    this.rotate(90);
+    return this;
+  }
+
+  /**
+   * Shortcut of rotating 18 degrees counterclockwise.
+   * @returns Itself rotated.
+   */
+  public rotate180(): this {
+    this.rotate(180);
+    return this;
+  }
+
+  /**
+   * Shortcut of rotating 270 degrees counterclockwise.
+   * @returns Itself rotated.
+   */
+  public rotate270(): this {
+    this.rotate(270);
+    return this;
+  }
 }
