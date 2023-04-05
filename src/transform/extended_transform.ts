@@ -67,4 +67,31 @@ export default class ExtendedTransform extends Transform {
     this.rotate(270);
     return this;
   }
+
+  /**
+   * Shortcut of reflecting in the X axis.
+   * @returns Itseft reflected.
+   */
+  public XaxisReflect(): this {
+    this.linear(1, 0, 0, -1, 0, 0);
+    return this;
+  }
+
+  /**
+   * Shortcut of reflecting in the Y axis.
+   * @returns Itseft reflected.
+   */
+  public YaxisReflect(): this {
+    this.linear(-1, 0, 0, 1, 0, 0);
+    return this;
+  }
+
+  /**
+   * Shortcut of reflecting in the origin. (`(0, 0)`)
+   * @returns Itseft reflected.
+   */
+  public OriginReflect(): this {
+    this.linear(-1, 0, 0, -1, 0, 0);
+    return this;
+  }
 }
