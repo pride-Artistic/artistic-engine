@@ -70,7 +70,7 @@ export default class ExtendedTransform extends Transform {
 
   /**
    * Shortcut of reflecting in the X axis.
-   * @returns Itseft reflected.
+   * @returns Itself reflected.
    */
   public XaxisReflect(): this {
     this.linear(1, 0, 0, -1, 0, 0);
@@ -79,7 +79,7 @@ export default class ExtendedTransform extends Transform {
 
   /**
    * Shortcut of reflecting in the Y axis.
-   * @returns Itseft reflected.
+   * @returns Itself reflected.
    */
   public YaxisReflect(): this {
     this.linear(-1, 0, 0, 1, 0, 0);
@@ -88,7 +88,7 @@ export default class ExtendedTransform extends Transform {
 
   /**
    * Shortcut of reflecting in the origin. (`(0, 0)`)
-   * @returns Itseft reflected.
+   * @returns Itself reflected.
    */
   public OriginReflect(): this {
     this.linear(-1, 0, 0, -1, 0, 0);
