@@ -117,6 +117,10 @@ export default class Transform {
     this.values[5] = value;
   }
 
+  public static fromDOM(dom: DOMMatrix) {
+    return new this(dom.a, dom.c, dom.b, dom.d, dom.e, dom.f);
+  }
+
   /**
    * Translate current coordinate system by given offset.
    * @param x - X value of the movement.
