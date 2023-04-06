@@ -193,11 +193,13 @@ export default class Transform {
    * @param angle - The rotation angle you want. (in *degrees*)
    * @returns Itself which got rotated.
    */
-  public rotate(angle: number): this {
+  public rotate(angle: number, pointX: number = 0, pointY: number = 0): this {
     angle = (angle * Math.PI) / 180;
     const sinValue = Math.sin(angle);
     const cosValue = Math.cos(angle);
-    return this.linear(cosValue, sinValue, -sinValue, cosValue, 0, 0);
+    return this.translate(-pointX, -pointY)
+      .linear(cosValue, sinValue, -sinValue, cosValue, 0, 0)
+      .translate(pointX, pointY);
   }
 
   /**
