@@ -256,6 +256,17 @@ export default class Transform {
   }
 
   /**
+   * Skews the sprite.
+   * @param x_slope - How much you want to skew to X-axis.
+   * @param y_slope - How much you want to skew to Y-axis.
+   * @returns Itself skewed.
+   */
+  public skew(x_slope: number = 0, y_slope: number = 0): this {
+    this.linear(1, x_slope, y_slope, 1, 0, 0);
+    return this;
+  }
+
+  /**
    * Makes a copy of this transform.
    * @returns a copy of this matrix
    */

@@ -94,15 +94,4 @@ export default class ExtendedTransform extends Transform {
     this.linear(-1, 0, 0, -1, 0, 0);
     return this;
   }
-
-  /**
-   * Shortcut of skewing.
-   * @param x_slope - How much you want to skew to X-axis.
-   * @param y_slope - How much you want to skew to Y-axis.
-   * @returns Itself skewed.
-   */
-  public skew(x_slope: number = 0, y_slope: number = 0): this {
-    this.linear(1, x_slope, y_slope, 1, 0, 0);
-    return this;
-  }
 }
