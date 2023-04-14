@@ -21,7 +21,10 @@ options[OPTION_DEVELOPMENT] = {
                 /test\.ts$/,
             ],
             use: {
-                loader: 'ts-loader'
+                loader: 'ts-loader',
+                options: {
+                    configFile: 'tsconfig.test.json'
+                },
             }
         }]
     },
@@ -51,7 +54,11 @@ options[OPTION_PRODUCTION] = {
     devtool: 'inline-source-map',
     output: {
         filename: 'main.js' ,
-        path: path.join(__dirname, 'dist')
+        path: path.join(__dirname, 'dist'),
+        library: {
+            name: "ArtisticEngine",
+            type: 'umd'
+        }
     },
     module: {
         rules: [{
@@ -61,7 +68,10 @@ options[OPTION_PRODUCTION] = {
                 path.join(__dirname, 'test-app')
             ],
             use: {
-                loader: 'ts-loader'
+                loader: 'ts-loader',
+                options: {
+                    configFile: 'tsconfig.prod.json'
+                },
             }
         }]
     },

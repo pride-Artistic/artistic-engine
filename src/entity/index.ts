@@ -1,4 +1,3 @@
-import { EntityConstructorConfig, Entity } from "./entity";
-import IEntity from "./ientity";
+import Entity from "./entity";
 
-export { EntityConstructorConfig, Entity, IEntity };
+export { Entity };

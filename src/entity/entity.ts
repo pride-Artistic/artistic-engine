@@ -1,14 +1,8 @@
 import { Vector2D } from "../vector";
-import CanvasConfig from "../canvas_config";
 import IEntity from "./ientity";
 import TreeItem from "../treeitem";
 
-export interface EntityConstructorConfig extends CanvasConfig {
-  x?: number;
-  y?: number;
-}
-
-export class Entity extends TreeItem<Entity> {
+export default class Entity extends TreeItem<Entity> implements IEntity {
   protected dimension: Vector2D = new Vector2D();
 
   protected position: Vector2D = new Vector2D();
