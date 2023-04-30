@@ -4,17 +4,17 @@ import ExtendedTransform from "./extended_transform";
 
 describe("Transform module", () => {
   // temporary removal regarding JSDOM DOMMatrix error
-  // test("Converting DOMMatrix to Transform and vice versa.", () => {
-  //   const dom = new DOMMatrix([3, 4, 5, 6, 7, 8]);
-  //   const transform = Transform.fromDOM(dom);
-  //   const dom0 = transform.toDOM();
-  //   expect(dom.a).toEqual(dom0.a);
-  //   expect(dom.b).toEqual(dom0.b);
-  //   expect(dom.c).toEqual(dom0.c);
-  //   expect(dom.d).toEqual(dom0.d);
-  //   expect(dom.e).toEqual(dom0.e);
-  //   expect(dom.f).toEqual(dom0.f);
-  // });
+  test("Converting DOMMatrix to Transform and vice versa.", () => {
+    const dom = new DOMMatrix([3, 4, 5, 6, 7, 8]);
+    const transform = Transform.fromDOM(dom);
+    const dom0 = transform.toDOM();
+    expect(dom.a).toEqual(dom0.a);
+    expect(dom.b).toEqual(dom0.b);
+    expect(dom.c).toEqual(dom0.c);
+    expect(dom.d).toEqual(dom0.d);
+    expect(dom.e).toEqual(dom0.e);
+    expect(dom.f).toEqual(dom0.f);
+  });
   test("Transfom initializing & getter & setter", () => {
     const transform = new Transform();
     expect(transform.m11).toBe(1);

@@ -2,13 +2,27 @@
   "name": "artistic-engine",
   "version": "1.0.0",
   "description": "General purpose html5 canvas rendering game engine",
-  "keywords": ["game", "engine,", "canvas", "artistic"],
+  "keywords": [
+    "game",
+    "engine,",
+    "canvas",
+    "artistic"
+  ],
   "homepage": "https://github.com/pride-Artistic/artistic-engine",
   "author": "pride Artistic",
   "contributors": [
-    {"name":"Ailre","url":"https://github.com/artistXenon"},
-    {"name":"friendship1226","url":"https://github.com/friend1226"},
-    {"name":"fixca","url":"https://github.com/fixca"}
+    {
+      "name": "Ailre",
+      "url": "https://github.com/artistXenon"
+    },
+    {
+      "name": "friendship1226",
+      "url": "https://github.com/friend1226"
+    },
+    {
+      "name": "fixca",
+      "url": "https://github.com/fixca"
+    }
   ],
   "license": "MIT",
   "repository": {
@@ -17,9 +31,7 @@
   },
   "browser": "dist/main.js",
   "types": "dist/index.d.ts",
-
   "TODO": "files",
-
   "scripts": {
     "build": "cross-env NODE_ENV=production webpack",
     "serve": "webpack-dev-server",
@@ -45,6 +57,7 @@
     "eslint-plugin-prettier": "^4.2.1",
     "html-webpack-plugin": "^5.5.0",
     "jest": "^29.3.1",
+    "jest-canvas-mock": "^2.5.0",
     "jest-environment-jsdom": "^29.3.1",
     "pre-commit": "^1.2.2",
     "prettier": "^2.8.3",
