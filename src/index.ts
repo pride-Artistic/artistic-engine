@@ -4,7 +4,7 @@ import { Sprite } from "./sprite";
 import * as Scenes from "./scenes";
 import * as Vector from "./vector";
 import { Transform } from "./transform";
-import { Modifiers, EaseFunctions } from "./modifier";
+import { Modifiers, EaseFunctions } from "./modifiers";
 
 export {
   Engine,
