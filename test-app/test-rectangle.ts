@@ -1,5 +1,5 @@
 import { Engine, Sprite } from "../src";
-import { Modifier, EaseFunctions } from "../src/modifier";
+import { Modifiers, EaseFunctions } from "../src/modifiers";
 
 export default class TestRectangle extends Sprite {
   private color: string;
@@ -8,7 +8,7 @@ export default class TestRectangle extends Sprite {
 
   private engine: Engine;
 
-  private modifier: Modifier | undefined;
+  private modifier: Modifiers.Modifier | undefined;
 
   constructor(color: string, isXMoving: boolean, engine: Engine) {
     super({
@@ -29,7 +29,7 @@ export default class TestRectangle extends Sprite {
         this.Y = Math.random() * (context.canvas.height - this.Height);
       else this.X = Math.random() * (context.canvas.width - this.Width);
 
-      this.modifier = new Modifier(
+      this.modifier = new Modifiers.Modifier(
         this.isXmoving ? -this.Width : -this.Height,
         this.isXmoving ? context.canvas.width : context.canvas.height,
         2000,
