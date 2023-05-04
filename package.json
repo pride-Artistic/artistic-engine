@@ -33,6 +33,13 @@
     ".": "./dist/main.js",
     "./modifiers": "./dist/modifiers.js"
   },
+  "typesVersions": {
+    "*": {
+        "modifiers": [
+            "./dist/modifiers/index.d.ts"
+        ]
+    }
+  },
   "types": "dist/index.d.ts",
   "TODO": "files",
   "scripts": {
