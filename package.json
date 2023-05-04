@@ -34,16 +34,13 @@
   "exports": {
     ".": {
       "import": "./dist/main.js",
+      "require": "./dist/main.js",
       "types": "./dist/index.d.ts"
     },
     "./modifiers": {
       "import": "./dist/modifiers.js",
+      "require": "./dist/modifiers.js",
       "types": "./dist/modifiers/index.d.ts"
-    }
-  },
-  "typesVersions": {
-    "*": {
-      "modifiers": ["dist/modifiers"]
     }
   },
   "TODO": "files",
