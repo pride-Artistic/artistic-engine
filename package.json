@@ -29,8 +29,20 @@
     "type": "git",
     "url": "https://github.com/pride-Artistic/artistic-engine.git"
   },
-  "browser": "dist/main.js",
+  "browser": "./dist/main.js",
   "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/main.js",
+      "require": "./dist/main.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./modifiers": {
+      "import": "./dist/modifiers.js",
+      "require": "./dist/modifiers.js",
+      "types": "./dist/modifiers/index.d.ts"
+    }
+  },
   "TODO": "files",
   "scripts": {
     "build": "cross-env NODE_ENV=production webpack",

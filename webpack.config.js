@@ -50,14 +50,17 @@ options[OPTION_DEVELOPMENT] = {
 options[OPTION_PRODUCTION] = {
     mode: OPTION_PRODUCTION,
     context: __dirname,
-    entry: './src/index.ts',
+    entry: { 
+        main: './src/index.ts',
+        modifiers: './src/modifiers/index.ts',
+    },
     devtool: 'inline-source-map',
     output: {
-        filename: 'main.js' ,
+        filename: '[name].js' ,
         path: path.join(__dirname, 'dist'),
         library: {
-            name: "ArtisticEngine",
-            type: 'umd'
+            type: 'umd',
+            name: "[name]"
         }
     },
     module: {
