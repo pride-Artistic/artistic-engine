@@ -30,14 +30,14 @@
     "url": "https://github.com/pride-Artistic/artistic-engine.git"
   },
   "exports": {
-    ".": "./dist/main.js",
-    "./modifiers": "./dist/modifiers.js"
+    ".": "./dist/main",
+    "./modifiers": "./dist/modifiers"
   },
   "typesVersions": {
     "*": {
-        "modifiers": [
-            "./dist/modifiers/index.d.ts"
-        ]
+      "modifiers": [
+        "dist/modifiers"
+      ]
     }
   },
   "types": "dist/index.d.ts",

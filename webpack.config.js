@@ -59,7 +59,8 @@ options[OPTION_PRODUCTION] = {
         filename: '[name].js' ,
         path: path.join(__dirname, 'dist'),
         library: {
-            type: 'umd'
+            type: 'umd',
+            name: "[name]"
         }
     },
     module: {
