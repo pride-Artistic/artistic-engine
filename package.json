@@ -29,7 +29,10 @@
     "type": "git",
     "url": "https://github.com/pride-Artistic/artistic-engine.git"
   },
-  "browser": "dist/main.js",
+  "exports": {
+    ".": "./dist/main.js",
+    "./modifiers": "./dist/modifiers.js"
+  },
   "types": "dist/index.d.ts",
   "TODO": "files",
   "scripts": {
