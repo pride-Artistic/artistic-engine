@@ -22,7 +22,9 @@ export default class SequentialModifier extends Modifier {
     if (currentModifier.Progress < 1) currentModifier.tick();
     else {
       const previousModifier = this.modifiers.shift();
-      this.modifiers[0]?.register(previousModifier?.EndTime);
+      this.modifiers[0]?.register(
+        Date.now() - (previousModifier?.EndTime ?? 0)
+      );
     }
   }
 }
