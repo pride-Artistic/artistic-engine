@@ -21,9 +21,8 @@ Latest ✔ | Latest ✔ | Latest ✔ | Latest ✔ | Latest ✔ | 11 ✔ |
 
 
 ```bash
-$ npm install git+https://github.com/pride-Artistic/artistic-engine.git
+$ npm install --save artistic-engine
 ```
-We plan to publish npm package as soon as our first release is confirmed.
 
 ## Credits
 
