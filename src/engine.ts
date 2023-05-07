@@ -128,8 +128,8 @@ export default class Engine {
   }
 
   /**
-   * register and start given modifier from this engine.
-   * @param modifier Modifier to hult execution.
+   * Register and start given modifier from this engine.
+   * @param modifier Modifier to halt execution.
    */
   public registerModifier(modifier: Modifier) {
     modifier.register();
@@ -138,10 +138,10 @@ export default class Engine {
 
   /**
    * Stops and removes given modifier from update pool in this engine.
-   * @param modifier Modifier to hult execution.
+   * @param modifier Modifier to halt execution.
    */
   public unregisterModifier(modifier: Modifier) {
-    this.modifiers = this.modifiers.filter((m) => m === modifier);
+    this.modifiers = this.modifiers.filter((m) => m !== modifier);
   }
 
   private render(timestamp: number) {
