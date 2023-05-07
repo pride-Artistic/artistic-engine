@@ -1,0 +1,10 @@
+/.github
+/test-app
+/src
+/scripts
+tsconfig.prod.json
+tsconfig.test.json
+jest.config.js
+webpack.config.js
+.eslintignore
+.eslintrc.cjs

@@ -1,18 +1,179 @@
+import CanvasConfig from "./canvas_config";
+import { Entity } from "./entity";
+import { IDrawable } from "./sprite";
+import { Vector2D } from "./vector";
+import checkCompatibility from "./compatibility";
+import { BlankScene } from "./scenes";
+import { Modifier } from "./modifiers/modifiers";
+import { Transform } from "./transform";
+
+interface ExtendedCanvasRenderingContext2D extends CanvasRenderingContext2D {
+  reset(): void;
+}
+
 export default class Engine {
   private canvas: HTMLCanvasElement;
 
-  private context: CanvasRenderingContext2D;
+  private context: ExtendedCanvasRenderingContext2D;
 
-  public constructor(canvasIdentifier: HTMLCanvasElement | string) {
+  private previousTimestamp: number = 0;
+
+  private animationId: number = -1;
+
+  private scene: IDrawable = new BlankScene();
+
+  private subReset: (context: CanvasRenderingContext2D) => void;
+
+  private camera: Transform = new Transform();
+
+  private modifiers: Modifier[] = [];
+
+  /**
+   * Constructor will bind Engine object to a given canvas and check for incompatible canvas features and cover.
+   * @param canvasIdentifier one of HTMLCnavasElement or css selector string that indicates canvas element.
+   */
+  public constructor(canvasIdentifier: HTMLCanvasElement | string | null) {
+    // locate canvas by HTMLCanvasElement or CSS selector
+    let canvas: HTMLCanvasElement | null;
     if (typeof canvasIdentifier === "string") {
-      this.canvas = document.querySelector(
+      canvas = document.querySelector(
         canvasIdentifier
-      ) as HTMLCanvasElement;
+      ) as HTMLCanvasElement | null;
     } else {
-      this.canvas = canvasIdentifier;
+      canvas = canvasIdentifier;
     }
-    this.context = this.canvas.getContext("2d") as CanvasRenderingContext2D;
-    this.context.fillStyle = "red";
-    this.context.fillRect(0, 0, 100, 100);
+
+    if (canvas === null) {
+      throw new Error("Unable to identify canvas.");
+    }
+
+    this.canvas = canvas;
+    this.subReset = () => {};
+
+    // request context from given canvas
+    const context = this.canvas.getContext(
+      "2d"
+    ) as ExtendedCanvasRenderingContext2D;
+
+    this.context = context;
+
+    checkCompatibility(this);
+  }
+
+  public get Canvas() {
+    return this.canvas;
+  }
+
+  public get Context() {
+    return this.context;
+  }
+
+  public get Scene(): IDrawable {
+    return this.scene;
+  }
+
+  public get Camera(): Transform {
+    return this.camera;
+  }
+
+  public set Scene(scene: IDrawable) {
+    if (scene instanceof Entity) {
+      scene.setParent(null);
+    }
+    this.scene = scene;
+  }
+
+  public set Camera(camera: Transform) {
+    this.camera = camera;
+  }
+
+  /**
+   * Register a callback that will be called on each frame.
+   * @param func User defined callback that will be executed after each frame is reset completely
+   */
+  public setSubResetFunction(
+    func: (context: CanvasRenderingContext2D) => void
+  ) {
+    this.subReset = func;
+  }
+
+  /**
+   * Set canvas width and height to given dimension. Canvas will try to match window size when no arguments are passed.
+   * @param config Canvas size dimension.
+   */
+  public resizeCanvas(config?: CanvasConfig | Vector2D) {
+    if (config instanceof Vector2D) {
+      this.Canvas.width = config.X;
+      this.Canvas.height = config.Y;
+    } else {
+      this.Canvas.width = config?.w ?? window.innerWidth;
+      this.Canvas.height = config?.h ?? window.innerHeight;
+    }
+    // TODO: emit canvas resize event
+  }
+
+  /**
+   * Makes bound canvas begin refreshing with given context. This will also start modifiers to update.
+   */
+  public start() {
+    // may be error check.
+    this.render(this.previousTimestamp);
+  }
+
+  /**
+   * Makes bound canvas to stop refreshing. This will also stop modifiers to update.
+   */
+  public stop() {
+    cancelAnimationFrame(this.animationId);
+  }
+
+  /**
+   * register and start given modifier from this engine.
+   * @param modifier Modifier to hult execution.
+   */
+  public registerModifier(modifier: Modifier) {
+    modifier.register();
+    this.modifiers.push(modifier);
+  }
+
+  /**
+   * Stops and removes given modifier from update pool in this engine.
+   * @param modifier Modifier to hult execution.
+   */
+  public unregisterModifier(modifier: Modifier) {
+    this.modifiers = this.modifiers.filter((m) => m === modifier);
+  }
+
+  private render(timestamp: number) {
+    const elapsedTime = timestamp - this.previousTimestamp;
+    this.previousTimestamp = timestamp;
+
+    const modifiersToRemove: Modifier[] = [];
+    for (const modifier of this.modifiers) {
+      if (modifier.Progress < 1) {
+        modifier.tick();
+      } else {
+        modifiersToRemove.push(modifier);
+      }
+    }
+    this.modifiers = this.modifiers.filter(
+      (m) => !modifiersToRemove.includes(m)
+    );
+
+    this.context.reset();
+    this.subReset(this.context);
+
+    this.context.transform(
+      this.camera.m11,
+      this.camera.m21,
+      this.camera.m12,
+      this.camera.m22,
+      this.camera.ox,
+      this.camera.oy
+    );
+
+    this.scene?.draw(this.context, elapsedTime);
+
+    this.animationId = requestAnimationFrame(this.render.bind(this));
   }
 }
