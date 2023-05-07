@@ -45,13 +45,13 @@ export default class Engine {
      */
     stop(): void;
     /**
-     * register and start given modifier from this engine.
-     * @param modifier Modifier to hult execution.
+     * Register and start given modifier from this engine.
+     * @param modifier Modifier to halt execution.
      */
     registerModifier(modifier: Modifier): void;
     /**
      * Stops and removes given modifier from update pool in this engine.
-     * @param modifier Modifier to hult execution.
+     * @param modifier Modifier to halt execution.
      */
     unregisterModifier(modifier: Modifier): void;
     private render;
