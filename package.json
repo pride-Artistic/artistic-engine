@@ -52,7 +52,9 @@
     "document": "typedoc --excludeInternal",
     "clean": "node scripts/clean",
     "clean:branch": "node scripts/git_clean",
-    "clean:build": "node scripts/dist_clean"
+    "clean:build": "node scripts/dist_clean",
+    "prepack": "npm run clean:build&&npm run build",
+    "postpack": "npm run clean:build"
   },
   "pre-commit": [
     "lint"
