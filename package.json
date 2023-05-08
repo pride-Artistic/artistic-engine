@@ -4,8 +4,10 @@
   "description": "General purpose html5 canvas rendering game engine",
   "keywords": [
     "game",
-    "engine,",
+    "engine",
     "canvas",
+    "framework",
+    "2D",
     "artistic"
   ],
   "homepage": "https://github.com/pride-Artistic/artistic-engine",
