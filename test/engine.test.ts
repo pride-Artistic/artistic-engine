@@ -1,5 +1,5 @@
 import { describe, expect, test } from "@jest/globals";
-import Engine from "./engine";
+import Engine from "../src/engine";
 
 beforeEach(() => {
   document.body.innerHTML = `<html><body><canvas id="main"></canvas></body></html>`;

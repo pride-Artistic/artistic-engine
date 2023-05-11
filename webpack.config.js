@@ -68,7 +68,8 @@ options[OPTION_PRODUCTION] = {
             test: /(?<!\.test)\.ts$/,
             exclude: [
                 path.join(__dirname, 'node_modules'), 
-                path.join(__dirname, 'test-app')
+                path.join(__dirname, 'test-app'), 
+                path.join(__dirname, 'test')
             ],
             use: {
                 loader: 'ts-loader',

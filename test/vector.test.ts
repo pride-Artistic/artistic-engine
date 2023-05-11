@@ -1,5 +1,5 @@
 import { describe, expect, test } from "@jest/globals";
-import { Vector2D, Vector3D, Vector4D } from "./index";
+import { Vector2D, Vector3D, Vector4D } from "../src/vector";
 
 describe("Vector module", () => {
   test("vector copy", () => {

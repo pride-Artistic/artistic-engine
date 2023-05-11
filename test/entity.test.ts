@@ -1,5 +1,5 @@
 import { describe, expect, test } from "@jest/globals";
-import Entity from "./entity";
+import { Entity } from "../src";
 
 describe("Entity test", () => {
   const e1 = new Entity({ X: 3, Y: 6 });

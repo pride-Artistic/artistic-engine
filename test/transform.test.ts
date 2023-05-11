@@ -1,6 +1,5 @@
 import { describe, expect, test } from "@jest/globals";
-import Transform from "./transform";
-import ExtendedTransform from "./extended_transform";
+import { Transform, ExtendedTransform } from "../src/transform";
 
 describe("Transform module", () => {
   // temporary removal regarding JSDOM DOMMatrix error

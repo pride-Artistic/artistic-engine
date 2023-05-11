@@ -1,5 +1,6 @@
 /.github
 /test-app
+/test
 /src
 /scripts
 tsconfig.prod.json
