@@ -32,7 +32,10 @@ export default class Engine {
    * Constructor will bind Engine object to a given canvas and check for incompatible canvas features and cover.
    * @param canvasIdentifier one of HTMLCnavasElement or css selector string that indicates canvas element.
    */
-  public constructor(canvasIdentifier: HTMLCanvasElement | string | null) {
+  public constructor(
+    canvasIdentifier: HTMLCanvasElement | string | null,
+    canvasConfig?: CanvasRenderingContext2DSettings
+  ) {
     // locate canvas by HTMLCanvasElement or CSS selector
     let canvas: HTMLCanvasElement | null;
     if (typeof canvasIdentifier === "string") {
@@ -52,7 +55,8 @@ export default class Engine {
 
     // request context from given canvas
     const context = this.canvas.getContext(
-      "2d"
+      "2d",
+      canvasConfig
     ) as ExtendedCanvasRenderingContext2D;
 
     this.context = context;
