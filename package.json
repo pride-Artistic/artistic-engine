@@ -1,6 +1,6 @@
 {
   "name": "artistic-engine",
-  "version": "1.0.2",
+  "version": "1.1.2",
   "description": "General purpose html5 canvas rendering game engine",
   "keywords": [
     "game",
@@ -36,13 +36,15 @@
   "exports": {
     ".": {
       "import": "./dist/main.js",
-      "require": "./dist/main.js",
       "types": "./dist/index.d.ts"
     },
     "./modifiers": {
       "import": "./dist/modifiers.js",
-      "require": "./dist/modifiers.js",
       "types": "./dist/modifiers/index.d.ts"
+    },
+    "./sprites": {
+      "import": "./dist/sprites.js",
+      "types": "./dist/sprite/index.d.ts"
     }
   },
   "TODO": "files",

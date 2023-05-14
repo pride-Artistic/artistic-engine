@@ -50,6 +50,9 @@ options[OPTION_DEVELOPMENT] = {
 options[OPTION_PRODUCTION] = {
     mode: OPTION_PRODUCTION,
     context: __dirname,
+    experiments: {
+        outputModule: true
+    },
     entry: { 
         main: './src/index.ts',
         modifiers: './src/modifiers/index.ts',
@@ -60,8 +63,8 @@ options[OPTION_PRODUCTION] = {
         filename: '[name].js' ,
         path: path.join(__dirname, 'dist'),
         library: {
-            type: 'umd',
-            name: "[name]"
+            type: 'module',
+//            name: "[name]"
         }
     },
     module: {
