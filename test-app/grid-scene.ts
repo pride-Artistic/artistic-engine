@@ -1,4 +1,5 @@
-import { Sprite, Transform } from "../src";
+import { Transform } from "../src";
+import { Sprite } from "../src/sprite";
 
 export default class GridScene extends Sprite {
   private gridSize: number;
