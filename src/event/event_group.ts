@@ -1,61 +1,53 @@
-type EventOrEventGroup = string | EventGroup;
+type EventName = string;
+interface EventListenable {
+  addEventListener: (
+    eventEmitter: EventName,
+    listener: (e: Event) => unknown
+  ) => void;
+  removeEventListener: (
+    eventEmitter: EventName,
+    listener: (e: Event) => unknown
+  ) => void;
+}
+type EventMap = Map<EventName, Set<EventListenable>>;
 
 export default class EventGroup {
-  protected events: EventOrEventGroup[];
+  protected events: EventMap;
 
   protected listener: (e: Event) => unknown;
 
-  constructor(events: EventOrEventGroup[], listener: (e: Event) => unknown) {
-    this.events = [...events];
+  constructor(events: EventMap | EventMap[], listener: (e: Event) => unknown) {
+    this.events = new Map();
+    if (Array.isArray(events)) {
+      this.updateEvent(...events);
+    } else {
+      this.updateEvent(events);
+    }
     this.listener = listener;
   }
 
-  get Events() {
-    return this.events.slice();
-  }
-
-  public addEvent(events: EventOrEventGroup | EventOrEventGroup[]) {
-    if (Array.isArray(events)) {
-      events.map((ev) => this.addEvent(ev));
-    } else {
-      this.events.push(events);
-    }
-  }
-
-  public removeEvent(events: EventOrEventGroup | EventOrEventGroup[]) {
-    if (Array.isArray(events)) {
-      events.map((ev) => this.removeEvent(ev));
-    } else {
-      const index = this.events.indexOf(events);
-      if (index > -1) this.events.splice(index, 1);
-    }
-  }
-
-  public registerEvent() {
-    this._registerEvent(this.listener);
-  }
-
-  public unregisterEvent() {
-    this._unregisterEvent(this.listener);
-  }
-
-  protected _registerEvent(func: (e: Event) => unknown) {
-    this.events.map((ev) => {
-      if (typeof ev === "string") {
-        addEventListener(ev, func);
-      } else {
-        ev._registerEvent(func);
-      }
+  public updateEvent(...events: EventMap[]) {
+    events.forEach((evmap) => {
+      evmap.forEach((v, k) => {
+        const elements = this.events.get(k);
+        if (elements instanceof Set) {
+          v.forEach((element) => elements.add(element));
+        } else {
+          this.events.set(k, new Set(v));
+        }
+      });
     });
   }
 
-  protected _unregisterEvent(func: (e: Event) => unknown) {
-    this.events.map((ev) => {
-      if (typeof ev === "string") {
-        removeEventListener(ev, func);
-      } else {
-        ev._unregisterEvent(func);
-      }
+  public registerEvent() {
+    this.events.forEach((v, k) => {
+      v.forEach((element) => element.addEventListener(k, this.listener));
+    });
+  }
+
+  public unregisterEvent() {
+    this.events.forEach((v, k) => {
+      v.forEach((element) => element.removeEventListener(k, this.listener));
     });
   }
 }
