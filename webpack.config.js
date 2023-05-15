@@ -43,7 +43,8 @@ options[OPTION_DEVELOPMENT] = {
         hot: false, // optional, but you must not set both hot and liveReload to true
         liveReload: true,
         compress: true,
-        port: 8010
+        port: 8010,
+        https: true
     }
 }
 
