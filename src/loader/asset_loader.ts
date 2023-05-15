@@ -51,10 +51,11 @@ export default class AssetLoader {
           );
         })
     );
+    this.fonts = [];
     loader.push(...fontLoaders);
 
     this.images.forEach((image, name) => {
-      if (image instanceof ImageBitmap) {
+      if (image instanceof Blob) {
         return;
       } else if (typeof image === "string") {
         loader.push(
@@ -109,7 +110,7 @@ export default class AssetLoader {
     const blob = this.images.get(name);
     if (blob instanceof Blob) return blob;
     throw new Error(
-      "specified image is not loaded. " +
+      "Specified image is not loaded. " +
         "Please check whether the name is correct or the load method has been called."
     );
   }
@@ -120,7 +121,7 @@ export default class AssetLoader {
       return audioBuffer;
     }
     throw new Error(
-      "specified audio is not loaded. " +
+      "Specified audio is not loaded. " +
         "Please check whether the name is correct or the load method has been called."
     );
   }
