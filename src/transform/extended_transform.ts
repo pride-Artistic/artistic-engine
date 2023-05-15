@@ -42,29 +42,29 @@ export default class ExtendedTransform extends Transform {
   }
 
   /**
-   * Shortcut of rotating 90 degrees counterclockwise.
+   * Shortcut of rotating 90 degrees clockwise.
    * @returns Itself rotated.
    */
   public rotate90(pointX: number = 0, pointY: number = 0): this {
-    this.rotate(90, pointX, pointY);
+    this.rotate(Math.PI / 2, pointX, pointY);
     return this;
   }
 
   /**
-   * Shortcut of rotating 18 degrees counterclockwise.
+   * Shortcut of rotating 180 degrees clockwise.
    * @returns Itself rotated.
    */
   public rotate180(pointX: number = 0, pointY: number = 0): this {
-    this.rotate(180, pointX, pointY);
+    this.rotate(Math.PI, pointX, pointY);
     return this;
   }
 
   /**
-   * Shortcut of rotating 270 degrees counterclockwise.
+   * Shortcut of rotating 270 degrees clockwise.
    * @returns Itself rotated.
    */
   public rotate270(pointX: number = 0, pointY: number = 0): this {
-    this.rotate(270, pointX, pointY);
+    this.rotate((Math.PI * 3) / 2, pointX, pointY);
     return this;
   }
 

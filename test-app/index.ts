@@ -25,7 +25,7 @@ f.load()
     text.Property.fill = "white";
     text.Property.font = "500 80px Poppin";
     text.Text = "artistic engine 🥳";
-    text.Position = new Vector2D(700, 400);
+    text.Position = new Vector2D(500, 300);
 
     scene.attachChildren(text);
   })
@@ -43,11 +43,13 @@ addEventListener("resize", () => {
   scene.Height = engine.Canvas.height;
 });
 
-const usingTransform = true;
+const usingTransform = false;
 
 const t = new Transform();
-t.rotate(180 / -12);
+t.rotate(Math.PI / -12);
 t.translate(200, 100);
+t.rotate(Math.PI / 6);
+t.translate(50, 50);
 
 // scene.Transform = t;
 // TODO: check matrix sequence
@@ -55,8 +57,10 @@ t.translate(200, 100);
 engine.setSubResetFunction((context: CanvasRenderingContext2D) => {
   if (usingTransform) context.setTransform(t.toDOM());
   else {
+    context.translate(50, 50);
+    context.rotate(Math.PI / 6);
     context.translate(200, 100);
-    context.rotate(Math.PI / 12);
+    context.rotate(Math.PI / -12);
   }
 });
 
