@@ -1,4 +1,6 @@
 import { Engine, Transform } from "../src";
+import FontBuilder from "../src/font_builder";
+import { EaseFunctions, Modifier } from "../src/modifiers";
 import { TextSprite } from "../src/sprite";
 import { Vector2D } from "../src/vector";
 import GridScene from "./grid-scene";
@@ -18,18 +20,43 @@ const f = new FontFace(
   "url(https://fonts.gstatic.com/s/poppins/v20/pxiByp8kv8JHgFVrLGT9Z1xlFQ.woff2)"
 );
 
+const text = new TextSprite();
 f.load()
   .then(() => {
+    const fontBuilder = new FontBuilder("Poppin");
+    fontBuilder.setSize("80px").setWeight("500");
+    console.log(fontBuilder.toString());
+
     document.fonts.add(f);
-    const text = new TextSprite();
     text.Property.fill = "white";
-    text.Property.font = "500 80px Poppin";
+    text.Property.font = fontBuilder.toString();
     text.Text = "artistic engine 🥳";
     text.Position = new Vector2D(700, 400);
 
     scene.attachChildren(text);
   })
   .catch(console.log);
+
+const engineText = "artistic engine 🥳";
+let lastTick = Date.now();
+setInterval(() => {
+  engine.registerModifier(
+    new Modifier(
+      0,
+      engineText.length,
+      2000,
+      (v) => {
+        v = Math.ceil(v);
+        if (v === 17) v = 16;
+        if (Date.now() - lastTick < 20 && v != engineText.length) return;
+        lastTick = Date.now();
+        text.Text = engineText.slice(0, v);
+      },
+      EaseFunctions.EaseOutCirc
+    )
+  );
+}, 4000);
+
 // END FONT LOADING EXAMPLE
 
 scene.attachChildren([
