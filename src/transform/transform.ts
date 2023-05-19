@@ -5,13 +5,13 @@ export default class Transform {
 
   constructor(
     m11: number = 1,
-    m12: number = 0,
     m21: number = 0,
+    m12: number = 0,
     m22: number = 1,
     ox: number = 0,
     oy: number = 0
   ) {
-    this.values = [m11, m12, m21, m22, ox, oy];
+    this.values = [m11, m21, m12, m22, ox, oy];
   }
 
   /**
@@ -25,14 +25,14 @@ export default class Transform {
    * Getter property of m12
    */
   get m12(): number {
-    return this.values[1];
+    return this.values[2];
   }
 
   /**
    * Getter property of m21
    */
   get m21(): number {
-    return this.values[2];
+    return this.values[1];
   }
 
   /**
@@ -86,14 +86,14 @@ export default class Transform {
    * Setter property of m12
    */
   set m12(value: number) {
-    this.values[1] = value;
+    this.values[2] = value;
   }
 
   /**
    * Setter property of m21
    */
   set m21(value: number) {
-    this.values[2] = value;
+    this.values[1] = value;
   }
 
   /**
@@ -118,7 +118,7 @@ export default class Transform {
   }
 
   public static fromDOM(dom: DOMMatrix) {
-    return new this(dom.a, dom.c, dom.b, dom.d, dom.e, dom.f);
+    return new this(dom.a, dom.b, dom.c, dom.d, dom.e, dom.f);
   }
 
   /**
@@ -150,11 +150,9 @@ export default class Transform {
     if (y === undefined) {
       return this.scale(x, x);
     }
-    [0, 1, 4].forEach((v) => {
+    [0, 2, 4].forEach((v) => {
       this.values[v] *= x;
-    });
-    [2, 3, 5].forEach((v) => {
-      this.values[v] *= y;
+      this.values[v + 1] *= y;
     });
     return this;
   }
@@ -162,25 +160,25 @@ export default class Transform {
   /**
    * Apply linear transformation.
    * @param m11 - Element of the matrix at `(1, 1)`.
-   * @param m12 - Element of the matrix at `(1, 2)`.
    * @param m21 - Element of the matrix at `(2, 1)`.
+   * @param m12 - Element of the matrix at `(1, 2)`.
    * @param m22 - Element of the matrix at `(2, 2)`.
-   * @param ox - Element of the matrix at `(3, 1)`.
-   * @param oy - Element of the matrix at `(3, 2)`.
+   * @param ox - Element of the matrix at `(1, 3)`.
+   * @param oy - Element of the matrix at `(2, 3)`.
    * @returns Itself which got applied.
    */
   public linear(
     m11: number,
-    m12: number,
     m21: number,
+    m12: number,
     m22: number,
     ox: number,
     oy: number
   ): this {
     this.values = [
       m11 * this.m11 + m12 * this.m21,
-      m11 * this.m12 + m12 * this.m22,
       m21 * this.m11 + m22 * this.m21,
+      m11 * this.m12 + m12 * this.m22,
       m21 * this.m12 + m22 * this.m22,
       m11 * this.ox + m12 * this.oy + ox,
       m21 * this.ox + m22 * this.oy + oy,
