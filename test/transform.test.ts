@@ -52,9 +52,11 @@ describe("Transform module", () => {
       .down(9)
       .rotate(-Math.PI / 2);
     expect(toArray(transform)).toEqual(
-      expect.arrayContaining([2, -4, 8, -6, 9, 4].map(rounding))
+      expect.arrayContaining([2, -4, 8, -6, 38, 64].map(rounding))
     );
     const v = transform.apply(10, 8);
-    expect([v.X, v.Y]).toEqual(expect.arrayContaining([93, -84].map(rounding)));
+    expect([v.X, v.Y]).toEqual(
+      expect.arrayContaining([122, -24].map(rounding))
+    );
   });
 });

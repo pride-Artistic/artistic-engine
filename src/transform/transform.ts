@@ -128,9 +128,7 @@ export default class Transform {
    * @returns Itself which got moved.
    */
   public translate(x: number, y: number): this {
-    this.ox += x;
-    this.oy += y;
-    return this;
+    return this.linear(1, 0, 0, 1, x, y);
   }
 
   /**
@@ -150,15 +148,13 @@ export default class Transform {
     if (y === undefined) {
       return this.scale(x, x);
     }
-    [0, 2, 4].forEach((v) => {
-      this.values[v] *= x;
-      this.values[v + 1] *= y;
-    });
-    return this;
+    return this.linear(x, 0, 0, y, 0, 0);
   }
 
   /**
-   * Apply linear transformation.
+   * Apply linear transformation.\
+   * The order of transformations follows DOMMatrix's.\
+   * (`A.linear(B).linear(C) = [A]*[B]*[C]`)
    * @param m11 - Element of the matrix at `(1, 1)`.
    * @param m21 - Element of the matrix at `(2, 1)`.
    * @param m12 - Element of the matrix at `(1, 2)`.
@@ -180,8 +176,8 @@ export default class Transform {
       m21 * this.m11 + m22 * this.m21,
       m11 * this.m12 + m12 * this.m22,
       m21 * this.m12 + m22 * this.m22,
-      m11 * this.ox + m12 * this.oy + ox,
-      m21 * this.ox + m22 * this.oy + oy,
+      this.m11 * ox + this.m12 * oy + this.ox,
+      this.m21 * ox + this.m22 * oy + this.oy,
     ];
     return this;
   }
@@ -191,12 +187,10 @@ export default class Transform {
    * @param angle - The rotation angle you want. (in *degrees*)
    * @returns Itself which got rotated.
    */
-  public rotate(angle: number, pointX: number = 0, pointY: number = 0): this {
+  public rotate(angle: number): this {
     const sinValue = Math.sin(angle);
     const cosValue = Math.cos(angle);
-    return this.translate(-pointX, -pointY)
-      .linear(cosValue, sinValue, -sinValue, cosValue, 0, 0)
-      .translate(pointX, pointY);
+    return this.linear(cosValue, sinValue, -sinValue, cosValue, 0, 0);
   }
 
   /**
