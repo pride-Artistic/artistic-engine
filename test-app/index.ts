@@ -46,10 +46,10 @@ addEventListener("resize", () => {
 const usingTransform = false;
 
 const t = new Transform();
-t.rotate(Math.PI / -12);
-t.translate(200, 100);
-t.rotate(Math.PI / 6);
 t.translate(50, 50);
+t.rotate(Math.PI / 6);
+t.translate(200, 100);
+t.rotate(Math.PI / -12);
 
 // scene.Transform = t;
 // TODO: check matrix sequence
