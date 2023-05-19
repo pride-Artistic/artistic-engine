@@ -195,7 +195,7 @@ export default class Transform {
     const sinValue = Math.sin(angle);
     const cosValue = Math.cos(angle);
     return this.translate(-pointX, -pointY)
-      .linear(cosValue, -sinValue, sinValue, cosValue, 0, 0)
+      .linear(cosValue, sinValue, -sinValue, cosValue, 0, 0)
       .translate(pointX, pointY);
   }
 
