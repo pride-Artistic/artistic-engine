@@ -1,15 +1,5 @@
 type EventName = string;
-interface EventListenable {
-  addEventListener: (
-    eventEmitter: EventName,
-    listener: (e: Event) => unknown
-  ) => void;
-  removeEventListener: (
-    eventEmitter: EventName,
-    listener: (e: Event) => unknown
-  ) => void;
-}
-type EventMap = Map<EventName, Set<EventListenable>>;
+type EventMap = Map<EventName, Set<EventTarget>>;
 
 export default class EventGroup {
   protected events: EventMap;
