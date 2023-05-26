@@ -1,32 +1,38 @@
 type EventName = string;
-type EventMap = Map<EventName, Set<EventTarget>>;
+type EventDest = { event: EventName; target?: EventTarget };
 
 export default class EventGroup {
-  protected events: EventMap;
+  protected defaultTarget: EventTarget;
+
+  protected events: Map<EventName, Set<EventTarget>>;
 
   protected listener: (e: Event) => unknown;
 
-  constructor(events: EventMap | EventMap[], listener: (e: Event) => unknown) {
+  constructor(events: EventDest[], defaultTarget: EventTarget = window) {
     this.events = new Map();
+    this.defaultTarget = defaultTarget;
     if (Array.isArray(events)) {
       this.updateEvent(...events);
     } else {
       this.updateEvent(events);
     }
-    this.listener = listener;
   }
 
-  public updateEvent(...events: EventMap[]) {
-    events.forEach((evmap) => {
-      evmap.forEach((v, k) => {
-        const elements = this.events.get(k);
-        if (elements instanceof Set) {
-          v.forEach((element) => elements.add(element));
-        } else {
-          this.events.set(k, new Set(v));
-        }
-      });
-    });
+  public updateEvent(...eventDests: EventDest[]) {
+    for (const eventDest of eventDests) {
+      let eventTargets = this.events.get(eventDest.event);
+      const eventTarget = eventDest.target ?? this.defaultTarget;
+      if (eventTargets == null) {
+        eventTargets = new Set();
+        this.events.set(eventDest.event, eventTargets);
+      }
+      eventTargets.add(eventTarget);
+    }
+  }
+
+  public setListener(listener: (e: Event) => unknown) {
+    this.unregisterEvent();
+    this.listener = listener;
   }
 
   public registerEvent() {
