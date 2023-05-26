@@ -6,7 +6,7 @@ export default class EventGroup {
 
   protected events: Map<EventName, Set<EventTarget>>;
 
-  protected listener: (e: Event) => unknown;
+  protected listener?: (e: Event) => unknown;
 
   constructor(events: EventDest[], defaultTarget: EventTarget = window) {
     this.events = new Map();
@@ -37,13 +37,17 @@ export default class EventGroup {
 
   public registerEvent() {
     this.events.forEach((v, k) => {
-      v.forEach((element) => element.addEventListener(k, this.listener));
+      v.forEach((element) =>
+        element.addEventListener(k, this.listener ?? (() => undefined))
+      );
     });
   }
 
   public unregisterEvent() {
     this.events.forEach((v, k) => {
-      v.forEach((element) => element.removeEventListener(k, this.listener));
+      v.forEach((element) =>
+        element.removeEventListener(k, this.listener ?? (() => undefined))
+      );
     });
   }
 }
