@@ -19,6 +19,7 @@ export default class Bitmap {
     this.options = options;
   }
 
+  public async getImageBitmap(): Promise<ImageBitmap>;
   public async getImageBitmap(xywh: XYWH): Promise<ImageBitmap>;
   public async getImageBitmap(
     x: number,
@@ -27,7 +28,7 @@ export default class Bitmap {
     h: number
   ): Promise<ImageBitmap>;
   public async getImageBitmap(
-    x: number | XYWH,
+    x?: number | XYWH,
     y?: number,
     w?: number,
     h?: number
@@ -37,25 +38,22 @@ export default class Bitmap {
     } else if (typeof x != "number") {
       return this.getImageBitmap(x.X, x.Y, x.W, x.H);
     } else {
-      const image = await createImageBitmap(
-        this.image,
-        x,
-        y,
-        w,
-        h,
-        this.options
-      );
+      const image =
+        x === undefined
+          ? await createImageBitmap(this.image, this.options)
+          : await createImageBitmap(this.image, x, y, w, h, this.options);
       return image;
     }
   }
 
   public async *generateImageBitmap(
-    ...rects: XYWH[]
-  ): AsyncGenerator<ImageBitmap, never, void> {
-    let i = 0;
-    while (true) {
-      yield await this.getImageBitmap(rects[i++]);
-      if (i >= rects.length) i -= rects.length;
+    func: (img: ImageBitmap) => [ImageBitmap, boolean]
+  ): AsyncGenerator<ImageBitmap, void, void> {
+    let image = await this.getImageBitmap();
+    let cond: boolean = true;
+    while (cond) {
+      yield image;
+      [image, cond] = func(image);
     }
   }
 }
