@@ -46,14 +46,13 @@ export default class Bitmap {
     }
   }
 
-  public async *generateImageBitmap(
-    func: (img: ImageBitmap) => [ImageBitmap, boolean]
-  ): AsyncGenerator<ImageBitmap, void, void> {
-    let image = await this.getImageBitmap();
-    let cond: boolean = true;
-    while (cond) {
-      yield image;
-      [image, cond] = func(image);
+  public async createImageBitmapList(
+    coordinates: IEntity[]
+  ): Promise<ImageBitmap[]> {
+    const promises: Promise<ImageBitmap>[] = [];
+    for (const c of coordinates) {
+      promises.push(this.getImageBitmap(c.X, c.Y, c.W, c.H));
     }
+    return Promise.all(promises);
   }
 }
