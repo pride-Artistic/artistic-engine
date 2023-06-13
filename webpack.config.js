@@ -43,25 +43,30 @@ options[OPTION_DEVELOPMENT] = {
         hot: false, // optional, but you must not set both hot and liveReload to true
         liveReload: true,
         compress: true,
-        port: 8010
+        port: 8010,
+        https: true
     }
 }
 
 options[OPTION_PRODUCTION] = {
     mode: OPTION_PRODUCTION,
     context: __dirname,
+    experiments: {
+        outputModule: true
+    },
     entry: { 
         main: './src/index.ts',
         modifiers: './src/modifiers/index.ts',
         assets: './src/loader/index.ts',
+        sprites: './src/sprite/index.ts',
     },
     devtool: 'inline-source-map',
     output: {
         filename: '[name].js' ,
         path: path.join(__dirname, 'dist'),
         library: {
-            type: 'umd',
-            name: "[name]"
+            type: 'module',
+//            name: "[name]"
         }
     },
     module: {
