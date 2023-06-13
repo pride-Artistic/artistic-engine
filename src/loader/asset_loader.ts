@@ -5,7 +5,7 @@ export default class AssetLoader {
 
   private images = new Map<string, string | Blob>();
 
-  private audios = new Map<string, string | AudioBuffer>();
+  private audios = new Map<string, string | HTMLAudioElement>();
 
   public get AudioContext() {
     return this.audioContext;
@@ -25,14 +25,14 @@ export default class AssetLoader {
     return this;
   }
 
-  public addAudios(name: string, source: string | AudioBuffer) {
+  public addAudios(name: string, source: string | HTMLAudioElement) {
     this.audios.set(name, source);
     return this;
   }
 
   public onLoad: (
     images: Map<string, string | Blob>,
-    audios: Map<string, string | AudioBuffer>
+    audios: Map<string, string | HTMLAudioElement>
   ) => void = () => undefined;
 
   public async load() {
@@ -79,23 +79,25 @@ export default class AssetLoader {
       }
 
       this.audios.forEach((audio, name) => {
-        if (audio instanceof ArrayBuffer) {
+        if (audio instanceof HTMLAudioElement) {
           return;
         } else if (typeof audio === "string") {
           loader.push(
-            fetch(audio)
-              .then(async (res) => {
-                const arrayBuffer = await res.arrayBuffer();
-                const audioBuffer = await this.audioContext!.decodeAudioData(
-                  arrayBuffer
+            new Promise((resolve) => {
+              const audioElement = new Audio(audio);
+              const readyCallback = () => {
+                audioElement.removeEventListener(
+                  "canplaythrough",
+                  readyCallback
                 );
-                this.audios.set(name, audioBuffer);
-              })
-              .catch((e) => {
-                throw new Error(
-                  "Failed to load audio resource: " + name + "\nReason: " + e
-                );
-              })
+                resolve(audioElement);
+              };
+              audioElement.addEventListener("canplaythrough", readyCallback);
+            }).catch((e) => {
+              throw new Error(
+                "Failed to load audio resource: " + name + "\nReason: " + e
+              );
+            })
           );
         }
       });
@@ -117,7 +119,7 @@ export default class AssetLoader {
 
   public getAudio(name: string) {
     const audioBuffer = this.audios.get(name);
-    if (audioBuffer instanceof AudioBuffer) {
+    if (audioBuffer instanceof HTMLAudioElement) {
       return audioBuffer;
     }
     throw new Error(
