@@ -5,7 +5,7 @@ type XYWH = IEntity | [number, number, number, number];
 export default class Bitmap {
   protected image: ImageBitmapSource;
 
-  protected options: ImageBitmapOptions;
+  protected options: ImageBitmapOptions | undefined;
 
   constructor(image: ImageBitmapSource) {
     this.image = image;
@@ -29,21 +29,20 @@ export default class Bitmap {
   ): Promise<ImageBitmap>;
   public async getImageBitmap(
     x?: number | XYWH,
-    y?: number,
-    w?: number,
-    h?: number
+    y: number = 0,
+    w: number = 0,
+    h: number = 0
   ): Promise<ImageBitmap> {
     if (Array.isArray(x)) {
       return this.getImageBitmap(...x);
-    } else if (typeof x != "number") {
-      return this.getImageBitmap(x.X, x.Y, x.W, x.H);
-    } else {
-      const image =
-        x === undefined
-          ? await createImageBitmap(this.image, this.options)
-          : await createImageBitmap(this.image, x, y, w, h, this.options);
-      return image;
     }
+    if (typeof x === "object") {
+      return this.getImageBitmap(x.X ?? 0, x.Y ?? 0, x.W ?? 0, x.H ?? 0);
+    }
+    if (x === undefined) {
+      return createImageBitmap(this.image, this.options);
+    }
+    return createImageBitmap(this.image, x, y, w, h, this.options);
   }
 
   public async createImageBitmapList(
@@ -51,7 +50,7 @@ export default class Bitmap {
   ): Promise<ImageBitmap[]> {
     const promises: Promise<ImageBitmap>[] = [];
     for (const c of coordinates) {
-      promises.push(this.getImageBitmap(c.X, c.Y, c.W, c.H));
+      promises.push(this.getImageBitmap(c));
     }
     return Promise.all(promises);
   }
