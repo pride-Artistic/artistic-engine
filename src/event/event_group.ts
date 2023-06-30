@@ -36,17 +36,18 @@ export default class EventGroup {
   }
 
   public registerEvent() {
+    if (this.listener == null) return;
     this.events.forEach((v, k) => {
-      v.forEach((element) =>
-        element.addEventListener(k, this.listener ?? (() => undefined))
-      );
+      v.forEach((element) => {
+        element.addEventListener(k, this.listener!);
+      });
     });
   }
 
   public unregisterEvent() {
     this.events.forEach((v, k) => {
       v.forEach((element) =>
-        element.removeEventListener(k, this.listener ?? (() => undefined))
+        element.removeEventListener(k, this.listener ?? null)
       );
     });
   }
