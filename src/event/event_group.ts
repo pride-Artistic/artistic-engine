@@ -8,6 +8,8 @@ export default class EventGroup {
 
   protected listener?: (e: Event) => unknown;
 
+  protected listening: boolean = false;
+
   constructor(events: EventDest[], defaultTarget: EventTarget = window) {
     this.events = new Map();
     this.defaultTarget = defaultTarget;
@@ -27,6 +29,10 @@ export default class EventGroup {
         this.events.set(eventDest.event, eventTargets);
       }
       eventTargets.add(eventTarget);
+
+      if (this.listening && this.listener != null) {
+        eventTarget.addEventListener(eventDest.event, this.listener);
+      }
     }
   }
 
@@ -36,17 +42,18 @@ export default class EventGroup {
   }
 
   public registerEvent() {
+    if (this.listener == null) return;
     this.events.forEach((v, k) => {
-      v.forEach((element) =>
-        element.addEventListener(k, this.listener ?? (() => undefined))
-      );
+      v.forEach((element) => {
+        element.addEventListener(k, this.listener!);
+      });
     });
   }
 
   public unregisterEvent() {
     this.events.forEach((v, k) => {
       v.forEach((element) =>
-        element.removeEventListener(k, this.listener ?? (() => undefined))
+        element.removeEventListener(k, this.listener ?? null)
       );
     });
   }
