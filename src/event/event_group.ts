@@ -8,6 +8,8 @@ export default class EventGroup {
 
   protected listener?: (e: Event) => unknown;
 
+  protected listening: boolean = false;
+
   constructor(events: EventDest[], defaultTarget: EventTarget = window) {
     this.events = new Map();
     this.defaultTarget = defaultTarget;
@@ -27,6 +29,10 @@ export default class EventGroup {
         this.events.set(eventDest.event, eventTargets);
       }
       eventTargets.add(eventTarget);
+
+      if (this.listening && this.listener != null) {
+        eventTarget.addEventListener(eventDest.event, this.listener);
+      }
     }
   }
 
