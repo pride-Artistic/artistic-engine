@@ -6,6 +6,7 @@ import checkCompatibility from "./compatibility";
 import { BlankScene } from "./scenes";
 import { Modifier } from "./modifiers/modifiers";
 import { Transform } from "./transform";
+import { AssetLoader } from "./loader";
 
 interface ExtendedCanvasRenderingContext2D extends CanvasRenderingContext2D {
   reset(): void;
@@ -27,6 +28,8 @@ export default class Engine {
   private camera: Transform = new Transform();
 
   private modifiers: Modifier[] = [];
+
+  private assetLoader: AssetLoader = new AssetLoader();
 
   /**
    * Constructor will bind Engine object to a given canvas and check for incompatible canvas features and cover.
@@ -80,6 +83,10 @@ export default class Engine {
     return this.camera;
   }
 
+  public get AssetLoader() {
+    return this.assetLoader;
+  }
+
   public set Scene(scene: IDrawable) {
     if (scene instanceof Entity) {
       scene.setParent(null);
@@ -89,6 +96,10 @@ export default class Engine {
 
   public set Camera(camera: Transform) {
     this.camera = camera;
+  }
+
+  public set AssetLoader(assetLoader: AssetLoader) {
+    this.assetLoader = assetLoader;
   }
 
   /**
