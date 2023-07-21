@@ -50,8 +50,8 @@ export default abstract class Sprite extends Entity implements IDrawable {
     if (this.transform) {
       context.transform(
         this.transform.m11,
-        this.transform.m21,
         this.transform.m12,
+        this.transform.m21,
         this.transform.m22,
         this.transform.ox,
         this.transform.oy
