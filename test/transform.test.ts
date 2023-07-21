@@ -39,19 +39,24 @@ describe("Transform module", () => {
     function toArray(
       c: ExtendedTransform
     ): [number, number, number, number, number, number] {
-      return [c.m11, c.m12, c.m21, c.m22, c.ox, c.oy];
+      return [c.m11, c.m21, c.m12, c.m22, c.ox, c.oy];
     }
     const rounding = (v: number) => expect.closeTo(v, 6);
-    const transform = new ExtendedTransform(2, 3, 1, 4, 0, 0);
+    const transform = new ExtendedTransform(2, 1, 3, 4, 0, 0);
     transform.scale(2);
     expect(toArray(transform)).toEqual(
-      expect.arrayContaining([4, 6, 2, 8, 0, 0])
+      expect.arrayContaining([4, 2, 6, 8, 0, 0])
     );
-    transform.left(4).down(9).rotate(90);
+    transform
+      .left(4)
+      .down(9)
+      .rotate(-Math.PI / 2);
     expect(toArray(transform)).toEqual(
-      expect.arrayContaining([2, 8, -4, -6, 9, 4].map(rounding))
+      expect.arrayContaining([2, -4, 8, -6, 38, 64].map(rounding))
     );
     const v = transform.apply(10, 8);
-    expect([v.X, v.Y]).toEqual(expect.arrayContaining([93, -84].map(rounding)));
+    expect([v.X, v.Y]).toEqual(
+      expect.arrayContaining([122, -24].map(rounding))
+    );
   });
 });

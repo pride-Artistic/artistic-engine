@@ -1,3 +1,4 @@
+// do notice not all variants are verified
 export default class FontBuilder {
   private family: string;
 

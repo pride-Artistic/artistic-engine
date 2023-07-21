@@ -1,6 +1,6 @@
 {
   "name": "artistic-engine",
-  "version": "1.1.2",
+  "version": "1.1.6",
   "description": "General purpose html5 canvas rendering game engine",
   "keywords": [
     "game",
@@ -31,34 +31,36 @@
     "type": "git",
     "url": "https://github.com/pride-Artistic/artistic-engine.git"
   },
-  "browser": "./dist/main.js",
-  "types": "dist/index.d.ts",
+  "browser": "./main.js",
+  "types": "index.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/main.js",
-      "types": "./dist/index.d.ts"
+      "import": "./main.js",
+      "require": "./main.js",
+      "types": "./index.d.ts"
     },
     "./modifiers": {
-      "import": "./dist/modifiers.js",
-      "types": "./dist/modifiers/index.d.ts"
+      "import": "./modifiers.js",
+      "require": "./modifiers.js",
+      "types": "./modifiers/index.d.ts"
     },
-    "./sprites": {
-      "import": "./dist/sprites.js",
-      "types": "./dist/sprite/index.d.ts"
+    "./loader": {
+      "import": "./loader.js",
+      "require": "./loader.js",
+      "types": "./loader/index.d.ts"
     }
   },
   "TODO": "files",
   "scripts": {
-    "build": "cross-env NODE_ENV=production webpack",
+    "build": "npm run clean:build&&npm run build:dry&&node scripts/publish",
+    "build:dry": "cross-env NODE_ENV=production webpack",
     "serve": "webpack-dev-server",
     "lint": "eslint . --ext .ts",
     "test": "jest",
     "document": "typedoc --excludeInternal",
     "clean": "node scripts/clean",
     "clean:branch": "node scripts/git_clean",
-    "clean:build": "node scripts/dist_clean",
-    "prepack": "npm run clean:build&&npm run build",
-    "postpack": "npm run clean:build"
+    "clean:build": "node scripts/dist_clean"
   },
   "pre-commit": [
     "lint"
