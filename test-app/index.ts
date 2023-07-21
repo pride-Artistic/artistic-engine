@@ -3,6 +3,7 @@ import FontBuilder from "../src/font_builder";
 import { EaseFunctions, Modifier } from "../src/modifiers";
 import { TextSprite } from "../src/sprite";
 import { Vector2D } from "../src/vector";
+import { controller } from "./controller";
 import GridScene from "./grid-scene";
 import TestRectangle from "./test-rectangle";
 
@@ -92,5 +93,7 @@ engine.setSubResetFunction((context: CanvasRenderingContext2D) => {
     context.rotate(Math.PI / -12);
   }
 });
+
+controller(engine.Canvas);
 
 engine.start();
