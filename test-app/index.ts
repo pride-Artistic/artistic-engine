@@ -3,6 +3,7 @@ import FontBuilder from "../src/font_builder";
 import { EaseFunctions, Modifier } from "../src/modifiers";
 import { TextSprite } from "../src/sprite";
 import { Vector2D } from "../src/vector";
+import { controller } from "./controller";
 import GridScene from "./grid-scene";
 import TestRectangle from "./test-rectangle";
 
@@ -21,6 +22,8 @@ const f = new FontFace(
 );
 
 const text = new TextSprite();
+const engineText = "artistic engine 🥳";
+
 f.load()
   .then(() => {
     const fontBuilder = new FontBuilder("Poppin");
@@ -30,14 +33,13 @@ f.load()
     document.fonts.add(f);
     text.Property.fill = "white";
     text.Property.font = fontBuilder.toString();
-    text.Text = "artistic engine 🥳";
+    text.Text = engineText;
     text.Position = new Vector2D(700, 400);
 
     scene.attachChildren(text);
   })
   .catch(console.log);
 
-const engineText = "artistic engine 🥳";
 let lastTick = Date.now();
 setInterval(() => {
   engine.registerModifier(
@@ -86,5 +88,7 @@ engine.setSubResetFunction((context: CanvasRenderingContext2D) => {
     context.rotate(Math.PI / 12);
   }
 });
+
+controller(engine.Canvas);
 
 engine.start();
