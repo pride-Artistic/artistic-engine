@@ -1,8 +1,16 @@
 import { Engine } from "../src";
 import { Rectangle } from "../src/sprite";
 import { Modifier, EaseFunctions } from "../src/modifiers";
+import { IPointerListener } from "../src/event";
 
-export default class TestRectangle extends Rectangle {
+export default class TestRectangle
+  extends Rectangle
+  implements IPointerListener
+{
+  public TouchRegistered: boolean = true;
+
+  public RecieveEventsOutOfBound: boolean = false;
+
   private isXmoving: boolean;
 
   private engine: Engine;
@@ -23,6 +31,11 @@ export default class TestRectangle extends Rectangle {
     this.engine = engine;
   }
 
+  public onTouch(): boolean {
+    this.fillStyle = "green";
+    return false;
+  }
+
   public override onDraw(
     context: CanvasRenderingContext2D,
     delay: number
@@ -35,7 +48,7 @@ export default class TestRectangle extends Rectangle {
       this.modifier = new Modifier(
         this.isXmoving ? -this.Width : -this.Height,
         this.isXmoving ? context.canvas.width : context.canvas.height,
-        2000,
+        200000,
         (v: number) => {
           if (this.isXmoving) this.X = v;
           else this.Y = v;

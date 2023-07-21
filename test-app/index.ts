@@ -1,4 +1,5 @@
 import { Engine, Transform } from "../src";
+import { PointerEventGroup } from "../src/event";
 import FontBuilder from "../src/font_builder";
 import { EaseFunctions, Modifier } from "../src/modifiers";
 import { TextSprite } from "../src/sprite";
@@ -60,11 +61,9 @@ setInterval(() => {
 }, 4000);
 
 // END FONT LOADING EXAMPLE
-
-scene.attachChildren([
-  new TestRectangle("red", true, engine),
-  new TestRectangle("blue", false, engine),
-]);
+const recRED = new TestRectangle("red", true, engine);
+const recBLUE = new TestRectangle("blue", false, engine);
+scene.attachChildren([recRED, recBLUE]);
 
 addEventListener("resize", () => {
   engine.resizeCanvas();
@@ -72,23 +71,21 @@ addEventListener("resize", () => {
   scene.Height = engine.Canvas.height;
 });
 
-const usingTransform = true;
-
 const t = new Transform();
 t.rotate(180 / -12);
 t.translate(200, 100);
 
 // scene.Transform = t;
 // TODO: check matrix sequence
-
-engine.setSubResetFunction((context: CanvasRenderingContext2D) => {
-  if (usingTransform) context.setTransform(t.toDOM());
-  else {
-    context.translate(200, 100);
-    context.rotate(Math.PI / 12);
-  }
-});
+engine.Camera = t;
 
 controller(engine.Canvas);
+
+const pointerGroup = new PointerEventGroup(engine);
+pointerGroup.registerTouchListener(recRED);
+pointerGroup.registerEvent();
+
+recRED.X = 700;
+recRED.Y = 400;
 
 engine.start();
