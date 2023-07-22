@@ -2,16 +2,14 @@ import { Sprite } from ".";
 import IEntity from "../entity/ientity";
 
 interface TextureConfig extends IEntity {
-  texture: ImageBitmap;
+  texture?: ImageBitmap;
 }
 
 export default class TextureSprite extends Sprite {
-  public texture: ImageBitmap;
+  public texture: ImageBitmap | undefined;
 
   constructor(config: TextureConfig) {
-    if (config.texture.width === 0 && config.texture.height === 0) {
-      throw new Error("Texture provided is not loaded correctly");
-    }
+    if (config.texture == null) return;
     if (config.W === undefined) config.W = config.texture.width;
     if (config.H === undefined) config.H = config.texture.height;
     super(config);
