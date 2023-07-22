@@ -1,5 +1,6 @@
 /.github
 /test-app
+/test
 /src
 /scripts
 tsconfig.prod.json
@@ -8,3 +9,4 @@ jest.config.js
 webpack.config.js
 .eslintignore
 .eslintrc.cjs
+.gitignore

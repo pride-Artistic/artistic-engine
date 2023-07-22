@@ -5,13 +5,13 @@ export default class Transform {
 
   constructor(
     m11: number = 1,
-    m12: number = 0,
     m21: number = 0,
+    m12: number = 0,
     m22: number = 1,
     ox: number = 0,
     oy: number = 0
   ) {
-    this.values = [m11, m12, m21, m22, ox, oy];
+    this.values = [m11, m21, m12, m22, ox, oy];
   }
 
   /**
@@ -22,16 +22,16 @@ export default class Transform {
   }
 
   /**
-   * Getter property of m12
+   * Getter property of m21
    */
-  get m12(): number {
+  get m21(): number {
     return this.values[1];
   }
 
   /**
-   * Getter property of m21
+   * Getter property of m12
    */
-  get m21(): number {
+  get m12(): number {
     return this.values[2];
   }
 
@@ -83,16 +83,16 @@ export default class Transform {
   }
 
   /**
-   * Setter property of m12
+   * Setter property of m21
    */
-  set m12(value: number) {
+  set m21(value: number) {
     this.values[1] = value;
   }
 
   /**
-   * Setter property of m21
+   * Setter property of m12
    */
-  set m21(value: number) {
+  set m12(value: number) {
     this.values[2] = value;
   }
 
@@ -118,7 +118,7 @@ export default class Transform {
   }
 
   public static fromDOM(dom: DOMMatrix) {
-    return new this(dom.a, dom.c, dom.b, dom.d, dom.e, dom.f);
+    return new this(dom.a, dom.b, dom.c, dom.d, dom.e, dom.f);
   }
 
   /**
@@ -128,9 +128,7 @@ export default class Transform {
    * @returns Itself which got moved.
    */
   public translate(x: number, y: number): this {
-    this.ox += x;
-    this.oy += y;
-    return this;
+    return this.linear(1, 0, 0, 1, x, y);
   }
 
   /**
@@ -150,56 +148,49 @@ export default class Transform {
     if (y === undefined) {
       return this.scale(x, x);
     }
-    [0, 1, 4].forEach((v) => {
-      this.values[v] *= x;
-    });
-    [2, 3, 5].forEach((v) => {
-      this.values[v] *= y;
-    });
-    return this;
+    return this.linear(x, 0, 0, y, 0, 0);
   }
 
   /**
-   * Apply linear transformation.
+   * Apply linear transformation.\
+   * The order of transformations follows DOMMatrix's.\
+   * (`A.linear(B).linear(C) = [A]*[B]*[C]`)
    * @param m11 - Element of the matrix at `(1, 1)`.
-   * @param m12 - Element of the matrix at `(1, 2)`.
    * @param m21 - Element of the matrix at `(2, 1)`.
+   * @param m12 - Element of the matrix at `(1, 2)`.
    * @param m22 - Element of the matrix at `(2, 2)`.
-   * @param ox - Element of the matrix at `(3, 1)`.
-   * @param oy - Element of the matrix at `(3, 2)`.
+   * @param ox - Element of the matrix at `(1, 3)`.
+   * @param oy - Element of the matrix at `(2, 3)`.
    * @returns Itself which got applied.
    */
   public linear(
     m11: number,
-    m12: number,
     m21: number,
+    m12: number,
     m22: number,
     ox: number,
     oy: number
   ): this {
     this.values = [
       m11 * this.m11 + m12 * this.m21,
-      m11 * this.m12 + m12 * this.m22,
       m21 * this.m11 + m22 * this.m21,
+      m11 * this.m12 + m12 * this.m22,
       m21 * this.m12 + m22 * this.m22,
-      m11 * this.ox + m12 * this.oy + ox,
-      m21 * this.ox + m22 * this.oy + oy,
+      this.m11 * ox + this.m12 * oy + this.ox,
+      this.m21 * ox + this.m22 * oy + this.oy,
     ];
     return this;
   }
 
   /**
-   * Rotate the camera countclockwise.
+   * Rotate the objects clockwise.
    * @param angle - The rotation angle you want. (in *degrees*)
    * @returns Itself which got rotated.
    */
-  public rotate(angle: number, pointX: number = 0, pointY: number = 0): this {
-    angle = (angle * Math.PI) / 180;
+  public rotate(angle: number): this {
     const sinValue = Math.sin(angle);
     const cosValue = Math.cos(angle);
-    return this.translate(-pointX, -pointY)
-      .linear(cosValue, sinValue, -sinValue, cosValue, 0, 0)
-      .translate(pointX, pointY);
+    return this.linear(cosValue, sinValue, -sinValue, cosValue, 0, 0);
   }
 
   /**
@@ -278,6 +269,19 @@ export default class Transform {
    */
   public copy(): Transform {
     return new Transform(...this.values);
+  }
+
+  /**
+   * Makes a copy of this transform.
+   * @returns a copy of this matrix
+   */
+  public copyTo(t: Transform) {
+    t.m11 = this.m11;
+    t.m21 = this.m21;
+    t.m12 = this.m12;
+    t.m22 = this.m22;
+    t.ox = this.ox;
+    t.oy = this.oy;
   }
 
   /**

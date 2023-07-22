@@ -1,8 +1,15 @@
-import { Engine, Sprite } from "../src";
+import { Engine } from "../src";
+import { Rectangle } from "../src/sprite";
 import { Modifier, EaseFunctions } from "../src/modifiers";
+import { IPointerListener } from "../src/event";
 
-export default class TestRectangle extends Sprite {
-  private color: string;
+export default class TestRectangle
+  extends Rectangle
+  implements IPointerListener
+{
+  public TouchRegistered: boolean = true;
+
+  public RecieveEventsOutOfBound: boolean = false;
 
   private isXmoving: boolean;
 
@@ -10,20 +17,32 @@ export default class TestRectangle extends Sprite {
 
   private modifier: Modifier | undefined;
 
-  constructor(color: string, isXMoving: boolean, engine: Engine) {
+  private color: string | CanvasGradient | CanvasPattern;
+
+  constructor(
+    color: string | CanvasGradient | CanvasPattern,
+    isXMoving: boolean,
+    engine: Engine
+  ) {
     super({
       W: 100,
       H: 100,
     });
     this.color = color;
+    this.fillStyle = color;
     this.isXmoving = isXMoving;
     this.engine = engine;
   }
 
-  public override onDraw(context: CanvasRenderingContext2D): void {
-    context.fillStyle = this.color;
-    context.fillRect(0, 0, this.Width, this.Height);
+  public onTouch(): boolean {
+    this.fillStyle = "green";
+    return false;
+  }
 
+  public override onDraw(
+    context: CanvasRenderingContext2D,
+    delay: number
+  ): void {
     if (!this.modifier || this.modifier.Progress >= 1) {
       if (this.isXmoving)
         this.Y = Math.random() * (context.canvas.height - this.Height);
@@ -41,5 +60,7 @@ export default class TestRectangle extends Sprite {
       );
       this.engine.registerModifier(this.modifier);
     }
+
+    super.onDraw(context, delay);
   }
 }
