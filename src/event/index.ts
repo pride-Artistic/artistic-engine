@@ -1,4 +1,8 @@
 import EventGroup from "./event_group";
-import { KeyboardEventGroup } from "./event_groups";
+import {
+  KeyboardEventGroup,
+  PointerEventGroup,
+  IPointerListener,
+} from "./event_groups";
 
-export { EventGroup, KeyboardEventGroup };
+export { EventGroup, KeyboardEventGroup, PointerEventGroup, IPointerListener };
