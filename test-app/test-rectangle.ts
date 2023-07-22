@@ -17,6 +17,8 @@ export default class TestRectangle
 
   private modifier: Modifier | undefined;
 
+  private color: string | CanvasGradient | CanvasPattern;
+
   constructor(
     color: string | CanvasGradient | CanvasPattern,
     isXMoving: boolean,
@@ -26,6 +28,7 @@ export default class TestRectangle
       W: 100,
       H: 100,
     });
+    this.color = color;
     this.fillStyle = color;
     this.isXmoving = isXMoving;
     this.engine = engine;
@@ -48,7 +51,7 @@ export default class TestRectangle
       this.modifier = new Modifier(
         this.isXmoving ? -this.Width : -this.Height,
         this.isXmoving ? context.canvas.width : context.canvas.height,
-        200000,
+        2000,
         (v: number) => {
           if (this.isXmoving) this.X = v;
           else this.Y = v;

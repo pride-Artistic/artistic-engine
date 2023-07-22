@@ -180,8 +180,8 @@ export default class Engine {
 
     this.context.transform(
       this.camera.m11,
-      this.camera.m12,
       this.camera.m21,
+      this.camera.m12,
       this.camera.m22,
       this.camera.ox,
       this.camera.oy

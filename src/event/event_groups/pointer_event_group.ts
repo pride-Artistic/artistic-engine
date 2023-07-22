@@ -43,11 +43,16 @@ export class PointerEventGroup extends EventGroup {
       for (const touchListener of this.iTouchListeners) {
         if (!touchListener.TouchRegistered) continue;
         if (!touchListener.RecieveEventsOutOfBound) {
-          const c = engine.Camera.copy(); // TODO: very poor performance
+          // TODO: very poor performance
+          // making a copy on every pointer refresh is expensive.
+          // suggest on making a copyTo method for transforms and reusing an instance
+          const c = engine.Camera.copy();
           c.translate(touchListener.AbsoluteX, touchListener.AbsoluteY)
             .multiply(touchListener.Transform)
             .invert();
-          const modifiedPointer = c.apply(event.x, event.y); // TODO: very poor performance
+          const modifiedPointer = c.apply(event.x, event.y);
+          // TODO: very poor performance
+          // suggest  a applyto method for vector and reusing an instance
 
           // is point inside given area
           console.log(
