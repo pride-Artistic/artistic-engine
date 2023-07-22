@@ -6,8 +6,8 @@
 
 - Render complex animations.
 - Allow dynamic mutation through matrix tranformation.
-- ~~Process various inputs for control.~~
-- ~~Simplify control over audio processing.~~
+- Process various inputs for control.
+- Simplify control over audio processing.
 
 ## Browser Support
 
