@@ -1,7 +1,12 @@
 import { Transform } from "../src";
+import { IPointerListener } from "../src/event";
 import { Sprite } from "../src/sprite";
 
-export default class GridScene extends Sprite {
+export default class GridScene extends Sprite implements IPointerListener {
+  public TouchRegistered: boolean = true;
+
+  public RecieveEventsOutOfBound: boolean = false;
+
   private gridSize: number;
 
   private minx = Infinity;
@@ -29,6 +34,11 @@ export default class GridScene extends Sprite {
       p.closePath();
       return p;
     };
+  }
+
+  public onTouch(): boolean {
+    // throw new Error("Method not implemented.");
+    return false;
   }
 
   public override beforeClip(context: CanvasRenderingContext2D): void {

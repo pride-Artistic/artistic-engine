@@ -22,17 +22,17 @@ export default class Transform {
   }
 
   /**
-   * Getter property of m12
-   */
-  get m12(): number {
-    return this.values[2];
-  }
-
-  /**
    * Getter property of m21
    */
   get m21(): number {
     return this.values[1];
+  }
+
+  /**
+   * Getter property of m12
+   */
+  get m12(): number {
+    return this.values[2];
   }
 
   /**
@@ -83,17 +83,17 @@ export default class Transform {
   }
 
   /**
-   * Setter property of m12
-   */
-  set m12(value: number) {
-    this.values[2] = value;
-  }
-
-  /**
    * Setter property of m21
    */
   set m21(value: number) {
     this.values[1] = value;
+  }
+
+  /**
+   * Setter property of m12
+   */
+  set m12(value: number) {
+    this.values[2] = value;
   }
 
   /**
@@ -269,6 +269,19 @@ export default class Transform {
    */
   public copy(): Transform {
     return new Transform(...this.values);
+  }
+
+  /**
+   * Makes a copy of this transform.
+   * @returns a copy of this matrix
+   */
+  public copyTo(t: Transform) {
+    t.m11 = this.m11;
+    t.m21 = this.m21;
+    t.m12 = this.m12;
+    t.m22 = this.m22;
+    t.ox = this.ox;
+    t.oy = this.oy;
   }
 
   /**

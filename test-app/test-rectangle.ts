@@ -1,13 +1,23 @@
 import { Engine } from "../src";
 import { Rectangle } from "../src/sprite";
 import { Modifier, EaseFunctions } from "../src/modifiers";
+import { IPointerListener } from "../src/event";
 
-export default class TestRectangle extends Rectangle {
+export default class TestRectangle
+  extends Rectangle
+  implements IPointerListener
+{
+  public TouchRegistered: boolean = true;
+
+  public RecieveEventsOutOfBound: boolean = false;
+
   private isXmoving: boolean;
 
   private engine: Engine;
 
   private modifier: Modifier | undefined;
+
+  private color: string | CanvasGradient | CanvasPattern;
 
   constructor(
     color: string | CanvasGradient | CanvasPattern,
@@ -18,9 +28,15 @@ export default class TestRectangle extends Rectangle {
       W: 100,
       H: 100,
     });
+    this.color = color;
     this.fillStyle = color;
     this.isXmoving = isXMoving;
     this.engine = engine;
+  }
+
+  public onTouch(): boolean {
+    this.fillStyle = "green";
+    return false;
   }
 
   public override onDraw(
