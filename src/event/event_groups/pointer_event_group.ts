@@ -48,13 +48,13 @@ export class PointerEventGroup extends EventGroup {
         if (!touchListener.TouchRegistered) continue;
         if (!touchListener.RecieveEventsOutOfBound) {
           engine.Camera.copyTo(tempTransform);
-          tempVector.X = touchListener.AbsoluteX;
-          tempVector.Y = touchListener.AbsoluteY;
+          tempVector.X = event.x;
+          tempVector.Y = event.y;
           tempTransform
             .translate(touchListener.AbsoluteX, touchListener.AbsoluteY)
             .multiply(touchListener.Transform)
             .invert();
-          const modifiedPointer = tempTransform.apply(event.x, event.y);
+          const modifiedPointer = tempTransform.apply(tempVector);
 
           // is point inside given area
           if (
