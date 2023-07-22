@@ -1,6 +1,8 @@
 import { EventGroup } from "..";
 import Engine from "../../engine";
 import { Sprite } from "../../sprite";
+import { Transform } from "../../transform";
+import { Vector2D } from "../../vector";
 // import { Transform } from "../../transform";
 
 export interface IPointerListener {
@@ -40,29 +42,21 @@ export class PointerEventGroup extends EventGroup {
 
     super.setListener((e: Event) => {
       const event = <PointerEvent>e;
+      const tempVector = new Vector2D();
+      const tempTransform = new Transform();
       for (const touchListener of this.iTouchListeners) {
         if (!touchListener.TouchRegistered) continue;
         if (!touchListener.RecieveEventsOutOfBound) {
-          // TODO: very poor performance
-          // making a copy on every pointer refresh is expensive.
-          // suggest on making a copyTo method for transforms and reusing an instance
-          const c = engine.Camera.copy();
-          c.translate(touchListener.AbsoluteX, touchListener.AbsoluteY)
+          engine.Camera.copyTo(tempTransform);
+          tempVector.X = touchListener.AbsoluteX;
+          tempVector.Y = touchListener.AbsoluteY;
+          tempTransform
+            .translate(touchListener.AbsoluteX, touchListener.AbsoluteY)
             .multiply(touchListener.Transform)
             .invert();
-          const modifiedPointer = c.apply(event.x, event.y);
-          // TODO: very poor performance
-          // suggest  a applyto method for vector and reusing an instance
+          const modifiedPointer = tempTransform.apply(event.x, event.y);
 
           // is point inside given area
-          console.log(
-            "raw",
-            event.x,
-            event.y,
-            touchListener.X,
-            touchListener.Y
-          );
-          console.log("cal", modifiedPointer.X, modifiedPointer.Y);
           if (
             modifiedPointer.X < 0 ||
             modifiedPointer.Y < 0 ||
