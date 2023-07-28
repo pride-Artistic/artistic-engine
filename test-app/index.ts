@@ -98,7 +98,7 @@ engine.Camera = t;
 controller(engine.Canvas);
 
 const pointerGroup = new PointerEventGroup(engine);
-pointerGroup.registerTouchListener(recRED);
+pointerGroup.registerPointerListener(recRED);
 pointerGroup.registerEvent();
 
 recRED.X = 700;

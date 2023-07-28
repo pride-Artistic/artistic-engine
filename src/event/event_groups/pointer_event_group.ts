@@ -6,9 +6,9 @@ import { Vector2D } from "../../vector";
 // import { Transform } from "../../transform";
 
 export interface IPointerListener {
-  TouchRegistered: boolean;
+  PointerRegistered: boolean;
   RecieveEventsOutOfBound: boolean;
-  onTouch(e: PointerEvent): boolean;
+  onPointer(e: PointerEvent): boolean;
 }
 
 type PointerListener = IPointerListener & Sprite;
@@ -16,7 +16,7 @@ type PointerListener = IPointerListener & Sprite;
 export class PointerEventGroup extends EventGroup {
   protected engine: Engine;
 
-  protected iTouchListeners: PointerListener[] = [];
+  protected iPointerListeners: PointerListener[] = [];
 
   protected fift: boolean = true;
 
@@ -44,15 +44,15 @@ export class PointerEventGroup extends EventGroup {
       const event = <PointerEvent>e;
       const tempVector = new Vector2D();
       const tempTransform = new Transform();
-      for (const touchListener of this.iTouchListeners) {
-        if (!touchListener.TouchRegistered) continue;
-        if (!touchListener.RecieveEventsOutOfBound) {
+      for (const pointerListener of this.iPointerListeners) {
+        if (!pointerListener.PointerRegistered) continue;
+        if (!pointerListener.RecieveEventsOutOfBound) {
           engine.Camera.copyTo(tempTransform);
           tempVector.X = event.x;
           tempVector.Y = event.y;
           tempTransform
-            .translate(touchListener.AbsoluteX, touchListener.AbsoluteY)
-            .multiply(touchListener.Transform)
+            .translate(pointerListener.AbsoluteX, pointerListener.AbsoluteY)
+            .multiply(pointerListener.Transform)
             .invert();
           const modifiedPointer = tempTransform.apply(tempVector);
 
@@ -60,23 +60,29 @@ export class PointerEventGroup extends EventGroup {
           if (
             modifiedPointer.X < 0 ||
             modifiedPointer.Y < 0 ||
-            modifiedPointer.X > touchListener.Width ||
-            modifiedPointer.Y > touchListener.Height
+            modifiedPointer.X > pointerListener.Width ||
+            modifiedPointer.Y > pointerListener.Height
           ) {
             continue;
           }
         }
 
-        if (touchListener.onTouch(event)) return;
+        if (pointerListener.onPointer(event)) return;
       }
     });
   }
 
-  public registerTouchListener(iTouchListener: PointerListener) {
+  public registerPointerListener(iPointerListener: PointerListener) {
     // TODO: arrange listeners to meet sequence between entities.
     // top sprites will control whether to allow event to be triggered on lower sprites.
-    this.iTouchListeners.push(iTouchListener);
-    // this.engine.Camera.multiply(iTouchListener.Transform);
+    this.iPointerListeners.push(iPointerListener);
+    // this.engine.Camera.multiply(iPointerListener.Transform);
+  }
+
+  public unregisterPointerListener(iPointerListener: PointerListener) {
+    const idx = this.iPointerListeners.indexOf(iPointerListener);
+    if (idx === -1) return;
+    this.iPointerListeners.splice(idx, 1);
   }
 
   public setListenSequenceFirstInFirstTrigger(fift: boolean) {

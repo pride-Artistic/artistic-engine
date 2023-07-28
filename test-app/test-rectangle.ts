@@ -7,7 +7,7 @@ export default class TestRectangle
   extends Rectangle
   implements IPointerListener
 {
-  public TouchRegistered: boolean = true;
+  public PointerRegistered: boolean = true;
 
   public RecieveEventsOutOfBound: boolean = false;
 
@@ -34,7 +34,7 @@ export default class TestRectangle
     this.engine = engine;
   }
 
-  public onTouch(): boolean {
+  public onPointer(): boolean {
     this.fillStyle = "green";
     return false;
   }
