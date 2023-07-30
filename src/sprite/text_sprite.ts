@@ -10,7 +10,7 @@ interface TextProperties {
 }
 
 export default class TextSprite extends Sprite {
-  protected text: string = "";
+  protected text: string | (() => string) = "";
 
   protected property: TextProperties = {
     direction: "inherit",
@@ -21,15 +21,16 @@ export default class TextSprite extends Sprite {
     textBaseLine: "top",
   };
 
-  public get Text() {
-    return this.text;
+  public get Text(): string {
+    if (typeof this.text === "string") return this.text;
+    return this.text();
   }
 
   public get Property() {
     return this.property;
   }
 
-  public set Text(text: string) {
+  public set Text(text: string | (() => string)) {
     this.text = text;
   }
 
@@ -45,6 +46,6 @@ export default class TextSprite extends Sprite {
     context.textAlign = this.property.textAlign;
     context.textBaseline = this.property.textBaseLine;
 
-    context.fillText(this.text, 0, 0);
+    context.fillText(this.Text, 0, 0);
   }
 }

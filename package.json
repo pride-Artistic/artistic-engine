@@ -1,6 +1,6 @@
 {
   "name": "artistic-engine",
-  "version": "1.2.7",
+  "version": "1.2.9",
   "description": "General purpose html5 canvas rendering game engine",
   "keywords": [
     "game",
@@ -49,7 +49,7 @@
       "require": "./modifiers.js",
       "types": "./modifiers/index.d.ts"
     },
-    "./events": {
+    "./event": {
       "import": "./event.js",
       "require": "./event.js",
       "types": "./event/index.d.ts"

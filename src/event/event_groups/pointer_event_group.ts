@@ -6,8 +6,8 @@ import { Vector2D } from "../../vector";
 // import { Transform } from "../../transform";
 
 export interface IPointerListener {
-  PointerRegistered: boolean;
-  RecieveEventsOutOfBound: boolean;
+  get PointerRegistered(): boolean;
+  get RecieveEventsOutOfBound(): boolean;
   onPointer(e: PointerEvent): boolean;
 }
 
@@ -44,7 +44,11 @@ export class PointerEventGroup extends EventGroup {
       const event = <PointerEvent>e;
       const tempVector = new Vector2D();
       const tempTransform = new Transform();
-      for (const pointerListener of this.iPointerListeners) {
+      for (let idx = 0; idx < this.iPointerListeners.length; idx++) {
+        const pointerListener =
+          this.iPointerListeners[
+            this.fift ? idx : this.iPointerListeners.length - idx - 1
+          ];
         if (!pointerListener.PointerRegistered) continue;
         if (!pointerListener.RecieveEventsOutOfBound) {
           engine.Camera.copyTo(tempTransform);
@@ -66,23 +70,24 @@ export class PointerEventGroup extends EventGroup {
             continue;
           }
         }
-
         if (pointerListener.onPointer(event)) return;
       }
     });
   }
 
-  public registerPointerListener(iPointerListener: PointerListener) {
+  public registerPointerListener(...iPointerListeners: PointerListener[]) {
     // TODO: arrange listeners to meet sequence between entities.
     // top sprites will control whether to allow event to be triggered on lower sprites.
-    this.iPointerListeners.push(iPointerListener);
+    this.iPointerListeners.push(...iPointerListeners);
     // this.engine.Camera.multiply(iPointerListener.Transform);
   }
 
-  public unregisterPointerListener(iPointerListener: PointerListener) {
-    const idx = this.iPointerListeners.indexOf(iPointerListener);
-    if (idx === -1) return;
-    this.iPointerListeners.splice(idx, 1);
+  public unregisterPointerListener(...iPointerListeners: PointerListener[]) {
+    for (const iPointerListener of iPointerListeners) {
+      const idx = this.iPointerListeners.indexOf(iPointerListener);
+      if (idx === -1) continue;
+      this.iPointerListeners.splice(idx, 1);
+    }
   }
 
   public setListenSequenceFirstInFirstTrigger(fift: boolean) {
