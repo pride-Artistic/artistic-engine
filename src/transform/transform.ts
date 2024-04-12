@@ -184,7 +184,7 @@ export default class Transform {
 
   /**
    * Rotate the objects clockwise.
-   * @param angle - The rotation angle you want. (in *degrees*)
+   * @param angle - The rotation angle you want. (in *radian*)
    * @returns Itself which got rotated.
    */
   public rotate(angle: number): this {
@@ -194,7 +194,7 @@ export default class Transform {
   }
 
   /**
-   * Apply transform to the gien coordinate values.
+   * Apply transform to the given coordinate values.
    * @param x - X value of the coordinate.
    * @param y - Y value of the coordinate.
    * @returns Actual coordinate values your coordinate will appear at.
