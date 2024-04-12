@@ -79,7 +79,7 @@
     "@types/jest": "^29.2.5",
     "@typescript-eslint/eslint-plugin": "^5.48.1",
     "@typescript-eslint/parser": "^5.48.1",
-    "canvas": "^2.11.0",
+    "canvas": "^2.11.2",
     "cross-env": "^7.0.3",
     "eslint": "^8.32.0",
     "eslint-config-airbnb-typescript": "^17.0.0",
