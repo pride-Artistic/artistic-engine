@@ -7,6 +7,7 @@ interface TextProperties {
   fontKerning: CanvasFontKerning;
   textAlign: CanvasTextAlign;
   textBaseLine: CanvasTextBaseline;
+  lineSpacing: number;
 }
 
 export default class TextSprite extends Sprite {
@@ -19,6 +20,7 @@ export default class TextSprite extends Sprite {
     fontKerning: "auto",
     textAlign: "start",
     textBaseLine: "top",
+    lineSpacing: 0,
   };
 
   public get Text(): string {
@@ -45,7 +47,9 @@ export default class TextSprite extends Sprite {
     context.fontKerning = this.property.fontKerning;
     context.textAlign = this.property.textAlign;
     context.textBaseline = this.property.textBaseLine;
-
-    context.fillText(this.Text, 0, 0);
+    const lines = this.Text.split("\n");
+    for (let i = 0; i < lines.length; i++) {
+      context.fillText(lines[i], 0, i * this.property.lineSpacing);
+    }
   }
 }
