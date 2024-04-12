@@ -1,6 +1,6 @@
 {
   "name": "artistic-engine",
-  "version": "1.2.2",
+  "version": "1.2.12",
   "description": "General purpose html5 canvas rendering game engine",
   "keywords": [
     "game",
@@ -39,15 +39,20 @@
       "require": "./main.js",
       "types": "./index.d.ts"
     },
+    "./sprite": {
+      "import": "./sprite.js",
+      "require": "./sprite.js",
+      "types": "./sprite/index.d.ts"
+    },
     "./modifiers": {
       "import": "./modifiers.js",
       "require": "./modifiers.js",
       "types": "./modifiers/index.d.ts"
     },
-    "./events": {
-      "import": "./events.js",
-      "require": "./events.js",
-      "types": "./events/index.d.ts"
+    "./event": {
+      "import": "./event.js",
+      "require": "./event.js",
+      "types": "./event/index.d.ts"
     },
     "./loader": {
       "import": "./loader.js",
@@ -74,7 +79,7 @@
     "@types/jest": "^29.2.5",
     "@typescript-eslint/eslint-plugin": "^5.48.1",
     "@typescript-eslint/parser": "^5.48.1",
-    "canvas": "^2.11.0",
+    "canvas": "^2.11.2",
     "cross-env": "^7.0.3",
     "eslint": "^8.32.0",
     "eslint-config-airbnb-typescript": "^17.0.0",

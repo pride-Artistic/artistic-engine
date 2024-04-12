@@ -3,7 +3,7 @@ import { IPointerListener } from "../src/event";
 import { Sprite } from "../src/sprite";
 
 export default class GridScene extends Sprite implements IPointerListener {
-  public TouchRegistered: boolean = true;
+  public PointerRegistered: boolean = true;
 
   public RecieveEventsOutOfBound: boolean = false;
 
@@ -36,7 +36,7 @@ export default class GridScene extends Sprite implements IPointerListener {
     };
   }
 
-  public onTouch(): boolean {
+  public onPointer(): boolean {
     // throw new Error("Method not implemented.");
     return false;
   }

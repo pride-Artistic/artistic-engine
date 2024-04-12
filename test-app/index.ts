@@ -1,9 +1,8 @@
 import { Engine, Transform } from "../src";
 import { PointerEventGroup } from "../src/event";
 import FontBuilder from "../src/font_builder";
-import { Bitmap } from "../src/image";
 import { EaseFunctions, Modifier } from "../src/modifiers";
-import { TextSprite, TextureSprite } from "../src/sprite";
+import { TextSprite } from "../src/sprite";
 import { Vector2D } from "../src/vector";
 import { controller } from "./controller";
 import GridScene from "./grid-scene";
@@ -23,9 +22,6 @@ const font = "Poppin";
 engine.AssetLoader.addFont(
   font,
   "url(https://fonts.gstatic.com/s/poppins/v20/pxiByp8kv8JHgFVrLGT9Z1xlFQ.woff2)"
-).addImages(
-  "test1",
-  "https://media.discordapp.net/attachments/603540332029673482/692014230798598264/170729783f5bd372.jpg"
 );
 
 const engineText = "artistic engine 🥳";
@@ -62,14 +58,14 @@ engine.AssetLoader.onLoad = async () => {
     );
   }, 4000);
 
-  const bitmapB = new Bitmap(engine.AssetLoader.getImage("test1"));
-  const bitmap = await bitmapB.getImageBitmap();
-  const txSp = new TextureSprite({
-    X: 400,
-    Y: 0,
-    texture: bitmap,
-  });
-  scene.attachChildren(txSp);
+  // const bitmapB = new Bitmap(engine.AssetLoader.getImage("test1"));
+  // const bitmap = await bitmapB.getImageBitmap();
+  // const txSp = new TextureSprite({
+  //   X: 400,
+  //   Y: 0,
+  //   texture: bitmap,
+  // });
+  // scene.attachChildren(txSp);
 };
 
 engine.AssetLoader.load();
@@ -98,7 +94,7 @@ engine.Camera = t;
 controller(engine.Canvas);
 
 const pointerGroup = new PointerEventGroup(engine);
-pointerGroup.registerTouchListener(recRED);
+pointerGroup.registerPointerListener(recRED);
 pointerGroup.registerEvent();
 
 recRED.X = 700;

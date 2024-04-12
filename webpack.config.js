@@ -56,10 +56,10 @@ options[OPTION_PRODUCTION] = {
     },
     entry: { 
         main: './src/index.ts',
-        events: './src/event/index.ts',
+        event: './src/event/index.ts',
         modifiers: './src/modifiers/index.ts',
-        assets: './src/loader/index.ts',
-        sprites: './src/sprite/index.ts',
+        loader: './src/loader/index.ts',
+        sprite: './src/sprite/index.ts',
     },
     devtool: 'inline-source-map',
     output: {
