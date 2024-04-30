@@ -233,7 +233,7 @@ export default class Transform {
    * Invert this matrix if invertible.
    * @returns this transform.
    */
-  public invert() {
+  public invert(): this {
     const det = this.Determinant;
     if (det === 0) throw new Error("This transform is not invertible");
     const m11 = this.m22 / det;
@@ -260,6 +260,20 @@ export default class Transform {
    */
   public skew(x_slope: number = 0, y_slope: number = 0): this {
     this.linear(1, x_slope, y_slope, 1, 0, 0);
+    return this;
+  }
+
+  /**
+   * Reset to identity matrix.
+   * @returns Itself reset.
+   */
+  public reset(): this {
+    this.m11 = 1;
+    this.m22 = 1;
+    this.m12 = 0;
+    this.m21 = 0;
+    this.ox = 0;
+    this.oy = 0
     return this;
   }
 
