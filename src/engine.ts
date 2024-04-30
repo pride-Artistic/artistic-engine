@@ -67,11 +67,11 @@ export default class Engine {
     checkCompatibility(this);
   }
 
-  public get Canvas() {
+  public get Canvas(): HTMLCanvasElement {
     return this.canvas;
   }
 
-  public get Context() {
+  public get Context(): CanvasRenderingContext2D {
     return this.context;
   }
 
@@ -83,7 +83,7 @@ export default class Engine {
     return this.camera;
   }
 
-  public get AssetLoader() {
+  public get AssetLoader(): AssetLoader {
     return this.assetLoader;
   }
 
@@ -121,8 +121,8 @@ export default class Engine {
       this.Canvas.width = config.X;
       this.Canvas.height = config.Y;
     } else {
-      this.Canvas.width = config?.w ?? window.innerWidth;
-      this.Canvas.height = config?.h ?? window.innerHeight;
+      this.Canvas.width = config?.W ?? window.innerWidth;
+      this.Canvas.height = config?.H ?? window.innerHeight;
     }
     // TODO: emit canvas resize event
   }

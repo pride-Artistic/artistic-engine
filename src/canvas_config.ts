@@ -1,4 +1,4 @@
 export default interface CanvasConfig {
-  h?: number;
-  w?: number;
+  H?: number;
+  W?: number;
 }
