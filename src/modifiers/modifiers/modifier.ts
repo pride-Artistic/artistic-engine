@@ -1,13 +1,13 @@
 export default class Modifier {
-  private from: number;
+  protected from: number;
 
-  private diff: number;
+  protected diff: number;
 
-  private duration: number;
+  protected duration: number;
 
-  private startTime = 0;
+  protected startTime = 0;
 
-  private elapsedTime = 0;
+  protected elapsedTime = 0;
 
   private modifyFunction: (value: number) => void;
 
@@ -45,7 +45,21 @@ export default class Modifier {
   }
 
   /**
-   * UNIX timestamp of time when the modifier will end with progress 0.
+   * The duration of this modifier from start to end.
+   */
+  public get Duration() {
+    return this.duration;
+  }
+
+  /**
+   * UNIX timestamp of time when the modifier started with progress 0.
+   */
+  public get StartTime() {
+    return this.startTime;
+  }
+
+  /**
+   * UNIX timestamp of time when the modifier will end with progress 1.
    */
   public get EndTime() {
     return this.startTime + this.duration;

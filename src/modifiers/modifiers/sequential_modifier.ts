@@ -3,28 +3,33 @@ import Modifier from "./modifier";
 export default class SequentialModifier extends Modifier {
   protected modifiers: Modifier[];
 
-  constructor(modifier: Modifier, ...modifiers: Modifier[]) {
-    super(0, 1, 1, () => {});
-    this.modifiers = [modifier, ...modifiers];
+  constructor(...modifiers: Modifier[]) {
+    let totalDuration = 0;
+    for (const modifier of modifiers) {
+      totalDuration += modifier.Duration;
+    }
+    super(0, 1, totalDuration, () => {
+      if (this.Progress === 1) return;
+
+      const currentModifier = this.modifiers[0];
+      currentModifier.tick();
+
+      if (currentModifier.Progress >= 1) {
+        this.modifiers.shift();
+        if (this.modifiers.length > 0) {
+          this.modifiers[0].register(Date.now() - currentModifier.EndTime);
+        }
+      }
+    });
+    this.modifiers = modifiers;
   }
 
   public override get Progress(): number {
-    return this.modifiers.length === 0 ? 1 : 0;
+    return this.duration === 0 ? 1 : super.Progress;
   }
 
-  public override register(): void {
+  public override register(offset: number = 0): void {
+    super.register(offset);
     this.modifiers[0].register();
-  }
-
-  public override tick(): void {
-    if (this.Progress === 1) return;
-    const currentModifier = this.modifiers[0];
-    if (currentModifier.Progress < 1) currentModifier.tick();
-    else {
-      const previousModifier = this.modifiers.shift();
-      this.modifiers[0]?.register(
-        Date.now() - (previousModifier?.EndTime ?? 0)
-      );
-    }
   }
 }

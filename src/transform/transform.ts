@@ -273,7 +273,7 @@ export default class Transform {
     this.m12 = 0;
     this.m21 = 0;
     this.ox = 0;
-    this.oy = 0
+    this.oy = 0;
     return this;
   }
 
