@@ -67,11 +67,11 @@ export default class Engine {
     checkCompatibility(this);
   }
 
-  public get Canvas() {
+  public get Canvas(): HTMLCanvasElement {
     return this.canvas;
   }
 
-  public get Context() {
+  public get Context(): CanvasRenderingContext2D {
     return this.context;
   }
 
@@ -83,7 +83,7 @@ export default class Engine {
     return this.camera;
   }
 
-  public get AssetLoader() {
+  public get AssetLoader(): AssetLoader {
     return this.assetLoader;
   }
 
@@ -121,8 +121,8 @@ export default class Engine {
       this.Canvas.width = config.X;
       this.Canvas.height = config.Y;
     } else {
-      this.Canvas.width = config?.w ?? window.innerWidth;
-      this.Canvas.height = config?.h ?? window.innerHeight;
+      this.Canvas.width = config?.W ?? window.innerWidth;
+      this.Canvas.height = config?.H ?? window.innerHeight;
     }
     // TODO: emit canvas resize event
   }
@@ -163,17 +163,18 @@ export default class Engine {
     const elapsedTime = timestamp - this.previousTimestamp;
     this.previousTimestamp = timestamp;
 
-    const modifiersToRemove: Modifier[] = [];
-    for (const modifier of this.modifiers) {
-      if (modifier.Progress < 1) {
-        modifier.tick();
-      } else {
-        modifiersToRemove.push(modifier);
+    let modifiersToRemove: number[] = [];
+    for (let i = 0; i < this.modifiers.length; i++) {
+      this.modifiers[i].tick();
+      if (this.modifiers[i].Progress >= 1) {
+        modifiersToRemove.push(i);
       }
     }
-    this.modifiers = this.modifiers.filter(
-      (m) => !modifiersToRemove.includes(m)
-    );
+
+    modifiersToRemove = modifiersToRemove.reverse();
+    for (const i of modifiersToRemove) {
+      this.modifiers.splice(i, 1);
+    }
 
     this.context.reset();
     this.subReset(this.context);
