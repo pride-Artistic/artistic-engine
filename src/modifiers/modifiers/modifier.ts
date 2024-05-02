@@ -71,7 +71,7 @@ export default class Modifier {
    * @param offset Offset applied to start time on call.
    */
   public register(offset: number = 0) {
-    this.startTime = Date.now() + offset;
+    this.startTime = performance.now() + offset;
     this.elapsedTime = 0;
   }
 
@@ -79,7 +79,7 @@ export default class Modifier {
    * @internal
    */
   public tick() {
-    this.elapsedTime = Date.now() - this.startTime;
+    this.elapsedTime = performance.now() - this.startTime;
     this.modify(
       this.from + this.easeFunction(Math.min(this.Progress, 1)) * this.diff
     );

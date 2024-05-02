@@ -39,7 +39,7 @@ engine.AssetLoader.onLoad = async () => {
 
   scene.attachChildren(text);
 
-  let lastTick = Date.now();
+  let lastTick = performance.now();
   setInterval(() => {
     engine.registerModifier(
       new Modifier(
@@ -49,8 +49,11 @@ engine.AssetLoader.onLoad = async () => {
         (v) => {
           v = Math.ceil(v);
           if (v === 17) v = 16;
-          if (Date.now() - lastTick < 20 && v != engineText.length) return;
-          lastTick = Date.now();
+          if (performance.now() - lastTick < 20 && v != engineText.length) {
+            return;
+          }
+
+          lastTick = performance.now();
           text.Text = engineText.slice(0, v);
         },
         EaseFunctions.EaseOutCirc

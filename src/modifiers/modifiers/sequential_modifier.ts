@@ -17,7 +17,9 @@ export default class SequentialModifier extends Modifier {
       if (currentModifier.Progress >= 1) {
         this.modifiers.shift();
         if (this.modifiers.length > 0) {
-          this.modifiers[0].register(Date.now() - currentModifier.EndTime);
+          this.modifiers[0].register(
+            performance.now() - currentModifier.EndTime
+          );
         }
       }
     });
