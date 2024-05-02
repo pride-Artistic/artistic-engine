@@ -5,6 +5,14 @@ export default abstract class TreeItem<T> {
 
   protected parent: Tree<T> | null = null;
 
+  public get Root() {
+    let tempItem: TreeItem<T> = this;
+    while (tempItem.Parent != null) {
+      tempItem = tempItem.Parent;
+    }
+    return tempItem;
+  }
+
   public get Parent() {
     return this.parent;
   }
