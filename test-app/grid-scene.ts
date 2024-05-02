@@ -1,8 +1,8 @@
-import { Transform } from "../src";
+import { Engine, Transform } from "../src";
 import { IPointerListener } from "../src/event";
-import { Sprite } from "../src/sprite";
+import { Scene } from "../src/scenes";
 
-export default class GridScene extends Sprite implements IPointerListener {
+export default class GridScene extends Scene implements IPointerListener {
   public PointerRegistered: boolean = true;
 
   public RecieveEventsOutOfBound: boolean = false;
@@ -91,5 +91,13 @@ export default class GridScene extends Sprite implements IPointerListener {
       context.lineTo(this.maxx, i);
     }
     context.stroke();
+  }
+
+  public onAttach(engine: Engine, previousScene: Scene) {
+    console.log("Scene attached");
+  }
+
+  public onDetach(engine: Engine, nextScene: Scene) {
+    console.log("Scene detached");
   }
 }

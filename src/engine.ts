@@ -1,9 +1,7 @@
 import CanvasConfig from "./canvas_config";
-import { Entity } from "./entity";
-import { IDrawable } from "./sprite";
 import { Vector2D } from "./vector";
 import checkCompatibility from "./compatibility";
-import { BlankScene } from "./scenes";
+import { BlankScene, Scene } from "./scenes";
 import { Modifier } from "./modifiers/modifiers";
 import { Transform } from "./transform";
 import { AssetLoader } from "./loader";
@@ -21,7 +19,7 @@ export default class Engine {
 
   private animationId: number = -1;
 
-  private scene: IDrawable = new BlankScene();
+  private scene: Scene = new BlankScene();
 
   private subReset: (context: CanvasRenderingContext2D) => void;
 
@@ -75,7 +73,7 @@ export default class Engine {
     return this.context;
   }
 
-  public get Scene(): IDrawable {
+  public get Scene(): Scene {
     return this.scene;
   }
 
@@ -87,11 +85,12 @@ export default class Engine {
     return this.assetLoader;
   }
 
-  public set Scene(scene: IDrawable) {
-    if (scene instanceof Entity) {
-      scene.setParent(null);
-    }
+  public set Scene(scene: Scene) {
+    const prevScene = this.scene;
+    scene.setParent(null);
+    prevScene.onDetach(this, scene);
     this.scene = scene;
+    this.scene.onAttach(this, prevScene);
   }
 
   public set Camera(camera: Transform) {
