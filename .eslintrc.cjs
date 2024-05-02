@@ -164,6 +164,15 @@ module.exports = {
         }
       }
     ],
+    // "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": [
+      "warn", // or "error"
+      {
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_",
+        "caughtErrorsIgnorePattern": "^_"
+      }
+    ],
     "import/no-extraneous-dependencies": "off",
     "import/extensions": "off",
     "no-console": "off",

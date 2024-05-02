@@ -40,7 +40,7 @@ export default class TextSprite extends Sprite {
     this.property = textProperty;
   }
 
-  public onDraw(context: CanvasRenderingContext2D): void {
+  public onDraw(context: CanvasRenderingContext2D, _delay: number): void {
     context.direction = this.property.direction;
     context.fillStyle = this.property.fill;
     context.font = this.property.font;
