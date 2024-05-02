@@ -9,7 +9,7 @@ export default class SequentialModifier extends Modifier {
       totalDuration += modifier.Duration;
     }
     super(0, 1, totalDuration, () => {
-      if (this.Progress === 1) return;
+      if (this.modifiers.length === 0) return;
 
       const currentModifier = this.modifiers[0];
       currentModifier.tick();
@@ -27,7 +27,11 @@ export default class SequentialModifier extends Modifier {
   }
 
   public override get Progress(): number {
-    return this.duration === 0 ? 1 : super.Progress;
+    if (this.duration === 0) return 1;
+    const superProgress = super.Progress;
+    if (this.modifiers.length === 1 && superProgress >= 1)
+      return 0.9999999999999999;
+    return superProgress;
   }
 
   public override register(offset: number = 0): void {

@@ -10,7 +10,7 @@ export default class ConcurrentModifier extends Modifier {
     }
 
     super(0, 1, maxDuration, () => {
-      if (this.Progress === 1) return;
+      if (this.modifiers.length === 0) return;
 
       let modifiersDone: number[] = [];
       for (let i = 0; i < this.modifiers.length; i++) {
@@ -29,7 +29,11 @@ export default class ConcurrentModifier extends Modifier {
   }
 
   public override get Progress(): number {
-    return this.duration === 0 ? 1 : super.Progress;
+    return this.duration === 0
+      ? 1
+      : this.modifiers.length === 0
+      ? super.Progress
+      : 0.9999999999999999;
   }
 
   public override register(offset: number = 0): void {

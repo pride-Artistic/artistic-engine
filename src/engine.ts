@@ -162,7 +162,7 @@ export default class Engine {
     const elapsedTime = timestamp - this.previousTimestamp;
     this.previousTimestamp = timestamp;
 
-    let modifiersToRemove: number[] = [];
+    const modifiersToRemove: number[] = [];
     for (let i = 0; i < this.modifiers.length; i++) {
       this.modifiers[i].tick();
       if (this.modifiers[i].Progress >= 1) {
@@ -170,9 +170,8 @@ export default class Engine {
       }
     }
 
-    modifiersToRemove = modifiersToRemove.reverse();
-    for (const i of modifiersToRemove) {
-      this.modifiers.splice(i, 1);
+    for (let i = modifiersToRemove.length - 1; i >= 0; i--) {
+      this.modifiers.splice(modifiersToRemove[i], 1);
     }
 
     this.context.reset();

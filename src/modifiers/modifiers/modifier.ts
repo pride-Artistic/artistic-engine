@@ -80,9 +80,8 @@ export default class Modifier {
    */
   public tick() {
     this.elapsedTime = performance.now() - this.startTime;
-    this.modify(
-      this.from + this.easeFunction(Math.min(this.Progress, 1)) * this.diff
-    );
+    const normalProgress = Math.min(this.Progress, 1);
+    this.modify(this.from + this.easeFunction(normalProgress) * this.diff);
   }
 
   protected modify(value: number) {
