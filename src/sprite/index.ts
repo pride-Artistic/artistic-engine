@@ -3,6 +3,7 @@ import Sprite from "./sprite";
 import { Shape, Rectangle, Ellipse } from "./shapes";
 import TextureSprite from "./texture_sprite";
 import TextSprite from "./text_sprite";
+import { BlankScene, Scene } from "./scenes";
 
 export {
   Sprite,
@@ -12,4 +13,6 @@ export {
   Ellipse,
   TextureSprite,
   TextSprite,
+  Scene,
+  BlankScene,
 };

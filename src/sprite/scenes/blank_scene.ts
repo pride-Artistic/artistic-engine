@@ -1,4 +1,4 @@
-import Engine from "../engine";
+import Engine from "../../engine";
 import Scene from "./scene";
 
 export default class BlankScene extends Scene {

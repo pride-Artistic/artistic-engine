@@ -1,7 +1,7 @@
 import CanvasConfig from "./canvas_config";
 import { Vector2D } from "./vector";
 import checkCompatibility from "./compatibility";
-import { BlankScene, Scene } from "./scenes";
+import { BlankScene, Scene } from "./sprite";
 import { Modifier } from "./modifiers/modifiers";
 import { Transform } from "./transform";
 import { AssetLoader } from "./loader";
