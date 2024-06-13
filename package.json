@@ -1,6 +1,6 @@
 {
   "name": "artistic-engine",
-  "version": "1.3.2",
+  "version": "1.4.0",
   "description": "General purpose html5 canvas rendering game engine",
   "keywords": [
     "game",

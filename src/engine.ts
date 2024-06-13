@@ -169,6 +169,7 @@ export default class Engine {
       this.modifiers.splice(modifiersToRemove[i], 1);
     }
 
+    // @ts-ignore TS2339
     this.context.reset();
     this.subReset(this.context);
 
