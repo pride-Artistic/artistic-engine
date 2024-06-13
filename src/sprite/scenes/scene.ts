@@ -1,7 +1,10 @@
 import Engine from "../../engine";
 import { Sprite } from "..";
 
-export default abstract class Scene extends Sprite {
-  public abstract onAttach(engine: Engine, previousScene: Scene): void;
-  public abstract onDetach(engine: Engine, nextScene: Scene): void;
+export default class Scene extends Sprite {
+  public onDraw(context: CanvasRenderingContext2D, delay: number): void {}
+
+  public onAttachEngine(engine: Engine, previousScene: Scene): void {}
+
+  public onDetachEngine(engine: Engine, nextScene: Scene): void {}
 }

@@ -43,19 +43,23 @@ export default abstract class TreeItem<T> {
     } else {
       for (
         let tempParent: Tree<T> | null = this;
-        tempParent !== null;
+        tempParent != null;
         tempParent = tempParent.parent
       ) {
         if (tempParent === children) {
           throw new Error("Loop of parent-child relationships detected.");
         }
       }
-      children.parent?.detachChildren(children);
+      if (children.parent != null) {
+        children.parent.detachChildren(children);
+        children.onDetach(children.parent);
+      }
       // TODO: Maybe good if there's option which decides
       //       whether it detaches and re-attaches or throws error
       this.children.push(children);
       children.parent = this;
       lastIndex = this.setChildIndex(children, z_index);
+      children.onAttach(this);
     }
     return lastIndex; // if returns -1, empty array has been input.
   }
@@ -122,4 +126,8 @@ export default abstract class TreeItem<T> {
       parent.attachChildren(this);
     }
   }
+
+  public onAttach(parent: Tree<T>): void {}
+
+  public onDetach(parent: Tree<T>): void {}
 }

@@ -3,6 +3,8 @@ import { Transform } from "../transform";
 import IDrawable from "./idrawable";
 
 export default abstract class Sprite extends Entity implements IDrawable {
+  protected contextMutator: boolean = false;
+
   private region: (() => Path2D) | undefined;
 
   private transform: Transform | undefined;
@@ -25,6 +27,14 @@ export default abstract class Sprite extends Entity implements IDrawable {
     return this.region;
   }
 
+  private get needsTransform() {
+    return this.transform != null && !this.transform.isIdentity;
+  }
+
+  private get hasRegion() {
+    return this.region != null;
+  }
+
   /**
    * Setter property for transform.
    */
@@ -45,30 +55,38 @@ export default abstract class Sprite extends Entity implements IDrawable {
   public readonly draw = (context: CanvasRenderingContext2D, delay: number) => {
     context.translate(this.X, this.Y);
 
-    context.save();
+    const needsTransform = this.needsTransform;
+    const hasRegion = this.hasRegion;
+    this.contextMutator ||= needsTransform || hasRegion;
 
-    if (this.transform) {
-      context.transform(
-        this.transform.m11,
-        this.transform.m21,
-        this.transform.m12,
-        this.transform.m22,
-        this.transform.ox,
-        this.transform.oy
-      );
-    }
+    if (this.contextMutator) {
+      context.save();
 
-    if (this.region) {
-      this.beforeClip(context, delay);
-      const path = this.region();
-      context.clip(path);
+      if (needsTransform) {
+        context.transform(
+          this.transform!.m11,
+          this.transform!.m21,
+          this.transform!.m12,
+          this.transform!.m22,
+          this.transform!.ox,
+          this.transform!.oy
+        );
+      }
+
+      if (hasRegion) {
+        this.beforeClip(context, delay);
+        const path = this.region!();
+        context.clip(path);
+      }
     }
 
     this.onDraw(context, delay);
 
-    context.restore();
+    if (this.contextMutator) {
+      context.restore();
+      this.afterRestore(context, delay);
+    }
 
-    this.afterRestore(context, delay);
     for (const child of this.Children) {
       if (!(child instanceof Sprite)) continue;
       child.draw(context, delay);
@@ -92,10 +110,6 @@ export default abstract class Sprite extends Entity implements IDrawable {
    */
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   public afterRestore(context: CanvasRenderingContext2D, delay: number) {}
-
-  public resetTransform() {
-    this.transform = new Transform();
-  }
 
   /**
    * Render tasks performed for canvas context.

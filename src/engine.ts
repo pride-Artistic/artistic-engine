@@ -1,19 +1,14 @@
 import CanvasConfig from "./canvas_config";
 import { Vector2D } from "./vector";
-import checkCompatibility from "./compatibility";
 import { BlankScene, Scene } from "./sprite";
 import { Modifier } from "./modifiers/modifiers";
 import { Transform } from "./transform";
 import { AssetLoader } from "./loader";
 
-interface ExtendedCanvasRenderingContext2D extends CanvasRenderingContext2D {
-  reset(): void;
-}
-
 export default class Engine {
   private canvas: HTMLCanvasElement;
 
-  private context: ExtendedCanvasRenderingContext2D;
+  private context: CanvasRenderingContext2D;
 
   private previousTimestamp: number = 0;
 
@@ -55,14 +50,13 @@ export default class Engine {
     this.subReset = () => {};
 
     // request context from given canvas
-    const context = this.canvas.getContext(
-      "2d",
-      canvasConfig
-    ) as ExtendedCanvasRenderingContext2D;
+    const context = this.canvas.getContext("2d", canvasConfig);
+
+    if (context == null) {
+      throw new Error("Unable to initialize Canvas Context.");
+    }
 
     this.context = context;
-
-    checkCompatibility(this);
   }
 
   public get Canvas(): HTMLCanvasElement {
@@ -88,9 +82,9 @@ export default class Engine {
   public set Scene(scene: Scene) {
     const prevScene = this.scene;
     scene.setParent(null);
-    prevScene.onDetach(this, scene);
+    prevScene.onDetachEngine(this, scene);
     this.scene = scene;
-    this.scene.onAttach(this, prevScene);
+    this.scene.onAttachEngine(this, prevScene);
   }
 
   public set Camera(camera: Transform) {
@@ -178,14 +172,16 @@ export default class Engine {
     this.context.reset();
     this.subReset(this.context);
 
-    this.context.transform(
-      this.camera.m11,
-      this.camera.m21,
-      this.camera.m12,
-      this.camera.m22,
-      this.camera.ox,
-      this.camera.oy
-    );
+    if (!this.camera.isIdentity) {
+      this.context.transform(
+        this.camera.m11,
+        this.camera.m21,
+        this.camera.m12,
+        this.camera.m22,
+        this.camera.ox,
+        this.camera.oy
+      );
+    }
 
     this.scene?.draw(this.context, elapsedTime);
 
