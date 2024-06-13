@@ -43,9 +43,9 @@ export default abstract class Sprite extends Entity implements IDrawable {
    * @inheritdoc
    */
   public readonly draw = (context: CanvasRenderingContext2D, delay: number) => {
-    context.save();
+    context.translate(this.X, this.Y);
 
-    context.translate(this.AbsoluteX, this.AbsoluteY);
+    context.save();
 
     if (this.transform) {
       context.transform(
