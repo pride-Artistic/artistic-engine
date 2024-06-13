@@ -90,6 +90,7 @@ export default class AssetLoader {
                   "canplaythrough",
                   readyCallback
                 );
+                this.audios.set(name, audioElement);
                 resolve(audioElement);
               };
               audioElement.addEventListener("canplaythrough", readyCallback);
