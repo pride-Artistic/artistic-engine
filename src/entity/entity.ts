@@ -17,6 +17,14 @@ export default class Entity extends TreeItem<Entity> implements IEntity {
     }
   }
 
+  public get Root() {
+    let parent: Entity | null;
+    do {
+      parent = this.Parent;
+    } while (parent != null);
+    return parent;
+  }
+
   public get Position() {
     return this.position;
   }
