@@ -8,8 +8,11 @@ interface TextureConfig extends IEntity {
 export default class TextureSprite extends Sprite {
   public texture: ImageBitmap | undefined;
 
-  constructor(config: TextureConfig | undefined) {
-    if (config?.texture == null) return;
+  constructor(config?: TextureConfig) {
+    if (config?.texture == null) {
+      super();
+      return;
+    }
     if (config.W === undefined) config.W = config.texture.width;
     if (config.H === undefined) config.H = config.texture.height;
     super(config);
