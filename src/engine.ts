@@ -155,7 +155,8 @@ export default class Engine {
    * @param modifier Modifier to halt execution.
    */
   public unregisterModifier(modifier: Modifier) {
-    this.modifiers = this.modifiers.filter((m) => m !== modifier);
+    const index = this.modifiers.indexOf(modifier);
+    this.modifiers.splice(index, 1);
   }
 
   private render(timestamp: number) {
