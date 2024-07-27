@@ -7,6 +7,8 @@ export default class AssetLoader {
 
   private audios = new Map<string, string | HTMLAudioElement>();
 
+  private samples = new Map<string, string | AudioBuffer>();
+
   public get AudioContext() {
     return this.audioContext;
   }
@@ -20,13 +22,18 @@ export default class AssetLoader {
     return this;
   }
 
-  public addImages(name: string, source: string | Blob) {
+  public addImage(name: string, source: string | Blob) {
     this.images.set(name, source);
     return this;
   }
 
-  public addAudios(name: string, source: string | HTMLAudioElement) {
+  public addAudio(name: string, source: string | HTMLAudioElement) {
     this.audios.set(name, source);
+    return this;
+  }
+
+  public addSample(name: string, source: string | AudioBuffer) {
+    this.samples.set(name, source);
     return this;
   }
 
@@ -73,7 +80,7 @@ export default class AssetLoader {
       }
     });
 
-    if (this.audios.size > 0) {
+    if (this.audios.size + this.samples.size > 0) {
       if (!(this.audioContext instanceof AudioContext)) {
         this.audioContext = new AudioContext();
       }
@@ -102,6 +109,28 @@ export default class AssetLoader {
           );
         }
       });
+
+      this.samples.forEach((sample, name) => {
+        if (sample instanceof AudioBuffer) {
+          return;
+        } else if (typeof sample === "string") {
+          loader.push(
+            fetch(sample)
+              .then(async (res) => {
+                const arrayBuffer = await res.arrayBuffer();
+                const audioBuffer = await this.AudioContext!.decodeAudioData(
+                  arrayBuffer
+                );
+                this.samples.set(name, audioBuffer);
+              })
+              .catch((e) => {
+                throw new Error(
+                  "Failed to load audio resource: " + name + "\nReason: " + e
+                );
+              })
+          );
+        }
+      });
     }
 
     return Promise.all(loader).then(() =>
@@ -121,6 +150,17 @@ export default class AssetLoader {
   public getAudio(name: string) {
     const audioBuffer = this.audios.get(name);
     if (audioBuffer instanceof HTMLAudioElement) {
+      return audioBuffer;
+    }
+    throw new Error(
+      "Specified audio is not loaded. " +
+        "Please check whether the name is correct or the load method has been called."
+    );
+  }
+
+  public getSample(name: string) {
+    const audioBuffer = this.samples.get(name);
+    if (audioBuffer instanceof AudioBuffer) {
       return audioBuffer;
     }
     throw new Error(
