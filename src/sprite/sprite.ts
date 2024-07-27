@@ -85,14 +85,13 @@ export default abstract class Sprite extends Entity implements IDrawable {
     if (this.contextMutator) {
       context.restore();
       this.afterRestore(context, delay);
-    } else {
-      context.translate(-this.X, -this.Y);
     }
 
     for (const child of this.Children) {
       if (!(child instanceof Sprite)) continue;
       child.draw(context, delay);
     }
+    context.translate(-this.X, -this.Y);
   };
 
   /**
