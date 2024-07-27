@@ -90,4 +90,14 @@ export default class Entity extends TreeItem<Entity> implements IEntity {
   public set Height(height: number) {
     this.dimension.Y = height;
   }
+
+  public setPosition(X: number, Y: number) {
+    this.X = X;
+    this.Y = Y;
+  }
+
+  public setSize(W: number, H: number) {
+    this.W = W;
+    this.H = H;
+  }
 }
