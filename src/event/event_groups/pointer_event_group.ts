@@ -8,7 +8,7 @@ import { Vector2D } from "../../vector";
 export interface IPointerListener {
   get PointerRegistered(): boolean;
   get RecieveEventsOutOfBound(): boolean;
-  onPointer(e: PointerEvent): boolean;
+  onPointer(e: PointerEvent, localX: number, localY: number): boolean;
 }
 
 type PointerListener = IPointerListener & Sprite;
@@ -54,23 +54,25 @@ export class PointerEventGroup extends EventGroup {
           engine.Camera.copyTo(tempTransform);
           tempVector.X = event.x;
           tempVector.Y = event.y;
+          // TODO: https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect
           tempTransform
             .translate(pointerListener.AbsoluteX, pointerListener.AbsoluteY)
             .multiply(pointerListener.Transform)
             .invert();
-          const modifiedPointer = tempTransform.apply(tempVector);
+          tempTransform.apply(tempVector);
 
           // is point inside given area
           if (
-            modifiedPointer.X < 0 ||
-            modifiedPointer.Y < 0 ||
-            modifiedPointer.X > pointerListener.Width ||
-            modifiedPointer.Y > pointerListener.Height
+            tempVector.X < 0 ||
+            tempVector.Y < 0 ||
+            tempVector.X > pointerListener.Width ||
+            tempVector.Y > pointerListener.Height
           ) {
             continue;
           }
         }
-        if (pointerListener.onPointer(event)) return;
+        if (pointerListener.onPointer(event, tempVector.X, tempVector.Y))
+          return;
       }
     });
   }
