@@ -6,9 +6,14 @@ import { Vector2D } from "../../vector";
 // import { Transform } from "../../transform";
 
 export interface IPointerListener {
-  get PointerRegistered(): boolean;
-  get RecieveEventsOutOfBound(): boolean;
-  onPointer(e: PointerEvent, localX: number, localY: number): boolean;
+  PointerRegistered?: boolean;
+  onPointer(
+    type: string,
+    localX: number,
+    localY: number,
+    inBound: boolean,
+    e: PointerEvent
+  ): boolean;
 }
 
 type PointerListener = IPointerListener & Sprite;
@@ -19,6 +24,12 @@ export class PointerEventGroup extends EventGroup {
   protected iPointerListeners: PointerListener[] = [];
 
   protected fift: boolean = true;
+
+  private tempVector: Vector2D = new Vector2D();
+
+  private baseTransform: Transform = new Transform();
+
+  private tempTransform: Transform = new Transform();
 
   constructor(engine: Engine) {
     // Maybe we should give developers a chance to select targets for each event
@@ -42,37 +53,51 @@ export class PointerEventGroup extends EventGroup {
 
     super.setListener((e: Event) => {
       const event = <PointerEvent>e;
-      const tempVector = new Vector2D();
-      const tempTransform = new Transform();
+      const { left, top } = this.engine.Canvas.getBoundingClientRect();
+      this.baseTransform
+        .reset()
+        .translate(left, top)
+        .multiply(this.engine.Camera);
       for (let idx = 0; idx < this.iPointerListeners.length; idx++) {
         const pointerListener =
           this.iPointerListeners[
             this.fift ? idx : this.iPointerListeners.length - idx - 1
           ];
-        if (!pointerListener.PointerRegistered) continue;
-        if (!pointerListener.RecieveEventsOutOfBound) {
-          engine.Camera.copyTo(tempTransform);
-          tempVector.X = event.x;
-          tempVector.Y = event.y;
-          // TODO: https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect
-          tempTransform
-            .translate(pointerListener.AbsoluteX, pointerListener.AbsoluteY)
-            .multiply(pointerListener.Transform)
-            .invert();
-          tempTransform.apply(tempVector);
-
-          // is point inside given area
-          if (
-            tempVector.X < 0 ||
-            tempVector.Y < 0 ||
-            tempVector.X > pointerListener.Width ||
-            tempVector.Y > pointerListener.Height
-          ) {
-            continue;
-          }
+        if (
+          pointerListener.PointerRegistered === false ||
+          pointerListener.Root !== this.engine.Scene
+        ) {
+          continue;
         }
-        if (pointerListener.onPointer(event, tempVector.X, tempVector.Y))
+
+        this.baseTransform.copyTo(this.tempTransform);
+        this.tempVector.X = event.clientX;
+        this.tempVector.Y = event.clientY;
+        // TODO: https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect
+        this.tempTransform
+          .translate(pointerListener.AbsoluteX, pointerListener.AbsoluteY)
+          .multiply(pointerListener.Transform)
+          .invert();
+
+        this.tempTransform.apply(this.tempVector);
+
+        const inBound =
+          this.tempVector.X > 0 &&
+          this.tempVector.Y > 0 &&
+          this.tempVector.X < pointerListener.W &&
+          this.tempVector.Y < pointerListener.H;
+
+        if (
+          pointerListener.onPointer(
+            event.type,
+            this.tempVector.X,
+            this.tempVector.Y,
+            inBound,
+            event
+          )
+        ) {
           return;
+        }
       }
     });
   }

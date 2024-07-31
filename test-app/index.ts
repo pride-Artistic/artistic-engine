@@ -100,7 +100,9 @@ const pointerGroup = new PointerEventGroup(engine);
 pointerGroup.registerPointerListener(recRED);
 pointerGroup.registerEvent();
 
-recRED.X = 700;
-recRED.Y = 400;
+recRED.X = 200;
+recRED.Y = -25;
+
+recRED.Transform.translate(-50, -50);
 
 engine.start();

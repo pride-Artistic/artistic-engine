@@ -14,8 +14,6 @@ export default class TestRectangle
 {
   public PointerRegistered: boolean = true;
 
-  public RecieveEventsOutOfBound: boolean = false;
-
   private isXmoving: boolean;
 
   private engine: Engine;
@@ -39,8 +37,17 @@ export default class TestRectangle
     this.engine = engine;
   }
 
-  public onPointer(): boolean {
-    this.fillStyle = "green";
+  public onPointer(
+    type: string,
+    x: number,
+    y: number,
+    inBound: boolean,
+    e: PointerEvent
+  ): boolean {
+    if (inBound) {
+      this.fillStyle = "green";
+    }
+
     return false;
   }
 
