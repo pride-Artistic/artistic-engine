@@ -9,6 +9,8 @@ export default abstract class Sprite extends Entity implements IDrawable {
 
   private transform: Transform | undefined;
 
+  private opacity: number = 1;
+
   /**
    * Getter property for transform.
    * @returns The matrix transform applied to this sprite.
@@ -27,12 +29,24 @@ export default abstract class Sprite extends Entity implements IDrawable {
     return this.region;
   }
 
+  /**
+   * Getter property for sprite opacity.
+   * @returns Theopacity this sprite is drawn.
+   */
+  public get Opacity(): number {
+    return this.opacity;
+  }
+
   private get needsTransform() {
     return this.transform != null && !this.transform.isIdentity;
   }
 
   private get hasRegion() {
     return this.region != null;
+  }
+
+  private get hasOpacity() {
+    return this.opacity !== 1;
   }
 
   /**
@@ -50,6 +64,13 @@ export default abstract class Sprite extends Entity implements IDrawable {
   }
 
   /**
+   * Setter property for opacity.
+   */
+  public set Opacity(opacity: number) {
+    this.opacity = Math.max(0, Math.min(opacity, 1));
+  }
+
+  /**
    * @inheritdoc
    */
   public readonly draw = (context: CanvasRenderingContext2D, delay: number) => {
@@ -57,7 +78,8 @@ export default abstract class Sprite extends Entity implements IDrawable {
 
     const needsTransform = this.needsTransform;
     const hasRegion = this.hasRegion;
-    this.contextMutator ||= needsTransform || hasRegion;
+    const hasOpacity = this.hasOpacity;
+    this.contextMutator ||= needsTransform || hasRegion || hasOpacity;
 
     if (this.contextMutator) {
       context.save();
@@ -77,6 +99,10 @@ export default abstract class Sprite extends Entity implements IDrawable {
         this.beforeClip(context, delay);
         const path = this.region!();
         context.clip(path);
+      }
+
+      if (hasOpacity) {
+        context.globalAlpha = this.opacity;
       }
     }
 

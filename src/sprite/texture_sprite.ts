@@ -9,6 +9,7 @@ export default class TextureSprite extends Sprite {
   public texture: ImageBitmap | undefined;
 
   constructor(config?: TextureConfig) {
+    // if no texture, we can not define witdth and height.
     if (config?.texture == null) {
       super();
       return;

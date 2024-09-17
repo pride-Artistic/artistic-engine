@@ -64,7 +64,7 @@ export class PointerEventGroup extends EventGroup {
             this.fift ? idx : this.iPointerListeners.length - idx - 1
           ];
         if (
-          pointerListener.PointerRegistered === false ||
+          pointerListener.PointerRegistered !== true ||
           pointerListener.Root !== this.engine.Scene
         ) {
           continue;

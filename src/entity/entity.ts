@@ -7,7 +7,7 @@ export default class Entity extends TreeItem<Entity> implements IEntity {
 
   protected position: Vector2D = new Vector2D();
 
-  public constructor(config?: IEntity | undefined) {
+  public constructor(config?: IEntity) {
     super();
     if (config) {
       this.dimension.X = config.W ?? 0;
