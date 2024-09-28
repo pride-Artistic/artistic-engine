@@ -39,6 +39,7 @@ export default class TestRectangle
 
   public onPointer(
     type: string,
+    button: number,
     x: number,
     y: number,
     inBound: boolean,

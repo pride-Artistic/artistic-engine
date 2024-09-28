@@ -168,4 +168,16 @@ export default class AssetLoader {
         "Please check whether the name is correct or the load method has been called."
     );
   }
+
+  // public releaseImage(...names: string[]) {
+  //   for (const name of names) {
+  //     this.images.delete(name);
+  //   }
+  // }
+
+  // public releaseAudio(...names: string[]) {
+  //   for (const name of names) {
+  //     this.audios.delete(name);
+  //   }
+  // }
 }

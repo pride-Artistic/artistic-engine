@@ -14,8 +14,9 @@ export default class ConcurrentModifier extends Modifier {
 
       let modifiersDone: number[] = [];
       for (let i = 0; i < this.modifiers.length; i++) {
-        this.modifiers[i].tick();
-        if (this.modifiers[i].Progress >= 1) {
+        const modifier = this.modifiers[i];
+        modifier.tick();
+        if (modifier.Progress >= 1) {
           modifiersDone.push(i);
         }
       }

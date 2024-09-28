@@ -9,6 +9,7 @@ export interface IPointerListener {
   PointerRegistered?: boolean;
   onPointer(
     type: string,
+    button: number,
     localX: number,
     localY: number,
     inBound: boolean,
@@ -64,7 +65,7 @@ export class PointerEventGroup extends EventGroup {
             this.fift ? idx : this.iPointerListeners.length - idx - 1
           ];
         if (
-          pointerListener.PointerRegistered !== true ||
+          pointerListener.PointerRegistered === false ||
           pointerListener.Root !== this.engine.Scene
         ) {
           continue;
@@ -90,6 +91,7 @@ export class PointerEventGroup extends EventGroup {
         if (
           pointerListener.onPointer(
             event.type,
+            event.button,
             this.tempVector.X,
             this.tempVector.Y,
             inBound,
