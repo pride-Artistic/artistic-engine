@@ -60,7 +60,6 @@ options[OPTION_PRODUCTION] = {
         modifiers: './src/modifiers/index.ts',
         sprite: './src/sprite/index.ts',
     },
-    devtool: 'inline-source-map',
     output: {
         filename: '[name].js' ,
         path: path.join(__dirname, 'dist'),
